@@ -16,6 +16,7 @@ DIST_lua=\
  lua/website/academicearth.lua \
  lua/website/arte.lua \
  lua/website/audioboo.lua \
+ lua/website/bbc.lua \
  lua/website/bloomberg.lua \
  lua/website/break.lua \
  lua/website/canalplus.lua \
