@@ -1,0 +1,67 @@
+
+
+Installation from source
+========================
+
+REMINDER: Run "make uninstall" if you have installed libquvi-scripts from
+the source previously.
+
+  * How to use GNU Autotools build system falls outside of the scope of
+  this documentation, refer to the appropriate sources instead
+
+  * IF you are unsure, THEN do not install from the source
+    - libquvi-scripts is available to many distros as a precompiled package
+
+    - Precompiled packages (ideally) make sure that no old files are
+      left behind when the software is upgraded or uninstalled
+
+    - Any old files left behind on your system may potentially interfere
+      with the new version of libquvi-scripts
+
+  * Consider yourself reminded
+
+"./configure && make install", typically. See also "./configure --help".
+If you are installing libquvi-scripts from the development code from the git
+repository, see "Installation from development code", instead.
+
+    --with-tests    Enable tests (e.g. "make check", req. Perl)
+                      - Set TEST_VERBOSE for verbose tests
+                      - Recommended for developers only
+                      - Tests are not run by default
+
+    --with-nlfy     Enable *tests* for webscripts marked as "NLFY"
+                      - a.k.a. the websites that mock visitors, e.g.:
+                        "Sorry we do not accept connections from your country"
+                      - NLFY webscripts are installed always
+
+    --with-nsfw     Install (&test) webscripts marked as "NSFW"
+                      - Install "Not safe for work" webscripts
+                      - Not installed by default
+
+    --with-fixme    Install (&test) webscripts marked as "FIXME"
+                      - Broken, outdated, ... webscripts
+                      - Recommended for developers only
+                      - Not installed by default
+
+  --without-manual        Do not install manual page(s)
+
+
+Installation from development code
+==================================
+
+If you are installing libquvi-scripts from the development code, run
+"autogen.sh", first. This generates the configuration files that are
+not in the git repository. You will need:
+
+  * GNU Autotools (autoconf, automake, etc.)
+
+Once the files have been generated, follow the instructions in "Installation
+from source" above.
+
+
+Tests
+=====
+
+"configure --with-tests && make check", typically. The test suite is
+intended for developers only and will use the Internet. See also
+$top_srcdir/tests/README.

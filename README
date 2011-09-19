@@ -1,0 +1,16 @@
+
+
+General
+=======
+
+libquvi-scripts contains the embedded lua scripts that libquvi uses for
+parsing the media details. Some additional utility scripts are also
+included.
+
+Home  : <http://quvi.sourceforge.net/>
+gitweb: <http://repo.or.cz/w/libquvi-scripts.git>
+
+License
+=======
+
+libquvi-scripts are free software, licensed under the LGPLv2.1+.
