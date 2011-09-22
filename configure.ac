@@ -17,19 +17,17 @@ AM_SILENT_RULES([yes])
 
 # Checks for programs.
 
-AC_PATH_PROG([QUVI], [quvi], [no], [$QUVI_PATH$PATH_SEPARATOR$PATH])
-AM_CONDITIONAL([HAVE_QUVI], [test x"$QUVI" != "xno"])
-AS_IF([test x"$QUVI" != "xno"],
-  [quviver=`$QUVI --version | head -n1 2>/dev/null`])
+AC_PATH_PROG([QUVI], [quvi], [], [$QUVI_PATH$PATH_SEPARATOR$PATH])
+AM_CONDITIONAL([HAVE_QUVI], [test -n "$QUVI"])
+AS_IF([test -n "$QUVI"], [quviver=`$QUVI --version | head -n1 2>/dev/null`])
 AC_SUBST([QUVI])
 
-AC_PATH_PROG([PROVE], [prove], [no], [$PROVE_PATH$PATH_SEPARATOR$PATH])
-AM_CONDITIONAL([HAVE_PROVE], [test x"$PROVE" != "xno"])
+AC_PATH_PROG([PROVE], [prove], [], [$PROVE_PATH$PATH_SEPARATOR$PATH])
+AM_CONDITIONAL([HAVE_PROVE], [test -n "$PROVE"])
 AC_SUBST([PROVE])
 
-AC_PATH_PROG([VALGRIND], [valgrind], [no],
-  [$VALGRIND_PATH$PATH_SEPARATOR$PATH])
-AM_CONDITIONAL([HAVE_VALGRIND], [test x"$VALGRIND" != "xno"])
+AC_PATH_PROG([VALGRIND], [valgrind], [], [$VALGRIND_PATH$PATH_SEPARATOR$PATH])
+AM_CONDITIONAL([HAVE_VALGRIND], [test -n "$VALGRIND"])
 AC_SUBST([VALGRIND])
 
 # Version.
@@ -39,9 +37,8 @@ AM_CONDITIONAL([HAVE_VN], [test -n "$VN"])
 
 # --with-tests
 AC_ARG_WITH([tests],
-  [AS_HELP_STRING([--with-tests],
-    [with tests @<:@default=no@:>@])],
-  [AS_IF([test x"$QUVI" = "xno"], [
+  [AS_HELP_STRING([--with-tests], [with tests @<:@default=no@:>@])],
+  [AS_IF([test -z "$QUVI"], [
     AC_MSG_NOTICE([quvi not found. Ignoring --with-tests.])
     with_tests=no])],
   [with_tests=no])
