@@ -44,16 +44,12 @@ end
 function parse(self)
     self.host_id = "tvlux"
     local page   = quvi.fetch(self.page_url)
-
-    local _,_,s = page:find('"title" content="(.-)"')
-    self.title  = s or error("no match: media title")
-
-    local _,_,s = self.page_url:find('/%d+/(%d+)')
-    self.id     = s or error("no match: media id")
-
-    local _,_,s = page:find("'file=(.-):?[&']")
-    self.url    = {s or error("no match: file")}
-
+    self.title   = page:match('"title" content="(.-)"')
+                    or error("no match: media title")
+    self.id      = self.page_url:match('/(%d+)$')
+                    or error("no match: media id")
+    self.url     = {page:match("'url':'(.-)'")
+                    or error('no match: media')}
     return self
 end
 

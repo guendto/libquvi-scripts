@@ -44,6 +44,7 @@ DIST_lua=\
  lua/website/spiegel.lua \
  lua/website/tagtele.lua \
  lua/website/ted.lua \
+ lua/website/tvlux.lua \
  lua/website/tmunderground.lua \
  lua/website/theonion.lua \
  lua/website/videobash.lua \
@@ -64,8 +65,7 @@ DIST_lua+=\
 endif
 
 if WITH_FIXME
-DIST_lua+=\
- lua/website/tvlux.lua
+DIST_lua+=
 endif
 
 nobase_dist_pkgdata_DATA=	$(DIST_lua)
