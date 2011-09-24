@@ -72,15 +72,21 @@ end
 
 function YouTube.normalize(s)
     if not s then return s end
-    -- domain names
-    s = s:gsub('youtu%.be', 'youtube.com')
-    s = s:gsub('%-nocookie', '')
-    -- paths
-    local w = '/watch?v='
-    for _,v in pairs({'/embed/', '/%w/'}) do
-        s = s:gsub(v,w)
+    local U = require 'quvi/url'
+    local t = U.parse(s)
+    t.host = t.host:gsub('youtu%.be', 'youtube.com')
+    t.host = t.host:gsub('-nocookie', '')
+    if t.path then
+        local p = {'/embed/([-_%w]+)', '/%w/([-_%w]+)', '/([-_%w]+)'}
+        for _,v in pairs(p) do
+            local m = t.path:match(v)
+            if m and not t.query then
+                t.query = 'v=' .. m
+                t.path  = '/watch'
+            end
+        end
     end
-    return s
+    return U.build(t)
 end
 
 function YouTube.get_config(self)
@@ -221,5 +227,43 @@ end
 function YouTube.to_s(t)
     return string.format("fmt%02d_%sp", t.fmt_id, t.height)
 end
+
+--[[
+local a = {
+  {u='http://youtu.be/3WSQH__H1XE',             -- u=page url
+   e='http://youtube.com/watch?v=3WSQH__H1XE'}, -- e=expected url
+  {u='http://youtu.be/watch?v=3WSQH__H1XE',
+   e='http://youtube.com/watch?v=3WSQH__H1XE'},
+  {u='http://youtu.be/embed/3WSQH__H1XE',
+   e='http://youtube.com/watch?v=3WSQH__H1XE'},
+  {u='http://youtu.be/v/3WSQH__H1XE',
+   e='http://youtube.com/watch?v=3WSQH__H1XE'},
+  {u='http://youtu.be/e/3WSQH__H1XE',
+   e='http://youtube.com/watch?v=3WSQH__H1XE'},
+  {u='http://youtube.com/watch?v=3WSQH__H1XE',
+   e='http://youtube.com/watch?v=3WSQH__H1XE'},
+  {u='http://youtube.com/embed/3WSQH__H1XE',
+   e='http://youtube.com/watch?v=3WSQH__H1XE'},
+  {u='http://jp.youtube.com/watch?v=3WSQH__H1XE',
+   e='http://jp.youtube.com/watch?v=3WSQH__H1XE'},
+  {u='http://jp.youtube-nocookie.com/e/3WSQH__H1XE',
+   e='http://jp.youtube.com/watch?v=3WSQH__H1XE'},
+  {u='http://jp.youtube.com/embed/3WSQH__H1XE',
+   e='http://jp.youtube.com/watch?v=3WSQH__H1XE'},
+  {u='http://youtube.com/3WSQH__H1XE', -- invalid page url
+   e='http://youtube.com/watch?v=3WSQH__H1XE'}
+}
+local e = 0
+for i,v in pairs(a) do
+  local s = YouTube.normalize(v.u)
+  if s ~= v.e then
+    print('\n   input: ' .. v.u .. " (#" .. i .. ")")
+    print('expected: '   .. v.e)
+    print('     got: '   .. s)
+    e = e + 1
+  end
+end
+print('\nerrors: ' .. e)
+]]--
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
