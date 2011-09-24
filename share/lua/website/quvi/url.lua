@@ -172,7 +172,7 @@ end
 --   a stringing with the corresponding URL
 -----------------------------------------------------------------------------
 function M.build(parsed)
-    local ppath = parse_path(parsed.path or "")
+    local ppath = M.parse_path(parsed.path or "")
     local url = M.build_path(ppath)
     if parsed.params then url = url .. ";" .. parsed.params end
     if parsed.query then url = url .. "?" .. parsed.query end
