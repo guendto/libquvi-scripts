@@ -117,13 +117,13 @@ function Dailymotion.iter_formats(page, U)
         error(e)
     end
     seq = U.unescape(seq)
-
+--[[
     local _,_,msg = seq:find('"message":"(.-)[<"]')
     if msg then
         msg = msg:gsub('+',' ')
         error(msg:gsub('\\',''))
     end
-
+]]--
     local _,_,vpp = seq:find('"videoPluginParameters":{(.-)}')
     if not vpp then
         -- See also <http://sourceforge.net/apps/trac/clive/ticket/4>
