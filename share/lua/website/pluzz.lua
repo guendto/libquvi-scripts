@@ -32,9 +32,7 @@ function ident(self)
     r.formats    = "default"
     r.categories = C.proto_mms
     local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url,
-                    {r.domain}, {"/.-%d+-%d+-%d+-%d+h-%d+%.html"})
--- http://www.pluzz.fr/sale-temps-pour-la-planete-2011-08-16-20h39.html
+    r.handles    = U.handles(self.page_url, {r.domain}, {"/.-%.html"})
     return r
 end
 
