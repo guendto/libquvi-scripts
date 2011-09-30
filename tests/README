@@ -147,10 +147,6 @@ The $top_srcdir/data/ contains the JSON files that the test suite uses.
 
     Read the README in this directory.
 
-  $top_srcdir/tests/data/format/default/non-http/
-
-    Read the README in this directory.
-
   $top_srcdir/tests/data/format/other/
 
     JSONs for those websites that support more than just the

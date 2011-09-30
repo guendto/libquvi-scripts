@@ -1,11 +1,11 @@
 
 TESTS_T=\
- t/format_default_nonhttp.t \
  t/format_default.t \
  t/format_other.t \
  t/shortened.t \
  t/nosupport.t \
  t/redirect.t \
+ t/expire.t \
  t/mem.t
 
 TESTS_D_T=	t/d/url.t

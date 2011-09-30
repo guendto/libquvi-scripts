@@ -67,7 +67,7 @@ sub new
   $config{quvi_path} ||= 'quvi';    # Presume it is found in the $PATH.
   $config{data_root} ||= cwd;
   $self->{config}          = \%config;
-  $self->{jobj}            = JSON::XS->new;
+  $self->{jobj}            = JSON::XS->new if $JSON::XS::VERSION;
   $ENV{LIBQUVI_SCRIPTSDIR} = $config{libquvi_scriptsdir}
     if $config{libquvi_scriptsdir};
   $self;
