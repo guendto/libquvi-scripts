@@ -54,6 +54,7 @@ DIST_lua=\
 
 if WITH_NSFW
 DIST_lua+=\
+ lua/website/foundrymusic.lua \
  lua/website/keezmovies.lua \
  lua/website/spankwire.lua \
  lua/website/tube8.lua \
@@ -64,8 +65,7 @@ DIST_lua+=\
 endif
 
 if WITH_FIXME
-DIST_lua+=\
- lua/website/foundrymusic.lua
+DIST_lua+=
 endif
 
 nobase_dist_pkgdata_DATA=	$(DIST_lua)
