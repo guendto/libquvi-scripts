@@ -1,0 +1,17 @@
+
+0.4.0  Wed Oct 05 2011  Toni Gundogdu
+
+Changes:
+  - Split from "quvi", new repo at <http://repo.or.cz/w/libquvi-scripts.git>
+  - videobash.lua (#71), thanks to Thomas Preud'homme <robotux@celest.fr>
+  - Add quvi/html.lua, thanks to Hans Elbers for the permission to use
+  - foundrymusic.lua (#69), thanks howeyc
+  - totallynsfw.lua, thanks anon
+
+Fixes:
+  - "attempt to call global parse_path (a nil value)" in quvi/url.lua
+  - youtube.lua: YouTube.normalize: handle youtu.be with '/watch?v='
+  - liveleak.lua: 'handles' pattern: accept word chars
+  - pluzz.lua: rewrite to use quvi/util.lua: handles
+
+For earlier notes, see <http://repo.or.cz/w/quvi.git/blob/HEAD:/NEWS>.
