@@ -48,7 +48,7 @@ function parse(self)
 
     local page = quvi.fetch(self.page_url)
 
-    self.title = page:match('og:title" content="(.-)"')
+    self.title = page:match('<title>(.-)</title>')
                     or error('no match: media title')
 
     self.thumbnail_url = page:match('"og:image" content="(.-)"')
