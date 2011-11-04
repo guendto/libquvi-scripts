@@ -27,14 +27,14 @@ plan skip_all => "JSON::XS required for testing" if $@;
 eval "use Test::Deep";
 plan skip_all => "Test::Deep required for testing" if $@;
 
-plan tests => 6;
-
 use Test::Quvi;
 
 my $q = Test::Quvi->new;
 
 plan skip_all => "TEST_SKIP rule"
   if $q->test_skip("redirect");
+
+plan tests => 6;
 
 my $j = $q->get_json_obj;
 

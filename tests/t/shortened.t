@@ -27,14 +27,14 @@ plan skip_all => "JSON::XS required for testing" if $@;
 eval "use Test::Deep";
 plan skip_all => "Test::Deep required for testing" if $@;
 
-plan tests => 4;
-
 use Test::Quvi;
 
 my $q = Test::Quvi->new;
 
 plan skip_all => "TEST_SKIP rule"
   if $q->test_skip("shortened");
+
+plan tests => 4;
 
 # All roads lead to (same) URL.
 my @u = (
