@@ -123,6 +123,9 @@ Set TEST_SKIP if you'd like to skip any of the test groups, e.g.:
 
   export TEST_SKIP=mem,format_default
 
+You can run the "find-tests.sh" script found in the top source directory
+to get a list of the test names that can be used with TEST_SKIP.
+
 Test suite data
 ---------------
 
