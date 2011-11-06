@@ -63,7 +63,7 @@ function parse(self)
     self.title   = page:match('<title>(.-)%s+|')
                     or error("no match: media title")
 
-    self.thumbnail_url = page:match('&amp;su=(.-)&amp;') or ''
+    self.thumbnail_url = page:match('rel="image_src" href="(.-)"') or ''
 
     local formats = Ted.iter_formats(page)
     local U       = require 'quvi/util'
