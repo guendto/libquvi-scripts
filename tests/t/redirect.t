@@ -34,7 +34,7 @@ my $q = Test::Quvi->new;
 plan skip_all => "TEST_SKIP rule"
   if $q->test_skip("redirect");
 
-plan tests => 6;
+plan tests => 8;
 
 my $j = $q->get_json_obj;
 
@@ -46,6 +46,11 @@ test_redirect_url(    # Test self.redirect_url in academicearth.lua
 test_redirect_url(    # Test self.redirect_url in collegehumor.lua
   "http://www.dorkly.com/embed/17349/ridiculous-way-to-get-ammo-to-teammates-in-battlefield-bad-company-2",
   "data/resolve/redirect_url_dorkly.json"
+                 );
+
+test_redirect_url(    # Test self.redirect_url in ted.lua
+      "http://www.ted.com/talks/paul_lewis_crowdsourcing_the_news.html",
+      "data/resolve/redirect_url_ted.json"
                  );
 
 test_url_shortener(    # Test URL shortener support

@@ -1,0 +1,18 @@
+{
+  "host": "youtube",
+  "page_title": "TEDxThessaloniki - Paul Lewis - Citizen Journalism",
+  "page_url": "http://www.youtube.com/v/9APO9_yNbcg&amp;hl=en_US&amp;fs=1&amp;rel=0&amp;color1=0xffffff&amp;color2=0xececec&amp;autoplay=1&amp;showinfo=0&amp;showsearch=false&amp;iv_load_policy=3",
+  "id": "9APO9_yNbcg",
+  "format_requested": "default",
+  "thumbnail_url": "http://i2.ytimg.com/vi/9APO9_yNbcg/default.jpg",
+  "duration": "1016000",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "35455045",
+      "content_type": "video/x-flv",
+      "file_suffix": "flv",
+      "url": ""
+    }
+  ]
+}
