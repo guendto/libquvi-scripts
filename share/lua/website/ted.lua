@@ -39,8 +39,12 @@ end
 -- Query available formats.
 function query_formats(self)
     local page    = quvi.fetch(self.page_url)
-    local formats = Ted.iter_formats(page)
 
+    if Ted.is_external(self, page) then
+        return self
+    end
+
+    local formats = Ted.iter_formats(page)
     local t = {}
     for _,v in pairs(formats) do
         table.insert(t, Ted.to_s(v))
@@ -56,6 +60,10 @@ end
 function parse(self)
     self.host_id = "ted"
     local page   = quvi.fetch(self.page_url)
+
+    if Ted.is_external(self, page) then
+        return self
+    end
 
     self.id      = page:match('ti:"(%d+)"')
                     or error("no match: media id")
@@ -138,6 +146,12 @@ function Ted.to_s(t)
     return (t.quality)
         and string.format("%s_%s", t.container, t.quality)
         or  string.format("%s", t.container)
+end
+
+function Ted.is_external(self, page)
+    -- Some of the videos are hosted elsewhere.
+    self.redirect_url = page:match('name="movie"%s+value="(.-)"') or ''
+    return #self.redirect_url > 0
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
