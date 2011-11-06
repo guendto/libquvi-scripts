@@ -1,4 +1,15 @@
 
+0.4.1  Sun Nov 06 2011  Toni Gundogdu
+
+Changes:
+    - ted.lua: Handle off-site media
+Bugfixes:
+    - ted.lua: thumbnail URL pattern
+    - xhamster.lua: title pattern
+    - yfrog.lua: title pattern
+    - ted.lua: media URL check
+
+
 0.4.0  Wed Oct 05 2011  Toni Gundogdu
 
 Changes:
