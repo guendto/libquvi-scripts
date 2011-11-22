@@ -74,6 +74,7 @@ function YouTube.normalize(s)
     if not s then return s end
     local U = require 'quvi/url'
     local t = U.parse(s)
+    if not t.host then return s end
     t.host = t.host:gsub('youtu%.be', 'youtube.com')
     t.host = t.host:gsub('-nocookie', '')
     if t.path then
