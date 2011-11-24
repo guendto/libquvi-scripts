@@ -62,12 +62,12 @@ function parse(self)
 
     local formats = CBSNews.iter_formats(config)
     local U       = require 'quvi/util'
-    self.url      = {U.choose_format(self, formats,
+    local format  = U.choose_format(self, formats,
                                      CBSNews.choose_best,
                                      CBSNews.choose_default,
-                                     CBSNews.to_s).url
-                        or error("no match: media url")}
-
+                                     CBSNews.to_s)
+                        or error("unable to choose format")
+    self.url      = {format.url or error("no match: media url")}
     return self
 end
 

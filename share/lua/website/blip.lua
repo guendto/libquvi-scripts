@@ -72,12 +72,12 @@ function parse(self)
     self.thumbnail_url = s or ''
 
     local formats = Blip.iter_formats(config)
-    self.url      = {U.choose_format(self, formats,
+    local format  = U.choose_format(self, formats,
                                      Blip.choose_best,
                                      Blip.choose_default,
-                                     Blip.to_s).url
-                        or error('no match: media url')}
-
+                                     Blip.to_s)
+                        or error("unable to choose format")
+    self.url      = {format.url or error("no match: media url")}
     return self
 end
 

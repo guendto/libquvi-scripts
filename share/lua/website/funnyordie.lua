@@ -67,11 +67,12 @@ function parse(self)
 
     local formats = FunnyOrDie.iter_formats(page)
     local U       = require 'quvi/util'
-    self.url      = {U.choose_format(self, formats,
+    local format  = U.choose_format(self, formats,
                                      FunnyOrDie.choose_best,
                                      FunnyOrDie.choose_default,
-                                     FunnyOrDie.to_s).url
-                        or error('no match: media url')}
+                                     FunnyOrDie.to_s)
+                        or error("unable to choose format")
+    self.url      = {format.url or error('no match: media url')}
     return self
 end
 

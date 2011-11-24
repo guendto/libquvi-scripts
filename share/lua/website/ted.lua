@@ -75,13 +75,12 @@ function parse(self)
 
     local formats = Ted.iter_formats(page)
     local U       = require 'quvi/util'
-    local r       = U.choose_format(self, formats,
+    local format  = U.choose_format(self, formats,
                                      Ted.choose_best,
                                      Ted.choose_default,
                                      Ted.to_s)
-                        or error("no match: media url")
-    self.url      = {r.url}
-
+                        or error("unable to choose format")
+    self.url      = {format.url or error("no match: media url")}
     return self
 end
 

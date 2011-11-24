@@ -160,11 +160,12 @@ function YouTube.get_video_info(self)
         YouTube.convert_deprecated_id(self.requested_format)
 
     local formats = YouTube.iter_formats(config, U)
-    local url     = U.choose_format(self, formats,
+    local format  = U.choose_format(self, formats,
                                     YouTube.choose_best,
                                     YouTube.choose_default,
-                                    YouTube.to_s).url
-                        or error("no match: media url")
+                                    YouTube.to_s)
+                        or error("unable to choose format")
+    local url     = format.url or error("no match: media url")
 
     if url and #self.start_time > 0 then
         local min, sec = self.start_time:match("^(%d+)m(%d+)s$")
@@ -177,7 +178,6 @@ function YouTube.get_video_info(self)
     end
 
     self.url = {url}
-
     return self
 end
 

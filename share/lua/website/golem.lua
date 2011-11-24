@@ -66,12 +66,12 @@ function parse(self)
 
     local formats = Golem.iter_formats(config)
     local U       = require 'quvi/util'
-    self.url      = {U.choose_format(self, formats,
+    local format  = U.choose_format(self, formats,
                                      Golem.choose_best,
                                      Golem.choose_default,
-                                     Golem.to_s).url
-                        or error("no match: media url")}
-
+                                     Golem.to_s)
+                        or error("unable to choose format")
+    self.url      = {format.url or error("no match: media url")}
     return self
 end
 

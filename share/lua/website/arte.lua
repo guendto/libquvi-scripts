@@ -64,6 +64,7 @@ function parse(self)
                                     Arte.choose_best,
                                     Arte.choose_default,
                                     Arte.to_s)
+                        or error("unable to choose format")
     self.title         = format.title or error('no match: title')
     self.id            = format.id or error('no match: id')
     self.thumbnail_url = format.thumb or ''

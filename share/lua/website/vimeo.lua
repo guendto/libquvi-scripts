@@ -70,11 +70,12 @@ function parse(self)
 
     local formats = Vimeo.iter_formats(self, config)
     local U       = require 'quvi/util'
-    self.url      = {U.choose_format(self, formats,
+    local format  = U.choose_format(self, formats,
                                      Vimeo.choose_best,
                                      Vimeo.choose_default,
-                                     Vimeo.to_s).url
-                        or error("no match: media url")}
+                                     Vimeo.to_s)
+                        or error("unable to choose format")
+    self.url      = {format.url or error("no match: media url")}
     return self
 end
 

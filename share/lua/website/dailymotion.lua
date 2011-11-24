@@ -73,12 +73,12 @@ function parse(self)
     self.thumbnail_url = s or ''
 
     local formats = Dailymotion.iter_formats(page, U)
-    self.url      = {U.choose_format(self, formats,
+    local format  = U.choose_format(self, formats,
                                      Dailymotion.choose_best,
                                      Dailymotion.choose_default,
-                                     Dailymotion.to_s).url
-                        or error("no match: media url")}
-
+                                     Dailymotion.to_s)
+                        or error("unable to choose format")
+    self.url      = {format.url or error("no match: media url")}
     return self
 end
 
