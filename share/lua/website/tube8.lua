@@ -50,8 +50,9 @@ function parse (self)
     local _,_,s = page:find('name="vidId" value="(%d+)"')
     self.id     = s or error ("no match: media id")
 
-    local _,_,s = page:find('videourl="(.-)"')
-    self.url    = {s or error ("no match: file")}
+    local U = require 'quvi/util'
+    local _,_,s = page:find('"video_url":"(.-)"')
+    self.url    = { U.unescape( s or error ("no match: file") ) }
 
     return self
 end
