@@ -47,7 +47,7 @@ function ident(self)
         'wjtv%.com', 'wkrg%.com', 'wrbl%.com', 'wsav%.com', 'wsls%.com',
         'wspa%.com', 'vteffect%.com'}
     r.domain     = 'mgnetwork%.com'
-    r.formats    = 'default'
+    r.formats    = 'default|best'
     r.categories = C.proto_http
     local U      = require 'quvi/util'
     r.handles    = U.handles(self.page_url,
