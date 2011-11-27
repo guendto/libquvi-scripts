@@ -1,8 +1,8 @@
 --
--- quvi
--- Copyright (C) 2011  quvi project <http://quvi.sourceforge.net/>
+-- libquvi-scripts
+-- Copyright (C) 2011  quvi project
 --
--- This file is part of quvi <http://quvi.sourceforge.net/>.
+-- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
 -- This library is free software; you can redistribute it and/or
 -- modify it under the terms of the GNU Lesser General Public
