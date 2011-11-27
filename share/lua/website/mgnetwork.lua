@@ -20,6 +20,15 @@
 -- 02110-1301  USA
 --
 
+--
+-- NOTE: Media General is a company that owns many local news stations
+-- and newspapers in the southeast US. They all use the same system for
+-- videos.
+--  <http://sourceforge.net/apps/trac/quvi/ticket/78>
+--
+
+local MGNetwork = {} -- Utility functions unique to this script
+
 -- Identify the script.
 function ident(self)
     package.path = self.script_dir .. '/?.lua'
@@ -49,45 +58,88 @@ end
 
 -- Query available formats.
 function query_formats(self)
-    self.formats = 'default'
+    local config  = MGNetwork.get_config(self)
+    local formats = MGNetwork.iter_formats(config)
+
+    local t = {}
+    for _,v in pairs(formats) do
+        table.insert(t, MGNetwork.to_s(v))
+    end
+
+    table.sort(t)
+    self.formats = table.concat(t, "|")
+
     return self
 end
 
 -- Parse media URL.
 function parse(self)
-    self.host_id         = 'mgnetwork'
+    self.host_id = 'mgnetwork'
 
-    local _,_,domain,v,s = self.page_url:find("http://([%w%.]+)/.+%-(%w+)%-(%d+)/")
-    self.id              = s
+    local xml = MGNetwork.get_config(self)
 
-    local page           = quvi.fetch(self.page_url)
-    local _,_,config_url = page:find("if %(!mrss_link%){ mrss_link = " ..
-        "'(.-)'; }")
-    if not config_url or config_url == '' then
-        error('no match: no video found on page')
-    end
+    self.title = xml:match('<item>.-<title>(.-)</title>')
+                    or error("no match: media title")
 
-    --local config_url     = string.format(
-    --    'http://%s/video/get/media_response_related_' ..
-    --    'for_content/%s/%d/', domain, v, self.id)
-    local opts           = {fetch_type = 'config'}
-    local xml            = quvi.fetch(config_url, opts)
+    local formats = MGNetwork.iter_formats(xml)
+    local U       = require 'quvi/util'
+    local format  = U.choose_format(self, formats,
+                                    MGNetwork.choose_best,
+                                    MGNetwork.choose_default,
+                                    MGNetwork.to_s)
+                        or error("unable to choose format")
+    self.url = {format.url or error("no match: media url")}
 
-    local _,_,item       = xml:find('<item>(.-)</item>')
-    local _,_,s          = item:find('<title>(.-)</title>')
-    self.title           = s
+    -- Optional: we can live without these
 
-    self.url             = {}
-    for s,d in item:gfind('<media:content url="(.-)" ' ..
-                            'type="video/mp4" duration="([%d\.]-)"') do
-        table.insert(self.url, s)
-        self.duration    = tonumber(d) or 0
-    end
+    self.thumbnail_url = xml:match('<media:thumbnail url="(.-)"') or ''
 
-    local _,_,t          = xml:find('<media:thumbnail url="(.-)"')
-    self.thumbnail_url   = t
+    local d = xml:match('duration="(.-)"') or 0
+    self.duration = math.ceil(d)
 
     return self
+end
+
+--
+-- Utility functions
+--
+
+function MGNetwork.get_config(self)
+    -- local config_url = string.format(
+    --    'http://%s/video/get/media_response_related_' ..
+    --    'for_content/%s/%d/', d, v, self.id)
+    local d,v,s = self.page_url:match("http://([%w%.]+)/.+%-(%w+)%-(%d+)/")
+    self.id = s or error("no match: media id")
+
+    -- Ideally, we'd skip this step and just get the config.
+    -- Do this so that we can check whether the video exists.
+    local d = quvi.fetch(self.page_url)
+    local p = "if %(!mrss_link%){ mrss_link = '(.-)'; }"
+    local s = d:match(p) or error('no match: no video found on page')
+
+    return quvi.fetch(s, {fetch_type = 'config'})
+end
+
+function MGNetwork.iter_formats(config)
+    local p = 'content url="(.-)" type="%w+/(.-)"'
+    local t = {}
+    for u,c in config:gfind(p) do
+        table.insert(t, {url=u, container=c})
+        --print(u,c)
+    end
+    return t
+end
+
+function MGNetwork.choose_best(t) -- Expect the first to be the 'best'
+  return t[1]
+end
+
+function MGNetwork.choose_default(t) -- Expect the last to be the 'default'
+  return t[#t]
+end
+
+function MGNetwork.to_s(t)
+  return t.container
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
