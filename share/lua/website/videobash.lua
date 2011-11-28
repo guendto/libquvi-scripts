@@ -50,8 +50,10 @@ function parse (self)
     local _,_,s = page:find("addFavorite%((%d+)")
     self.id     = s or error ("no match: media id")
 
-    local _,_,s = page:find("video_url=(.-)%?")
-    self.url    = {s or error ("no match: flv")}
+    local s = page:match('video_url="(.-);')
+                or error("no match: media url")
+    s = s:gsub("['%s+]",'')
+    self.url    = {s}
 
     return self
 end
