@@ -61,7 +61,7 @@ test_url_shortener(    # Test URL shortener support
 sub test_redirect_url
 {
   my ($url, $json) = @_;
-  my ($r, $o) = $q->run($url, "-q");
+  my ($r, $o) = $q->run($url, "-vq");
   is($r, 0, "quvi exit status == 0") or diag $url;
 SKIP:
   {
@@ -76,7 +76,7 @@ SKIP:
 sub test_url_shortener
 {
   my ($url, $json) = @_;
-  my ($r, $o) = $q->run($url, "-q");
+  my ($r, $o) = $q->run($url, "-vq");
   is($r, 0, "quvi exit status == 0") or diag $url;
 SKIP:
   {

@@ -54,16 +54,16 @@ is($r, 0x0, "exit status == 0x0");    # 0x0 = QUVI_OK
 
 # --support arg
 ($r) =
-  $q->run_with_valgrind('http://vimeo.com/1485507', '--support -qr');
+  $q->run_with_valgrind('http://vimeo.com/1485507', '--support -vq -e-r');
 is($r, 0x0, "exit status == 0x0");
 
 # fetch, parse, exit
-($r) = $q->run_with_valgrind('http://vimeo.com/1485507', '-qr');
+($r) = $q->run_with_valgrind('http://vimeo.com/1485507', '-vq -e-r');
 is($r, 0x0, "exit status == 0x0");
 
 # fetch, parse, exec and exit
 ($r) = $q->run_with_valgrind('http://vimeo.com/1485507',
-                             '-qr --exec "echo %t ; echo %u"');
+                             '-vq -e-r --exec "echo %t ; echo %u"');
 is($r, 0x0, "exit status == 0x0");
 
 # (fetch, parse) x 2, exit
@@ -71,7 +71,7 @@ is($r, 0x0, "exit status == 0x0");
   $q->run_with_valgrind(
                         'http://vimeo.com/1485507',
                         'http://megavideo.com/?v=HJVPVMTV',
-                        '-qr'
+                        '-vq -e-r'
                        );
 is($r, 0x0, "exit status == 0x0");
 
@@ -81,7 +81,7 @@ is($r, 0x0, "exit status == 0x0");
   $q->run_with_valgrind(
                         'http://ww.vimeo.com/1485507',
                         'http://megavideo.com/?v=HJVPVMTV',
-                        '-qr'
+                        '-vq -e-r'
                        );
 is($r, 0x0, "exit status == 0x0");
 

@@ -54,7 +54,7 @@ foreach (@files)
   $q->mark_ignored(\$e, $1) if $_ =~ /$ign/;
 
   my $f = $e->{format_requested};
-  my ($r, $o) = $q->run($e->{page_url}, "-qrf $f");
+  my ($r, $o) = $q->run($e->{page_url}, "-vq -e-r -f $f");
   is($r, 0, "quvi exit status == 0")
     or diag $e->{page_url};
 SKIP:

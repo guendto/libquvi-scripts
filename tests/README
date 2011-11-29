@@ -5,6 +5,10 @@ quvi test suite
 Prerequisites
 -------------
 
+  * quvi 0.4.1+
+     - The test suite uses the new options introduced in quvi 0.4.1,
+       e.g. "-vq" instead of (now depr.) "-q", etc.
+
   * Perl (and prove <http://search.cpan.org/perldoc?prove>)
 
   * Perl modules (that are not among the 5.12.2 core modules)
@@ -92,7 +96,7 @@ e.g. "-b $top_srcdir/share/"
 
 You can pass additional options to quvi, e.g:
 
-  prove t/foo.t :: -o "-qr"
+  prove t/foo.t :: -o "-vq -e-r"
 
 The test suite uses the bundled JSON files for the verification process.
 You have the option of using --json-file with the "Custom tests" (see

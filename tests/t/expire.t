@@ -65,7 +65,7 @@ SKIP:
     {
       skip 'no match: url', 1 unless $url;
       note "querying media...";
-      ($r) = $q->run($url, "-qr");
+      ($r) = $q->run($url, "-vq -e-r");
       is($r, 0x00, "quvi exit status == QUVI_OK")
         or diag $url;
     }

@@ -47,12 +47,12 @@ my @a = qw(
 plan tests => 1 + scalar @a;
 
 # Make a note of the use of /dev/null
-my ($r) = $q->run("http://nosupport.url", "--support -qr 2>/dev/null");
+my ($r) = $q->run("http://nosupport.url", "--support -vq -e-r 2>/dev/null");
 is($r, 0x41, "quvi exit status == QUVI_NOSUPPORT");
 
 foreach (@a)
 {
-  ($r) = $q->run($_, "--support -qr");
+  ($r) = $q->run($_, "--support -vq -e-r");
   is($r, 0x00, "quvi exit status == QUVI_OK");
 }
 

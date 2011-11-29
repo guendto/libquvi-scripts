@@ -57,7 +57,7 @@ $q->mark_ignored(\$e, 'length_bytes');
 
 foreach (@u)
 {
-  my ($r, $o) = $q->run($_, "-q");
+  my ($r, $o) = $q->run($_, "-vq");
   is($r, 0, "quvi exit status == 0")
     or diag $_;
 SKIP:
