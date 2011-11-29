@@ -55,7 +55,6 @@ DIST_lua=\
 
 if WITH_NSFW
 DIST_lua+=\
- lua/website/foundrymusic.lua \
  lua/website/keezmovies.lua \
  lua/website/spankwire.lua \
  lua/website/tube8.lua \
