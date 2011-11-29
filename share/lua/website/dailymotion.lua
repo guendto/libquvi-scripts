@@ -108,7 +108,7 @@ function Dailymotion.normalize(page_url) -- "Normalize" embedded URLs
 end
 
 function Dailymotion.iter_formats(page, U)
-    local _,_,seq = page:find('"sequence",%s+"(.-)"')
+    local seq = page:match('"sequence",%s+"(.-)"')
     if not seq then
         local e = "no match: sequence"
         if page:find("_partnerplayer") then
@@ -116,31 +116,22 @@ function Dailymotion.iter_formats(page, U)
         end
         error(e)
     end
+
     seq = U.unescape(seq)
---[[
-    local _,_,msg = seq:find('"message":"(.-)[<"]')
-    if msg then
-        msg = msg:gsub('+',' ')
-        error(msg:gsub('\\',''))
-    end
-]]--
-    local _,_,vpp = seq:find('"videoPluginParameters":{(.-)}')
-    if not vpp then
-        -- See also <http://sourceforge.net/apps/trac/clive/ticket/4>
-        error("no match: video plugin params")
-    end
 
     local t = {}
-    for url in vpp:gfind('%w+URL":"(.-)"') do
-        url = url:gsub("\\/", "/")
-        local _,_,c,w,h,cn = url:find('(%w+)%-(%d+)x(%d+).-%.(%w+)')
-        if not c then
-            error('no match: codec, width, height, container')
+    for url in seq:gfind('%w+URL":"(.-)"') do
+        local c,w,h,cn = url:match('(%w+)%-(%d+)x(%d+).-%.(%w+)')
+        if c then
+            table.insert(t, {width=tonumber(w), height=tonumber(h),
+                             container=cn,      codec=string.lower(c),
+                             url=url:gsub("\\/", "/")})
+--            print(c,w,h,cn)
         end
---        print(c,w,h,cn)
-        table.insert(t, {width=tonumber(w), height=tonumber(h),
-                         container=cn,      codec=string.lower(c),
-                         url=url})
+    end
+
+    if #t == 0 then
+        error("no match: media URL")
     end
 
     return t
