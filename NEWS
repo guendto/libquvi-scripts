@@ -1,9 +1,19 @@
 
-0.4.1  Sun Nov 06 2011  Toni Gundogdu
+0.4.2  Tue Nov 29 2011  Toni Gundogdu
+Changes:
+    - Add mgnetwork.lua, mutantmonkey <mutantmonkey@mutantmonkey.in> (#78)
+    - Remove foundrymusic.lua
+Fixes:
+    - tube8.lua: media URL parsing, Tomas Janousek <tomi@nomi.cz> (#80)
+    - Multiple: potential "attempt to index ... (a nil value)"
+    - dailymotion.lua: no match: video plugin params
+    - videobash.lua: media URL parsing (#81)
 
+
+0.4.1  Sun Nov 06 2011  Toni Gundogdu
 Changes:
     - ted.lua: Handle off-site media
-Bugfixes:
+Fixes:
     - ted.lua: thumbnail URL pattern
     - xhamster.lua: title pattern
     - yfrog.lua: title pattern
