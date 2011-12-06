@@ -20,6 +20,8 @@
 -- 02110-1301  USA
 --
 
+local LiveLeak = {} -- Utility functions specific to this script
+
 -- Identify the script.
 function ident (self)
     package.path = self.script_dir .. '/?.lua'
@@ -29,6 +31,7 @@ function ident (self)
     r.formats    = "default"
     r.categories = C.proto_http
     local U      = require 'quvi/util'
+    LiveLeak.normalize(self)
     r.handles    = U.handles(self.page_url,
                     {r.domain}, {"view"}, {"i=[%w_]+"})
     return r
@@ -43,6 +46,8 @@ end
 -- Parse media URL.
 function parse (self)
     self.host_id = "liveleak"
+
+    LiveLeak.normalize(self)
     local page   = quvi.fetch(self.page_url)
 
     local _,_,s = page:find("<title>LiveLeak.com%s+%-%s+(.-)</")
@@ -62,6 +67,23 @@ function parse (self)
     self.url    = {s or error ("no match: file")}
 
     return self
+end
+
+--
+-- Utility functions
+--
+
+function LiveLeak.normalize(self)
+    if not self.page_url then return self.page_url end
+
+    local U = require 'quvi/url'
+    local t = U.parse(self.page_url)
+    local i = t.path:match('/e/([_%w]+)')
+    if i then
+        t.query = 'i=' .. i
+        t.path = '/view'
+        self.page_url = U.build(t)
+    end
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
