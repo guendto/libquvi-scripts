@@ -20,8 +20,10 @@
 -- 02110-1301  USA
 --
 
+local TCMag = {} -- Utility functions specific to this script
+
 -- Identify the script.
-function ident (self)
+function ident(self)
     package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local r      = {}
@@ -36,40 +38,51 @@ end
 -- Query available formats.
 function query_formats(self)
     self.formats = 'default'
-    return self
+    return TCMag.check_external_content(self)
 end
 
 -- Parse media URL.
-function parse (self)
+function parse(self)
     self.host_id = "tcmag"
-    local page   = quvi.fetch(self.page_url)
+    return TCMag.check_external_content(self)
+end
 
-    local _,_,s = page:find('<article id="article">(.-)</article>')
-    local article = s or error ("no match: article")
+--
+-- Utility functions
+--
 
-    local _,_,s  = article:find('http://.*youtube.com/embed/([^/]-)"')
-    if s then
-        -- Hand over to youtube.lua
+function TCMag.check_external_content(self)
+    local page = quvi.fetch(self.page_url)
+
+    local article = page:match('<article id="article">(.-)</article>')
+                        or error("no match: article")
+
+    local s = article:match('http://.*youtube.com/embed/([^/]-)"')
+    if s then -- Hand over to youtube.lua
         self.redirect_url = 'http://youtube.com/watch?v=' .. s
         return self
     end
 
-    local _,_,s  = article:find('http://.*vimeo.com/video/([0-9]+)')
-    if s then
-        -- Hand over to vimeo.lua
+    local s = article:match('http://.*vimeo.com/video/([0-9]+)')
+    if s then -- Hand over to vimeo.lua
         self.redirect_url = 'http://vimeo.com/video/' .. s
         return self
     end
 
-    local _,_,s  = article:find("'file': '(.-)',")
-    self.url     = {s or error ("no match: media url")}
-    local url    = s
+    local s = article:match('http://.*liveleak.com/e/([%w_]+)')
+    if s then -- Hand over to liveleak.lua
+        self.redirect_url = 'http://liveleak.com/e/' .. s
+        return self
+    end
 
-    local _,_,s = article:find('<h1>(.-)</h1>')
-    self.title   = s or error ("no match: media title")
+    self.title = article:match('<h1>(.-)</h1>')
+                    or error ("no match: media title")
 
-    local _,_,s = url:find("/(.-)/sizes/")
-    self.id     = s or error ("no match: media id")
+    self.url = {article:match("'file': '(.-)',")
+                or error("no match: media url")}
+
+    self.id = self.url[1]:match("/%d+/%d+/(.-)/sizes/")
+                or error ("no match: media id")
 
     return self
 end
