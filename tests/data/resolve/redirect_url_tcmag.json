@@ -1,0 +1,18 @@
+{
+  "host": "vimeo",
+  "page_title": "Traffic in Frenetic HCMC, Vietnam",
+  "page_url": "http://vimeo.com/video/32958521",
+  "id": "32958521",
+  "format_requested": "default",
+  "thumbnail_url": "http://b.vimeocdn.com/ts/223/690/223690097_640.jpg",
+  "duration": "140000",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "15150954",
+      "content_type": "video/mp4",
+      "file_suffix": "mp4",
+      "url": ""
+    }
+  ]
+}
