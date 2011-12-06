@@ -57,6 +57,7 @@ if WITH_NSFW
 DIST_lua+=\
  lua/website/keezmovies.lua \
  lua/website/spankwire.lua \
+ lua/website/tcmag.lua \
  lua/website/tube8.lua \
  lua/website/totallynsfw.lua \
  lua/website/xhamster.lua \
