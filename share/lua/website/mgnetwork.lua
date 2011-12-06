@@ -95,7 +95,7 @@ function parse(self)
     self.thumbnail_url = xml:match('<media:thumbnail url="(.-)"') or ''
 
     local d = xml:match('duration="(.-)"') or 0
-    self.duration = math.ceil(d)
+    self.duration = math.ceil(d) * 1000 -- to msec
 
     return self
 end
