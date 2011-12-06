@@ -32,6 +32,10 @@ function suffix_from_contenttype(ctype)
             ..'incomplete.')
     end
 
+    if ctype:find("audio/mpeg") then
+        return "mp3"
+    end
+
     local _,_,s = ctype:find("/(.-)$")
     s = s or error ("no match: content type")
     s = s:gsub("^x%-","")
