@@ -56,7 +56,7 @@ function parse (self)
     local _,_,s = page:find("'file': '(.-)'")
     local file  = s or error ("no match: file")
 
-    self.url    = {srv.."/flv2/"..file}
+    self.url    = {srv.."/key="..file}
 
     return self
 end
