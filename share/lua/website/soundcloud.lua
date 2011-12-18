@@ -19,6 +19,10 @@
 -- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 -- 02110-1301  USA
 --
+-- For Soundcloud.toUtf8():
+-- Copyright 2004 by Rici Lake. Permission is granted to use this code under
+-- the same terms and conditions as found in the Lua copyright notice at
+-- http://www.lua.org/license.html.
 
 local Soundcloud = {} -- Utility functions unique to this script
 
@@ -60,9 +64,9 @@ function parse(self)
     local title  = s or error("no match: media title")
     -- Unescape the Unicode strings if any
     -- the HTML will be unescaped by quvi itself
-    self.title = string.gsub(title, "\\u(%d+)",
+    self.title = string.gsub(title, "\\u(%x+)",
         function (h)
-            return string.char(tonumber(h, 16))
+            return Soundcloud.toUtf8(tonumber(h, 16))
         end)
 
     local _,_,s = page:find('content="([:/%w%?%.-]-)" property="og:image"')
@@ -91,6 +95,30 @@ function Soundcloud.normalize(self) -- "Normalize" an embedded URL
 
     local s = quvi.fetch(oe_url):match('href=\\"(.-)\\"')
     self.page_url = s or error('no match: page url')
+end
+
+-- Adapted from http://luaparse.luaforge.net/libquery.lua.html
+--
+-- Convert an integer to a UTF-8 sequence, without checking for
+-- invalid codes.
+-- This originally had calls to floor scattered about but it is
+-- not necessary: string.char does a "C" conversion from float to int,
+-- which is a truncate towards zero operation; i must be non-negative,
+-- so that is the same as floor.
+function Soundcloud.toUtf8(i)
+  if i <= 127 then return string.char(i)
+   elseif i <= tonumber("7FF", 16) then
+    return string.char(i / 64 + 192, math.mod(i, 64) + 128)
+   elseif i <= tonumber("FFFF", 16) then
+    return string.char(i / 4096 + 224,
+                   math.mod(i / 64, 64) + 128,
+                   math.mod(i, 64) + 128)
+   else
+    return string.char(i / 262144 + 240,
+                   math.mod(i / 4096, 64) + 128,
+                   math.mod(i / 64, 64) + 128,
+                   math.mod(i, 64) + 128)
+  end
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
