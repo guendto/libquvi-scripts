@@ -1,0 +1,17 @@
+{
+  "host": "imdb",
+  "page_title": "The Dark Knight Rises Trailer (No. 1)",
+  "page_url": "http://www.imdb.com/video/imdb/vi2823134745/",
+  "id": "vi2823134745",
+  "format_requested": "default",
+  "thumbnail_url": "http://ia.media-imdb.com/images/M/MV5BMTgxMzE4OTE0MV5BMl5BanBnXkFtZTcwNjQ4OTcxNw@@._V1_.jpg",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "24696094",
+      "content_type": "video/mp4",
+      "file_suffix": "mp4",
+      "url": ""
+    }
+  ]
+}
