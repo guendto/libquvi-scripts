@@ -51,7 +51,7 @@ function parse (self)
     local _,_,s = page:find("%?id=(%d+)")
     self.id     = s or error ("no match: media id")
 
-    local _,_,s = page:find('addVariable%("file","(.-)"')
+    local _,_,s = page:find('addVariable%("file",encodeURIComponent%("(.-)"')
     self.url    = {s or error ("no match: file")}
 
     return self
