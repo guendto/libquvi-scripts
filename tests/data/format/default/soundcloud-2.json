@@ -1,0 +1,18 @@
+{
+  "host": "soundcloud",
+  "page_title": "DOROTHY LITTLE HAPPY - デモサヨナラ (DJ AMAYA VS. GROOVEBOT REMIX)",
+  "page_url": "http://soundcloud.com/dj-amaya/dorothy-little-happy-dj-amaya",
+  "id": "6YKwEK5p4uaV",
+  "format_requested": "default",
+  "thumbnail_url": "http://i1.sndcdn.com/artworks-000014987582-3c8xy9-t300x300.jpg?77cede1",
+  "duration": "395303",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "6322467",
+      "content_type": "audio/mpeg",
+      "file_suffix": "mp3",
+      "url": ""
+    }
+  ]
+}
