@@ -50,10 +50,11 @@ function parse (self)
     local _,_,s = page:find("addFavorite%((%d+)")
     self.id     = s or error ("no match: media id")
 
-    local s = page:match('video_url="(.-);')
+    local s = page:match('video_url=(.-)&')
                 or error("no match: media url")
-    s = s:gsub("['%s+]",'')
-    self.url    = {s}
+
+    local U     = require 'quvi/util'
+    self.url    = {U.unescape(s)}
 
     return self
 end
