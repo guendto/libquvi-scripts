@@ -1,6 +1,6 @@
 
 -- libquvi-scripts
--- Copyright (C) 2011  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
 -- Copyright (C) 2011  Bastien Nocera <hadess@hadess.net>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
@@ -38,114 +38,38 @@ end
 
 -- Query available formats.
 function query_formats(self)
-    local page    = quvi.fetch(self.page_url)
-
-    if Ted.is_external(self, page) then
-        return self
-    end
-
-    local formats = Ted.iter_formats(page)
-    local t = {}
-    for _,v in pairs(formats) do
-        table.insert(t, Ted.to_s(v))
-    end
-
-    table.sort(t)
-    self.formats = table.concat(t, "|")
-
+    self.formats  = "default"
+    Ted.is_external(self, quvi.fetch(self.page_url))
     return self
 end
 
 -- Parse video URL.
 function parse(self)
     self.host_id = "ted"
-    local page   = quvi.fetch(self.page_url)
+    local p = quvi.fetch(self.page_url)
 
-    if Ted.is_external(self, page) then
+    if Ted.is_external(self, p) then
         return self
     end
 
-    self.id      = page:match('ti:"(%d+)"')
-                    or error("no match: media id")
+    self.id = p:match('ti:"(%d+)"')
+                or error("no match: media id")
 
-    self.title   = page:match('<title>(.-)%s+|')
+    self.title = p:match('<title>(.-)%s+|')
                     or error("no match: media title")
 
-    self.thumbnail_url = page:match('rel="image_src" href="(.-)"') or ''
+    self.thumbnail_url = p:match('rel="image_src" href="(.-)"') or ''
 
-    local formats = Ted.iter_formats(page)
-    local U       = require 'quvi/util'
-    local format  = U.choose_format(self, formats,
-                                     Ted.choose_best,
-                                     Ted.choose_default,
-                                     Ted.to_s)
-                        or error("unable to choose format")
-    self.url      = {format.url or error("no match: media url")}
+    local u  = p:match('"og:video"%s+content="(.-)"')
+                or error("no match: media url")
+    self.url = {u}
+
     return self
 end
 
 --
 -- Utility functions
 --
-
-function Ted.iter_formats(page)
-    local pp = 'http://download.ted.com'
-    local p  = 'href="' ..pp.. '(.-)"'
-    local t  = {}
-    for u in page:gfind(p) do
-        local c = u:match('%.(%w+)$') or error('no match: container')
-        local q = u:match('%-(%w+)%.%w+$') -- nil is acceptable here
-        u = pp .. u
-        if not Ted.find_duplicate(t,u) then
-            table.insert(t, {url=u, container=c, quality=q})
---            print(u,c,q)
-        end
-    end
-    return t
-end
-
-function Ted.find_duplicate(t,u)
-    for _,v in pairs(t) do
-        if v.url == u then return true end
-    end
-    return false
-end
-
-function Ted.choose_best(formats) -- Last 'mp4' is the 'best'
-    local r = Ted.choose_default(formats)
-    local p = '(%d+)p'
-    for _,v in pairs(formats) do
-        if v.container:match('mp4') then
-            if v.quality then
-                local a = v.quality:match(p)
-                local b = (r.quality) and r.quality:match(p) or 0
-                if a and tonumber(a) > tonumber(b) then
-                    r = v
-                end
-            else
-                r = v
-            end
-        end
-    end
-    return r
-end
-
-function Ted.choose_default(formats) -- First 'mp4' is the 'default'
-    local r -- Return this if mp4 is not found for some reason
-    for _,v in pairs(formats) do
-        if v.container:match('mp4') then
-            return v
-        end
-        r = v
-    end
-    return r
-end
-
-function Ted.to_s(t)
-    return (t.quality)
-        and string.format("%s_%s", t.container, t.quality)
-        or  string.format("%s", t.container)
-end
 
 function Ted.is_external(self, page)
     -- Some of the videos are hosted elsewhere.
