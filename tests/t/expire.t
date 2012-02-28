@@ -40,7 +40,7 @@ my %h = (
   },
   "http://www.pluzz.fr/" => sub {
     my ($page, $url) = @_;
-    my $rx_href = qr|href="(.*?)"|i;
+    my $rx_href = qr|class=""\s+href="(.*?)"|i;
     my $rx_url  = qr|$url|;
     for my $c ($page =~ /$rx_href/g)
     {
