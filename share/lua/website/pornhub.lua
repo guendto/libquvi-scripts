@@ -43,17 +43,18 @@ end
 function parse(self)
     self.host_id = "pornhub"
     local page   = quvi.fetch(self.page_url)
-    local U     = require 'quvi/util'
+    local U      = require 'quvi/util'
 
-    self.title = page:match('<title>(.-) - Pornhub.com</title>')
+    self.title = page:match('\'video_title\'%s+:%s+"(.-)"')
                   or error("no match: media title")
+    self.title = self.title:gsub('+',' ')
 
-    local _,_,s         = page:find('\'video_url\'.-:.-"(.-)"')
-    s                   = s or error ("no match: config url")
-    self.url            = { U.unescape(s) }
+    local s  = page:match('\'video_url\'%s+:%s+"(.-)"')
+                or error ("no match: config url")
+    self.url = { U.unescape(s) }
 
-    local _,_,s         = self.page_url:find('viewkey=(%d+)')
-    self.id             = s or error ("no match: media id")
+    self.id = self.page_url:match('viewkey=(%d+)')
+                or error ("no match: media id")
 
     return self
 end
