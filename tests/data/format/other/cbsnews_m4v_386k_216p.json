@@ -8,8 +8,8 @@
     {
       "id": "1",
       "length_bytes": "105048222",
-      "content_type": "video/mp4",
-      "file_suffix": "mp4",
+      "content_type": "video/x-m4v",
+      "file_suffix": "m4v",
       "url": ""
     }
   ]
