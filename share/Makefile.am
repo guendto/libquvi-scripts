@@ -48,6 +48,7 @@ DIST_lua=\
  lua/website/tvlux.lua \
  lua/website/tmunderground.lua \
  lua/website/theonion.lua \
+ lua/website/videa.lua \
  lua/website/videobash.lua \
  lua/website/vimeo.lua \
  lua/website/yfrog.lua \
