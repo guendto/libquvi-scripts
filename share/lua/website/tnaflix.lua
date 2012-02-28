@@ -44,19 +44,19 @@ function parse(self)
     self.host_id = "tnaflix"
     local page   = quvi.fetch(self.page_url)
 
-    self.title = page:match('<title>(.-), Free Porn.-</title>')
-                  or error("no match: media title")
+    self.title  = page:match('"og:title"%s+content="(.-)"')
+                    or error("no match: media title")
 
-    local _,_,s         = page:find('%sflashvars.config = escape%("(.-)"')
-    local config_url    = s or error ("no match: config url")
+    local s     = page:match('%sflashvars.config = escape%("(.-)"')
+    local c_url = s or error ("no match: config url")
 
-    local config        = quvi.fetch(config_url, {fetch_type='config'})
+    local c = quvi.fetch(c_url, {fetch_type='config'})
 
-    local _,_,s         = config:find('<VID>(.-)</VID>')
-    self.id             = s or error ("no match: media id")
+    self.id = c:match('<VID>(.-)</VID>')
+                or error ("no match: media id")
 
-    local _,_,s         = config:find('<videoLink>(.-)</videoLink>')
-    s                   = s or error ("no match: video link")
+    local s = c:match('<videoLink>(.-)</videoLink>')
+                or error ("no match: video link")
 
     local U     = require 'quvi/util'
     self.url    = { U.unescape(s) }
