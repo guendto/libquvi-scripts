@@ -43,25 +43,21 @@ end
 
 -- Parse media URL.
 function parse(self)
-    self.host_id  = "videa"
-
+    self.host_id = "videa"
     Videa.normalize(self)
 
-    local page = quvi.fetch(self.page_url)
+    local p = quvi.fetch(self.page_url)
 
-    local _,_,s = page:find('value=&quot;http://videa%.hu/flvplayer%.swf%?v=(%w+)&quot;')
-    self.id = s or error("no match: media id")
+    self.id = p:match("v=(%w+)")
+                or error("no match: media id")
 
-    local _,_,s = page:find('<title>(.-)</title>')
-    self.title  = s or error("no match: media title")
+    self.title = p:match('"og:title"%s+content="(.-)"')
+                    or error("no match: media title")
 
-    local _,_,s = page:find('<meta property="og:image" content="(.-)"')
-    self.thumbnail_url = s or error("no match: thumbnail_url")
+    local s  = p:match("%?f=(.-)&") or error("no match: f param")
+    self.url = {'http://videa.hu/static/video/' .. s:gsub("%.%d+$","")}
 
-    local _,_,s = self.thumbnail_url:find('/0%.[0-9]%.(.+)%.[0-9]')
-    local video_id = s or error("no match: video url")
-    url = 'http://videa.hu/static/video/' .. video_id
-    self.url  = { url }  or error("no match: stream URL")
+    self.thumbnail_url = p:match('"og:image"%s+content="(.-)"') or ''
 
     return self
 end
