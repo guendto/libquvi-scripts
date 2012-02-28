@@ -29,7 +29,6 @@ DIST_lua=\
  lua/website/funnyhub.lua \
  lua/website/funnyordie.lua \
  lua/website/gaskrank.lua \
- lua/website/globo.lua \
  lua/website/golem.lua \
  lua/website/google.lua \
  lua/website/guardian.lua \
@@ -66,7 +65,8 @@ DIST_lua+=\
 endif
 
 if WITH_FIXME
-DIST_lua+=
+DIST_lua+=\
+ lua/website/globo.lua
 endif
 
 nobase_dist_pkgdata_DATA=	$(DIST_lua)
