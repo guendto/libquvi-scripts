@@ -35,7 +35,6 @@ DIST_lua=\
  lua/website/guardian.lua \
  lua/website/liveleak.lua \
  lua/website/mgnetwork.lua \
- lua/website/megavideo.lua \
  lua/website/metacafe.lua \
  lua/website/pluzz.lua \
  lua/website/publicsenat.lua \
