@@ -59,7 +59,6 @@ DIST_lua+=\
  lua/website/spankwire.lua \
  lua/website/tcmag.lua \
  lua/website/tnaflix.lua \
- lua/website/tube8.lua \
  lua/website/totallynsfw.lua \
  lua/website/xhamster.lua \
  lua/website/xvideos.lua \
@@ -68,7 +67,9 @@ endif
 
 if WITH_FIXME
 DIST_lua+=\
- lua/website/globo.lua
+ lua/website/globo.lua \
+ # nsfw
+ lua/website/tube8.lua
 endif
 
 nobase_dist_pkgdata_DATA=	$(DIST_lua)
