@@ -78,6 +78,9 @@ function LiveLeak.normalize(self)
 
     local U = require 'quvi/url'
     local t = U.parse(self.page_url)
+
+    if not t.path then return self.page_url end
+
     local i = t.path:match('/e/([_%w]+)')
     if i then
         t.query = 'i=' .. i
