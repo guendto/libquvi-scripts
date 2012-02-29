@@ -40,8 +40,8 @@ end
 
 -- Query available formats.
 function query_formats(self)
-    local config  = IMDB.get_config(self)
-    local formats = IMDB.iter_formats(config)
+    local page    = quvi.fetch(self.page_url)
+    local formats = IMDB.iter_formats(page)
 
     local t = {}
     for _,v in pairs(formats) do
