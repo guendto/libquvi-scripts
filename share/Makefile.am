@@ -68,7 +68,6 @@ endif
 if WITH_FIXME
 DIST_lua+=\
  lua/website/globo.lua \
- # nsfw
  lua/website/tube8.lua
 endif
 
