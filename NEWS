@@ -1,3 +1,36 @@
+v0.4.3 (2012-03-01) / Toni Gundogdu
+
+Anonymous:
+  - Add tcmag.lua [5f8d188]
+  - FIX: xhamster.lua (HTTP/403) [2bd53fd]
+
+Bastien Nocera:
+  - Add special-case suffix for audio/mpeg [ca784e3]
+  - FIX: soundcloud.lua: Multi-byte char handling [82d1818]
+
+mutantmonkey:
+  - Add IMDb support (#88) [7198600]
+
+PaulK:
+  - Add support for pornhub.com (NSFW) [968143b]
+  - Add support for tnaflix.com (NSFW) [d34caf1]
+  - FIX: youjizz [b60401e]
+
+Toni Gundogdu:
+  - Add videa.hu support (#84, Bastien) [ab56c38]
+  - FIX: liveleak.lua: attempt to index field 'path' (nil) [4919605]
+  - FIX: mgnetwork.lua: return duration in msec [b34fef6]
+  - FIX: videobash.lua: media URL pattern [8072eac]
+  - guardian.lua: Parse from JSON instead (#83) [019f38e]
+  - liveleak.lua: Support embedded URLs [fdd223a]
+  - Mark globo.lua as FIXME [26f48f5]
+  - Mark tube8.lua as FIXME [de13a39]
+  - Remove buzzhumor.lua [a568afc]
+  - Remove megavideo.lua [dc08e00]
+  - soundcloud.lua: Rework title parsing [53204fd]
+  - tcmag.lua: Make query_formats work with external content [f5cbd0d]
+  - ted.lua: Support the "default" format only [2caf52b]
+
 
 0.4.2  Tue Nov 29 2011  Toni Gundogdu
 Changes:
