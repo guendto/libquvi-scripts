@@ -17,6 +17,7 @@ DIST_lua=\
  lua/website/blip.lua \
  lua/website/bloomberg.lua \
  lua/website/break.lua \
+ lua/website/canalplus.lua \
  lua/website/cbsnews.lua \
  lua/website/charlierose.lua \
  lua/website/clipfish.lua \
