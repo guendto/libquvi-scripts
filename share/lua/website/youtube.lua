@@ -81,7 +81,7 @@ function YouTube.normalize(s)
         local p = {'/embed/([-_%w]+)', '/%w/([-_%w]+)', '/([-_%w]+)'}
         for _,v in pairs(p) do
             local m = t.path:match(v)
-            if m and not t.query then
+            if m and #m == 11 then
                 t.query = 'v=' .. m
                 t.path  = '/watch'
             end
@@ -233,6 +233,8 @@ end
 local a = {
   {u='http://youtu.be/3WSQH__H1XE',             -- u=page url
    e='http://youtube.com/watch?v=3WSQH__H1XE'}, -- e=expected url
+  {u='http://youtu.be/v/3WSQH__H1XE?hl=en',
+   e='http://youtube.com/watch?v=3WSQH__H1XE'},
   {u='http://youtu.be/watch?v=3WSQH__H1XE',
    e='http://youtube.com/watch?v=3WSQH__H1XE'},
   {u='http://youtu.be/embed/3WSQH__H1XE',
@@ -264,7 +266,7 @@ for i,v in pairs(a) do
     e = e + 1
   end
 end
-print('\nerrors: ' .. e)
+print((e == 0) and 'Tests OK' or ('\nerrors: ' .. e))
 ]]--
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
