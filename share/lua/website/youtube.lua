@@ -1,6 +1,6 @@
 
 -- libquvi-scripts
--- Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2010-2012  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -57,11 +57,10 @@ end
 
 -- Parse URL.
 function parse(self)
-    self.host_id   = "youtube"
-    local page_url = YouTube.normalize(self.page_url)
+    self.host_id = "youtube"
 
-    local _,_,s = page_url:find('#a?t=(.+)')
-    self.start_time = s or ''
+    local p_url = YouTube.normalize(self.page_url)
+    self.start_time = p_url:match('#a?t=(.+)') or ''
 
     return YouTube.get_video_info(self)
 end
@@ -91,29 +90,29 @@ function YouTube.normalize(s)
 end
 
 function YouTube.get_config(self)
-    local _,_,s  = self.page_url:find('^(%w+)://')
-    local scheme = s or error("no match: scheme")
+    local sch = self.page_url:match('^(%w+)://')
+                  or error("no match: scheme")
 
-    local page_url = YouTube.normalize(self.page_url)
+    local p_url = YouTube.normalize(self.page_url)
 
-    local _,_,s = page_url:find("v=([%w-_]+)")
-    self.id = s or error("no match: media id")
+    self.id = p_url:match("v=([%w-_]+)")
+                or error("no match: media ID")
 
     local s_fmt = "%s://www.youtube.com/get_video_info?&video_id=%s"
                     .. "&el=detailpage&ps=default&eurl=&gl=US&hl=en"
 
-    local config_url = string.format(s_fmt, scheme, self.id)
+    local c_url = string.format(s_fmt, sch, self.id)
 
-    local U      = require 'quvi/util'
-    local config = U.decode(quvi.fetch(config_url, {fetch_type='config'}))
+    local U = require 'quvi/util'
+    local c = U.decode(quvi.fetch(c_url, {fetch_type='config'}))
 
-    if config['reason'] then
-        local reason = U.unescape(config['reason'])
-        local code   = config['errorcode']
+    if c['reason'] then
+        local reason = U.unescape(c['reason'])
+        local code = c['errorcode']
         error(string.format("%s (code=%s)", reason, code))
     end
 
-    return config,U
+    return c, U
 end
 
 function YouTube.iter_formats(config, U)
