@@ -119,7 +119,7 @@ function Dailymotion.iter_formats(page, U)
     seq = U.unescape(seq)
 
     local t = {}
-    for url in seq:gfind('%w+URL":"(.-)"') do
+    for url in seq:gmatch('%w+URL":"(.-)"') do
         local c,w,h,cn = url:match('(%w+)%-(%d+)x(%d+).-%.(%w+)')
         if c then
             table.insert(t, {width=tonumber(w), height=tonumber(h),

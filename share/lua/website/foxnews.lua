@@ -124,9 +124,9 @@ function Foxnews.iter_formats_js(page, U)
     end
 
     local t = {}
-    for attrs in formats:gfind('"@attributes":(%b{})') do
+    for attrs in formats:gmatch('"@attributes":(%b{})') do
         local format = {}
-        for key,value in attrs:gfind('"(.-)":"(.-)"') do
+        for key,value in attrs:gmatch('"(.-)":"(.-)"') do
             format[key]=value
 	    end
         if format.rel == "stream" then
@@ -154,9 +154,9 @@ function Foxnews.iter_thumbnails_js(page, U)
     end
 
     local t = {}
-    for attrs in thumbs:gfind('"@attributes":(%b{})') do
+    for attrs in thumbs:gmatch('"@attributes":(%b{})') do
         local thumb = {}
-        for key,value in attrs:gfind('"(.-)":"(.-)"') do
+        for key,value in attrs:gmatch('"(.-)":"(.-)"') do
             thumb[key]=value
 	    end
         table.insert(t, thumb)

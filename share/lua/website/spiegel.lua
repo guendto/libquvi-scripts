@@ -115,7 +115,7 @@ function Spiegel.iter_formats(config)
            .. '.-<height>(%d+)'
            .. '.-<duration>(%d+)'
     local t = {}
-    for fn,c,b,w,h,d in config:gfind(p) do
+    for fn,c,b,w,h,d in config:gmatch(p) do
         local cn = fn:match('%.(%w+)$') or error('no match: container')
         local u = 'http://video.spiegel.de/flash/' .. fn
 --        print(u,c,b,w,h,cn,d)

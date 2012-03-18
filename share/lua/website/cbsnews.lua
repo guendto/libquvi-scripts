@@ -99,7 +99,7 @@ function CBSNews.iter_formats(config) -- Iterate available formats
            .. '.-<DeliveryUrl>.-'
            .. 'CDATA%[(.-)%]'
     local t = {}
-    for w,h,b,u in config:gfind(p) do
+    for w,h,b,u in config:gmatch(p) do
         local s = u:match('%.(%w+)$')
 --        print(w,h,b,s,u)
         table.insert(t,

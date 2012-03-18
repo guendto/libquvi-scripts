@@ -116,7 +116,7 @@ function Blip.iter_formats(c)
            .. '.-isDefault="(.-)"'
            .. '.-width="(.-)"'
     local t = {}
-    for u,r,h,d,w in c:gfind(p) do
+    for u,r,h,d,w in c:gmatch(p) do
         r = string.lower(r)
         r = r:gsub(' ','_')
         r = r:gsub('[()]','')

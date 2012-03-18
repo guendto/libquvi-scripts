@@ -122,7 +122,7 @@ function YouTube.iter_formats(config, U)
     fmt_stream_map = U.unescape(fmt_stream_map) .. ","
 
     local urls = {}
-    for f in fmt_stream_map:gfind('([^,]*),') do
+    for f in fmt_stream_map:gmatch('([^,]*),') do
         local d = U.decode(f)
         if d['itag'] and d['url'] then
             urls[U.unescape(d['itag'])] = U.unescape(d['url'])
@@ -133,7 +133,7 @@ function YouTube.iter_formats(config, U)
     fmt_map = U.unescape(fmt_map)
 
     local r = {}
-    for f,w,h in fmt_map:gfind('(%d+)/(%d+)x(%d+)') do
+    for f,w,h in fmt_map:gmatch('(%d+)/(%d+)x(%d+)') do
 --        print(f,w,h)
         table.insert(r, {fmt_id=tonumber(f),    url=urls[f],
                           width=tonumber(w), height=tonumber(h)})

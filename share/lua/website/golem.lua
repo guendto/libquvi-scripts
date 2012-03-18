@@ -94,7 +94,7 @@ function Golem.iter_formats(config)
            .. '.-<url>(.-)<'
            .. '.-</teaser>'
     local t = {}
-    for id,w,h,c,u in config:gfind(p) do
+    for id,w,h,c,u in config:gmatch(p) do
             u = 'http://video.golem.de' .. u
 --            print(id,w,h,c,u)
             table.insert(t, {width=tonumber(w), height=tonumber(h),

@@ -88,7 +88,7 @@ end
 
 function Arte.get_lang_config(config)
     local t = {}
-    for lang,url in config:gfind('<video lang="(%w+)" ref="(.-)"') do
+    for lang,url in config:gmatch('<video lang="(%w+)" ref="(.-)"') do
         table.insert(t, {lang=lang,
                          config=quvi.fetch(url, {fetch_type = 'config'})})
     end
@@ -119,7 +119,7 @@ function Arte.iter_lang_formats(lang_config, t, U)
     local urls = config:match('<urls>(.-)</urls>')
                   or error('no match: urls')
 
-    for q,u in urls:gfind('<url quality="(%w+)">(.-)<') do
+    for q,u in urls:gmatch('<url quality="(%w+)">(.-)<') do
 --        print(q,u)
         table.insert(t, {lang=lang,   quality=q,   url=u,
                          thumb=thumb, title=title, id=id})
