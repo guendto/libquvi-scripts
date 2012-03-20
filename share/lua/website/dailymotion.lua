@@ -122,6 +122,7 @@ function Dailymotion.iter_formats(page, U)
     for url in seq:gmatch('%w+URL":"(.-)"') do
         local c,w,h,cn = url:match('(%w+)%-(%d+)x(%d+).-%.(%w+)')
         if c then
+            url = url:gsub('cell=secure%-vod&', '') -- http://is.gd/BzYPZJ
             table.insert(t, {width=tonumber(w), height=tonumber(h),
                              container=cn,      codec=string.lower(c),
                              url=url:gsub("\\/", "/")})
