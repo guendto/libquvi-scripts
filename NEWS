@@ -1,3 +1,16 @@
+v0.4.4 (2012-03-23) / Toni Gundogdu
+
+Toni Gundogdu:
+  - Rewrite scripts using "foo:match" instead of "foo:find"
+  - FIX: clipfish.lua: Use new config URL [bb8bf4c]
+  - FIX: dailymotion.lua: Issue with some videos (#92) [325b20e]
+      - Thanks to David Pugnasse for the fix
+  - FIX: Lua-5.2: Use gmatch instead of gfind (#89) [b5ae4e1]
+  - FIX: Lua-5.2: Use the # operator instead (#89) [04f0284]
+  - FIX: youtube.lua: Allow embed URLs w/ params (#90) [386aae2]
+  - FIXME: bikeradar.lua [6d64461]
+
+
 v0.4.3 (2012-03-01) / Toni Gundogdu
 
 Anonymous:
