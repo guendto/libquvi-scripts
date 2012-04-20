@@ -53,6 +53,7 @@ DIST_lua=\
 
 if WITH_NSFW
 DIST_lua+=\
+ lua/website/empflix.lua \
  lua/website/keezmovies.lua \
  lua/website/pornhub.lua \
  lua/website/spankwire.lua \
