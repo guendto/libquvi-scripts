@@ -14,7 +14,6 @@ DIST_lua=\
  lua/website/academicearth.lua \
  lua/website/arte.lua \
  lua/website/audioboo.lua \
- lua/website/blip.lua \
  lua/website/bloomberg.lua \
  lua/website/break.lua \
  lua/website/canalplus.lua \
@@ -65,6 +64,7 @@ endif
 if WITH_FIXME
 DIST_lua+=\
  lua/website/bikeradar.lua \
+ lua/website/blip.lua \
  lua/website/globo.lua \
 if WITH_NSFW
  lua/website/tube8.lua \
