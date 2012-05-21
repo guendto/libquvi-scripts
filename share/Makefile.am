@@ -28,7 +28,6 @@ DIST_lua=\
  lua/website/funnyordie.lua \
  lua/website/gaskrank.lua \
  lua/website/golem.lua \
- lua/website/google.lua \
  lua/website/guardian.lua \
  lua/website/imdb.lua \
  lua/website/liveleak.lua \
