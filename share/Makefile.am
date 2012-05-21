@@ -25,7 +25,6 @@ DIST_lua=\
  lua/website/dailymotion.lua \
  lua/website/foxnews.lua \
  lua/website/francetelevisions.lua \
- lua/website/funnyhub.lua \
  lua/website/funnyordie.lua \
  lua/website/gaskrank.lua \
  lua/website/golem.lua \
