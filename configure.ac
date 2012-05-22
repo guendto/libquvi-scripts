@@ -12,8 +12,9 @@ AC_INIT([libquvi-scripts], [_LIBQUVI_SCRIPTS_VERSION],
 AC_CONFIG_AUX_DIR([config.aux])
 AC_CONFIG_MACRO_DIR([m4])
 
-AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2 dist-xz])
+AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar])
 AM_SILENT_RULES([yes])
+#AM_PROG_AR
 
 # Checks for programs.
 
