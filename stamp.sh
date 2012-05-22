@@ -7,9 +7,13 @@ stamp_scripts()
   [ -z $1 ] && (echo "error: define path to top source dir" ; exit 1)
   [ -z $2 ] && (echo "error: define path to top dist dir" ; exit 1)
   if [ -x "$2/gen-ver.sh" ]; then
+    D='common/ media/ playlist/ scan/ util/'
     VN=`$2/gen-ver.sh $1`
-    find "$2/share/" -name '*.lua' \
-      -exec sed -i "s/^\(-- libquvi-scripts\).*/\1 $VN/" {} \;
+    for d in $D; do
+      find "$2/share/lua/$d" -name '*.lua' \
+        -exec echo "Stamp {}" \; \
+        -exec sed -i "s/^\(-- libquvi-scripts\).*/\1 $VN/" {} \;
+    done
   fi
   exit 0
 }
