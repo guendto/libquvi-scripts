@@ -23,7 +23,6 @@ DIST_lua=\
  lua/website/collegehumor.lua \
  lua/website/dailymotion.lua \
  lua/website/foxnews.lua \
- lua/website/francetelevisions.lua \
  lua/website/funnyordie.lua \
  lua/website/gaskrank.lua \
  lua/website/golem.lua \
@@ -32,7 +31,6 @@ DIST_lua=\
  lua/website/liveleak.lua \
  lua/website/mgnetwork.lua \
  lua/website/metacafe.lua \
- lua/website/pluzz.lua \
  lua/website/publicsenat.lua \
  lua/website/sapo.lua \
  lua/website/sevenload.lua \
@@ -65,13 +63,16 @@ if WITH_FIXME
 DIST_lua+=\
  lua/website/bikeradar.lua \
  lua/website/blip.lua \
+ lua/website/francetelevisions.lua \
  lua/website/globo.lua \
-if WITH_NSFW
- lua/website/tube8.lua \
- lua/website/keezmovies.lua \
-endif
+ lua/website/pluzz.lua \
  lua/website/vimeo.lua
+if WITH_NSFW
+DIST_lua+=
+ lua/website/tube8.lua \
+ lua/website/keezmovies.lua
 endif
+endif # WITH_FIXME
 
 nobase_dist_pkgdata_DATA=	$(DIST_lua)
 EXTRA_DIST=	$(DIST_lua)
