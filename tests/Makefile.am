@@ -4,11 +4,11 @@ TESTS_T=\
  t/format_other.t \
  t/shortened.t \
  t/nosupport.t \
- t/expire.t \
- t/mem.t
+ t/expire.t
 
 if WITH_FIXME
 TESTS_T+=t/redirect.t # TODO: Uses scripts marked as FIXME; use new URLs.
+TESTS_T+=t/mem.t # TODO: Ditto.
 endif
 
 TESTS_D_T=	t/d/url.t
