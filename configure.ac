@@ -84,7 +84,7 @@ AC_CONFIG_FILES([
   share/Makefile
   share/lua/Makefile
   tests/Makefile
-  libquvi-scripts.pc])
+  libquvi-scripts-1.0.pc])
 AC_OUTPUT
 
 AC_MSG_NOTICE([
