@@ -148,24 +148,12 @@ function CanalPlus.iter_formats(self, config, U)
     return t
 end
 
-function CanalPlus.choose_best(formats) -- Whatever matches 'hd' first
-    local r
-    for _,v in pairs(formats) do
-        if CanalPlus.to_s(v):find('hd') then
-            return v
-        end
-    end
-    return r
+function CanalPlus.choose_default(t)
+    return t[1] -- Presume the first to be the 'default'.
 end
 
-function CanalPlus.choose_default(formats) -- Whatever matches 'sd' first
-    local r
-    for _,v in pairs(formats) do
-        if CanalPlus.to_s(v):find('sd') then
-            return v
-        end
-    end
-    return r
+function CanalPlus.choose_best(t)
+    return t[#t] -- Presume the last to be the 'best'.
 end
 
 function CanalPlus.to_s(t)
