@@ -42,6 +42,11 @@ end
 -- Query available formats.
 function query_formats(self)
     local config  = CanalPlus.get_config(self)
+
+    if #self.redirect_url >0 then
+        return self
+    end
+
     local U       = require 'quvi/util'
     local formats = CanalPlus.iter_formats(self, config, U)
 
@@ -59,9 +64,14 @@ end
 -- Parse media URL.
 function parse(self)
     self.host_id  = 'canalplus'
-    local config  = CanalPlus.get_config(self)
-    local U       = require 'quvi/util'
 
+    local config  = CanalPlus.get_config(self)
+
+    if #self.redirect_url >0 then
+        return self
+    end
+
+    local U       = require 'quvi/util'
     local formats = CanalPlus.iter_formats(self, config, U)
     local format  = U.choose_format(self, formats,
                                     CanalPlus.choose_best,
@@ -80,6 +90,12 @@ end
 function CanalPlus.get_config(self)
     local t    = {}
     local page = quvi.fetch(self.page_url)
+
+    local u = page:match('"og:video" content="(.-)"')
+    if u and not u:match('canalplus%.fr') then
+        self.redirect_url = u -- Media is hosted elsewhere, e.g. YouTube.
+        return
+    end
 
     -- canalplus.fr
     self.title = page:match('videoTitre%s-=%s-"(.-)"')
