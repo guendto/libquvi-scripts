@@ -11,6 +11,7 @@ DIST_lua=\
  lua/website/quvi/const.lua \
  lua/website/quvi/url.lua \
  lua/website/quvi/util.lua \
+ lua/website/101greatgoals.lua \
  lua/website/academicearth.lua \
  lua/website/arte.lua \
  lua/website/audioboo.lua \
