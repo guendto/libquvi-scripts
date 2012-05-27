@@ -89,12 +89,9 @@ function CanalPlus.get_config(self)
                     or error('no match: media title')
     end
 
-    self.id = page:match('videoId%s-=%s-"(.-)"')
-    if not self.id then
-      -- canalstreet.canalplus.fr
-      self.id = page:match('videoId%s-=%s-(.-)"')
-                    or error('no match: video id')
-    end
+    self.id = page:match('videoId=(%d+)')
+                or page:match('videoId%s+=%s+"(%d+)"')
+                or error('no match: media ID')
 
     local c_url =
       "http://service.canal-plus.com/video/rest/getVideosLiees/cplus/"
