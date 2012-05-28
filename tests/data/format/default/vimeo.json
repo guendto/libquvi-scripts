@@ -1,0 +1,18 @@
+{
+  "host": "vimeo",
+  "page_title": "Gramatik - \"Solidified\" (bokeh silhouette music video)",
+  "page_url": "http://vimeo.com/42605731",
+  "id": "42605731",
+  "format_requested": "default",
+  "thumbnail_url": "http://b.vimeocdn.com/ts/295/718/295718677_640.jpg",
+  "duration": "228000",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "24836639",
+      "content_type": "video/mp4",
+      "file_suffix": "mp4",
+      "url": ""
+    }
+  ]
+}
