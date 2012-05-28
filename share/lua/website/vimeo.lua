@@ -112,6 +112,7 @@ end
 function Vimeo.iter_formats(self, config)
     local t = {}
     local qualities = config:match('"qualities":%[(.-)%]')
+                        or error('no match: qualities')
     for q in qualities:gmatch('"(.-)"') do
         Vimeo.add_format(self, config, t, q)
     end
