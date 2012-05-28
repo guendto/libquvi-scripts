@@ -50,6 +50,7 @@ if WITH_NSFW
 DIST_lua+=\
  lua/website/empflix.lua \
  lua/website/pornhub.lua \
+ lua/website/redtube.lua \
  lua/website/spankwire.lua \
  lua/website/tcmag.lua \
  lua/website/tnaflix.lua \
