@@ -20,8 +20,9 @@
 -- 02110-1301  USA
 --
 
--- w/ HD: <http://vimeo.com/1485507>
--- no HD: <http://vimeo.com/10772672>
+--
+-- NOTE: Vimeo is picky about the user-agent string.
+--
 
 local Vimeo = {} -- Utility functions unique to this script.
 
@@ -60,15 +61,18 @@ function parse(self)
 
     local c = Vimeo.get_config(self)
 
-    self.title = c:match("<caption>(.-)</")
+    self.title = c:match('"title":"(.-)"')
                   or error("no match: media title")
 
-    self.duration = (tonumber(c:match('<duration>(%d+)')) or 0) * 1000
+    self.duration = (tonumber(c:match('"duration":(%d+)')) or 0) * 1000
 
-    self.thumbnail_url = c:match('<thumbnail>(.-)<') or ''
+    local U = require 'quvi/util'
+    local s = c:match('"thumbnail":"(.-)"') or ''
+    if #s >0 then
+      self.thumbnail_url = U.slash_unescape(s)
+    end
 
     local formats = Vimeo.iter_formats(self, c)
-    local U       = require 'quvi/util'
     local format  = U.choose_format(self, formats,
                                      Vimeo.choose_best,
                                      Vimeo.choose_default,
@@ -94,7 +98,7 @@ function Vimeo.get_config(self)
     self.id = self.page_url:match('vimeo.com/(%d+)')
                 or error("no match: media ID")
 
-    local c_url = "http://vimeo.com/moogaloop/load/clip:" .. self.id
+    local c_url = "player.vimeo.com/config/" .. self.id
     local c = quvi.fetch(c_url, {fetch_type='config'})
 
     if c:match('<error>') then
@@ -106,43 +110,47 @@ function Vimeo.get_config(self)
 end
 
 function Vimeo.iter_formats(self, config)
-    local isHD  = tonumber(config:match('<isHD>(%d+)')) or 0
-
     local t = {}
-    Vimeo.add_format(self, config, t, 'sd')
-    if isHD == 1 then
-        Vimeo.add_format(self, config, t, 'hd')
+    local qualities = config:match('"qualities":%[(.-)%]')
+    for q in qualities:gmatch('"(.-)"') do
+        Vimeo.add_format(self, config, t, q)
     end
-
     return t
 end
 
 function Vimeo.add_format(self, config, t, quality)
-    table.insert(t,
-        {quality=quality,
-         url=Vimeo.to_url(self, config, quality)})
+    table.insert(t, {quality=quality,
+                     url=Vimeo.to_url(self, config, quality)})
 end
 
-function Vimeo.choose_best(formats) -- Last is 'best'
-    local r
-    for _,v in pairs(formats) do r = v end
-    return r
+function Vimeo.choose_best(t) -- First 'hd', then 'sd' and 'mobile' last.
+    for _,v in pairs(t) do
+        local f = Vimeo.to_s(v)
+        for _,q in pairs({'hd','sd','mobile'}) do
+            if f == q then return v end
+        end
+    end
+    return Vimeo.choose_default(t)
 end
 
-function Vimeo.choose_default(formats) -- First is 'default'
-    for _,v in pairs(formats) do return v end
+function Vimeo.choose_default(t)
+  for _,v in pairs(t) do
+      if Vimeo.to_s(v) == 'sd' then return v end -- Default to 'sd'.
+  end
+  return t[1] -- Or whatever is the first.
 end
 
 function Vimeo.to_url(self, config, quality)
-    local sign = config:match("<request_signature>(.-)</")
+    local sign = config:match('"signature":"(.-)"')
                   or error("no match: request signature")
 
-    local exp = config:match("<request_signature_expires>(.-)</")
-                  or error("no match: request signature expires")
+    local exp = config:match('"timestamp":(%d+)')
+                  or error("no match: request timestamp")
 
-    local fmt_s = "http://vimeo.com/moogaloop/play/clip:%s/%s/%s/?q=%s"
+    local s = "http://player.vimeo.com/play_redirect?clip_id=%s"
+              .. "&sig=%s&time=%s&quality=%s&type=moogaloop_local"
 
-    return string.format(fmt_s, self.id, sign, exp, quality)
+    return string.format(s, self.id, sign, exp, quality)
 end
 
 function Vimeo.to_s(t)
