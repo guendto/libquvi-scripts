@@ -43,6 +43,7 @@ DIST_lua=\
  lua/website/theonion.lua \
  lua/website/videa.lua \
  lua/website/videobash.lua \
+ lua/website/vimeo.lua \
  lua/website/yfrog.lua \
  lua/website/youtube.lua
 
@@ -66,10 +67,9 @@ DIST_lua+=\
  lua/website/blip.lua \
  lua/website/francetelevisions.lua \
  lua/website/globo.lua \
- lua/website/pluzz.lua \
- lua/website/vimeo.lua
+ lua/website/pluzz.lua
 if WITH_NSFW
-DIST_lua+=
+DIST_lua+=\
  lua/website/tube8.lua \
  lua/website/keezmovies.lua
 endif
