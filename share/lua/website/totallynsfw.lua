@@ -20,6 +20,8 @@
 -- 02110-1301  USA
 --
 
+local TotallyNSFW = {} -- Utility functions specific to this script
+
 -- Identify the script.
 function ident(self)
     package.path = self.script_dir .. '/?.lua'
@@ -29,12 +31,25 @@ function ident(self)
     r.formats    = "default"
     r.categories = C.proto_http
     local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, {r.domain}, {"/videos/.-"})
+    local is_rss = U.handles(self.page_url, {r.domain},
+                            {"/videos/rss_2%.0/?"})
+    if is_rss then -- Don't try to handle the RSS feeds
+        r.handles = false
+    else
+        r.handles = U.handles(self.page_url, {r.domain},
+                              {"/videos/.-", "/nsfw/"})
+    end
     return r
 end
 
 -- Query available formats.
 function query_formats(self)
+    local p = quvi.fetch(self.page_url)
+
+    if TotallyNSFW.is_external(self, p) then
+        return self
+    end
+
     self.formats = 'default'
     return self
 end
@@ -44,6 +59,10 @@ function parse(self)
     self.host_id = "totallynsfw"
 
     local p = quvi.fetch(self.page_url)
+
+    if TotallyNSFW.is_external(self, p) then
+        return self
+    end
 
     self.title = p:match('<div class="hdr"><h2>(.-)</h2></div>')
                   or error ("no match: media title")
@@ -62,6 +81,29 @@ function parse(self)
     self.url = {s}
 
     return self
+end
+
+--
+-- Utility functions.
+--
+
+function TotallyNSFW.is_external(self, page)
+    local u = page:match('options=(.-)"')
+    if u then
+        if TotallyNSFW.is_hosted_at_pornhub(self, u) then
+            return true
+        end
+        -- Add more below if necessary.
+    end
+    return false
+end
+
+function TotallyNSFW.is_hosted_at_pornhub(self, url)
+    if url:match('pornhub%.com/embed_player') then
+        local c = quvi.fetch(url, {fetch_type='config'})
+        self.redirect_url = c:match('<link_url>(.-)<') or ''
+    end
+    return #self.redirect_url >0
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
