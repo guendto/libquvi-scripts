@@ -61,12 +61,12 @@ function parse(self)
 
     local c = Vimeo.get_config(self)
 
-    self.title = c:match('"title":"(.-)"')
-                  or error("no match: media title")
+    local s = c:match('"title":(.-),') or error("no match: media title")
+    local U = require 'quvi/util'
+    self.title = U.slash_unescape(s):gsub('^"',''):gsub('"$','')
 
     self.duration = (tonumber(c:match('"duration":(%d+)')) or 0) * 1000
 
-    local U = require 'quvi/util'
     local s = c:match('"thumbnail":"(.-)"') or ''
     if #s >0 then
       self.thumbnail_url = U.slash_unescape(s)
@@ -78,7 +78,7 @@ function parse(self)
                                      Vimeo.choose_default,
                                      Vimeo.to_s)
                         or error("unable to choose format")
-    self.url      = {format.url or error("no match: media URL")}
+    self.url      = {format.url or error("no match: media stream URL")}
     return self
 end
 
