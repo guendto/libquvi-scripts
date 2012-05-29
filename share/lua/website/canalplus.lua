@@ -109,17 +109,19 @@ function CanalPlus.get_config(self)
                 or page:match('videoId%s+=%s+"(%d+)"')
                 or error('no match: media ID')
 
-    local c_url =
-      "http://service.canal-plus.com/video/rest/getVideosLiees/cplus/"
-      .. self.id
+    local u = "http://service.canal-plus.com/video/rest/getVideosLiees/cplus/"
+                .. self.id
 
-    t.data = quvi.fetch(c_url, {fetch_type = 'config'})
-
-    return t
+    return quvi.fetch(u, {fetch_type = 'config'})
 end
 
 function CanalPlus.iter_formats(self, config, U)
     local t = {}
+
+    local id = config:match('<ID>(.-)</ID>')
+    if id and id == '-1' then
+        error('Media is no longer available (expired)')
+    end
 
     local p = '<ID>' .. self.id .. '</ID>'
            .. '.-<INFOS>'
@@ -136,7 +138,7 @@ function CanalPlus.iter_formats(self, config, U)
     -- hd = high definition flv
     -- hq = high definition mp4
 
-    local thumb,sd_url,hd_url,hq_url = config.data:match(p)
+    local thumb,sd_url,hd_url,hq_url = config:match(p)
     if not sd_url then error("no match: media url") end
 
     self.thumbnail_url = thumb or ''
