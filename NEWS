@@ -1,3 +1,29 @@
+v0.4.5 (2012-05-30) / Toni Gundogdu
+
+Bastien Nocera:
+  - Added 101greatgoals.lua [efc2cdf]
+  - dailymotion: Fix overeager ID fetching [0223bd8]
+  - FIX: sapo.lua: ID, media stream URL and title [84cb67d]
+PaulK:
+  - Added canalplus.lua [ed6877d]
+  - Added support for empflix.com (NSFW website) [cb2de3c]
+Toni Gundogdu:
+  - Add website/redtube.lua [694ff91]
+  - FIX: pornhub.lua: media title, stream URL parsing [1867d4f]
+  - FIX: theonion.lua [70dfaab]
+  - FIX: videobash.lua: media URL parsing [471e73d]
+  - FIX: vimeo.lua (#97) [4f811dd]
+  - blip.lua: Mark as FIXME [888a3ed]
+  - keezmovies.lua: Mark as FIXME [4337407]
+  - pluzz.lua, francetelevisions.lua: Mark as FIXME [5b9cfc6]
+  - Lower AC_PREREQ to 2.67 [d1ac468]
+  - Remove funnyhub.lua: Videos no more [?] [3dae8bd]
+  - Remove google.lua: video.google.com is no more [8f38fe6]
+  - website/sapo.lua: Parse thumbnail_url [d8cfb16]
+
+ 46 files changed, 740 insertions(+), 411 deletions(-)
+
+
 v0.4.4 (2012-03-23) / Toni Gundogdu
 
 Toni Gundogdu:
