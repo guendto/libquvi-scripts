@@ -116,7 +116,6 @@ function CanalPlus.get_config(self)
 end
 
 function CanalPlus.iter_formats(self, config, U)
-    local t = {}
 
     local id = config:match('<ID>(.-)</ID>')
     if id and id == '-1' then
@@ -143,10 +142,10 @@ function CanalPlus.iter_formats(self, config, U)
 
     self.thumbnail_url = thumb or ''
 
+    local t = {}
     table.insert(t, {url=sd_url, quality="sd"})
     table.insert(t, {url=hd_url, quality="hd"})
     table.insert(t, {url=hq_url, quality="hq"})
-
     return t
 end
 
