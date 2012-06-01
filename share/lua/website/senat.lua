@@ -1,5 +1,5 @@
 
--- quvi
+-- libquvi-scripts
 -- Copyright (C) 2012 Raphaël Droz.
 --
 -- This file is part of quvi <http://quvi.googlecode.com/>.
