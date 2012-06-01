@@ -34,6 +34,7 @@ DIST_lua=\
  lua/website/metacafe.lua \
  lua/website/publicsenat.lua \
  lua/website/sapo.lua \
+ lua/website/senat.lua \
  lua/website/sevenload.lua \
  lua/website/soundcloud.lua \
  lua/website/spiegel.lua \
