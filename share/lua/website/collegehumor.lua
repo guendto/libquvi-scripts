@@ -68,7 +68,7 @@ function parse(self)
 
     local c = CollegeHumor.get_config(self)
 
-    self.title = c:match('<caption>(.-)<')
+    self.title = c:match('<caption>.-%[.-%[(.-)%]%]')
                   or error("no match: media title")
 
     self.thumbnail_url = c:match('<thumbnail><!%[.-%[(.-)%]') or ''
@@ -105,8 +105,7 @@ function CollegeHumor.get_media_id(self)
     local U = require 'quvi/url'
     local domain = U.parse(self.page_url).host:gsub('^www%.', '', 1)
 
-    self.host_id = domain:match('^(.+)%.[^.]+$')
-                    or error("no match: domain")
+    self.host_id = domain:match('^(.+)%.[^.]+$') or error("no match: domain")
 
     self.id = self.page_url:match('/video[/:](%d+)')
                 or error("no match: media ID")
@@ -123,11 +122,10 @@ function CollegeHumor.get_config(self)
     local r = quvi.resolve(self.page_url)
 
     -- Make a note of the use of the quvi.resolve returned string.
-    local config_url =
-        string.format("http://www.%s/moogaloop/video%s%s",
-            domain, (#r > 0) and ':' or '/', self.id)
+    local u = string.format("http://www.%s/moogaloop/video%s%s",
+                              domain, (#r > 0) and ':' or '/', self.id)
 
-    return quvi.fetch(config_url, {fetch_type='config'})
+    return quvi.fetch(u, {fetch_type='config'})
 end
 
 function CollegeHumor.iter_formats(config)
