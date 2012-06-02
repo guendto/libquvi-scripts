@@ -42,6 +42,7 @@ DIST_lua=\
  lua/website/tagtele.lua \
  lua/website/ted.lua \
  lua/website/tvlux.lua \
+ lua/website/tvrain.lua \
  lua/website/tmunderground.lua \
  lua/website/theonion.lua \
  lua/website/videa.lua \
