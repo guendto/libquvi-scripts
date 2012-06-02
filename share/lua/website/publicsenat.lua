@@ -28,7 +28,7 @@ function ident(self)
     r.formats    = "default"
     r.categories = C.proto_http
     local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, {r.domain}, {"/vod", "/vod.html"})
+    r.handles    = U.handles(self.page_url, {r.domain}, {"/vod"})
     return r
 end
 
