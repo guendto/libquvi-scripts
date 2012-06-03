@@ -20,6 +20,8 @@
 -- 02110-1301  USA
 --
 
+local OTvRu = {} -- Utility functions specific to this script
+
 -- Identify the script.
 function ident(self)
     package.path = self.script_dir .. '/?.lua'
@@ -50,10 +52,10 @@ function parse(self)
 
     local p = quvi.fetch(self.page_url)
 
-    self.title = p:match(pattern('title', '(.-)'))
+    self.title = p:match(OTvRu.pattern('title', '(.-)'))
                   or error("no match: media title")
 
-    self.url = {p:match(pattern('file', '(.-)'))
+    self.url = {p:match(OTvRu.pattern('file', '(.-)'))
                   or error("no match: media stream URL")}
 
     self.thumbnail_url = p:match('"og:image" content="(.-)"') or ''
@@ -61,7 +63,7 @@ function parse(self)
     return self
 end
 
-function pattern(key_name, value_pattern)
+function OTvRu.pattern(key_name, value_pattern)
    return string.format("jwplayer%%('flashvideoportal_1'%%).*'%s': '%s'",
                           key_name, value_pattern)
 end
