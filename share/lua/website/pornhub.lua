@@ -54,7 +54,7 @@ function parse(self)
 
     self.url = { U.unescape(s) }
 
-    self.id = self.page_url:match('viewkey=(%d+)')
+    self.id = self.page_url:match('viewkey=(%x+)')
                 or error ("no match: media ID")
 
     return self
