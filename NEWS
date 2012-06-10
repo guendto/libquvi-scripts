@@ -1,3 +1,21 @@
+v0.4.6 (2012-06-10) / Toni Gundogdu
+
+Mikhail Gusarov:
+  - 1tvru.lua: Add support for 1tv.ru [82e3151]
+  - tvrain.lua: Add support for tvrain.ru [730720d]
+Mort Gerald:
+  - pornhub.lua: Media ID can be hexadecimal [82b78df]
+Toni Gundogdu:
+  - FIX: collegehumor.lua: title pattern [3825171]
+  - FIX: ted.lua: Media stream URL pattern [2fc90bf]
+  - FIX: xhamster.lua: server response code 404 [6f3e8bd]
+Raphaël Droz:
+  - publicsenat.lua: Update support [f329cde]
+  - senat.lua: Add support for senat.fr [5cf4540]
+
+ 15 files changed, 317 insertions(+), 33 deletions(-)
+
+
 v0.4.5 (2012-05-30) / Toni Gundogdu
 
 Bastien Nocera:
