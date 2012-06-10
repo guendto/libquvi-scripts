@@ -53,17 +53,15 @@ function parse(self)
     end
 
     self.id = p:match('ti:"(%d+)"')
-                or error("no match: media id")
+                or error("no match: media ID")
 
     self.title = p:match('<title>(.-)%s+|')
                     or error("no match: media title")
 
     self.thumbnail_url = p:match('rel="image_src" href="(.-)"') or ''
 
-    local u  = p:match('"og:video"%s+content="(.-)"')
-                or error("no match: media url")
-    self.url = {u}
-
+    self.url = {p:match('(http://download.-)"')
+                  or error("no match: media stream URL")}
     return self
 end
 
