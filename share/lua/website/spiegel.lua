@@ -88,7 +88,7 @@ end
 --
 
 function Spiegel.get_media_id(self)
-    self.id = self.page_url:match("/video/video%-(.-)%.")
+    self.id = self.page_url:match("/video/.-video%-(.-)%.")
                 or error ("no match: media id")
 end
 
