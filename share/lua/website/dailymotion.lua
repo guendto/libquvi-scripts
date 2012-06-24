@@ -88,7 +88,7 @@ end
 function Dailymotion.fetch_page(self, U)
     self.page_url = Dailymotion.normalize(self.page_url)
 
-    local s = self.page_url:match('/family_filter%?urlback=(.+)')
+    local s = self.page_url:match('[%?%&]urlback=(.+)')
     if s then
         self.page_url = 'http://dailymotion.com' .. U.unescape(s)
     end
