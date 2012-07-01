@@ -45,8 +45,9 @@ function parse(self)
 
     local p = quvi.fetch(self.page_url)
 
-    self.title = p:match('name="description" content="(.-)"')
+    self.title = p:match('"og:title" content="(.-)"')
                   or error("no match: media title")
+    self.title = self.title:gsub('Video', '')
 
     self.id = p:match('unit_long(.-)"')
                 or error("no match: media id")
