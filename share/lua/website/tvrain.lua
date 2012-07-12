@@ -43,6 +43,9 @@ end
 function parse(self)
     self.host_id = "tvrain"
 
+    self.id = self.page_url:match('%-(%d+)/$')
+                or error("no match: media ID")
+
     local p = quvi.fetch(self.page_url)
 
     -- tvrain uses <iframe> for the video player which constructs URL to load a
@@ -60,9 +63,6 @@ function parse(self)
                             .. 'prt=%s&id=%s&mode=1', p1, p2)
 
     local pl = quvi.fetch(u, {fetch_type='playlist'})
-
-    self.id = pl:match('<programm[^>]-id="(.-)"')
-                or error("no match: media ID")
 
     self.title = pl:match('<video[^>]-name="(.-)"')
                   or error("no match: media title")
