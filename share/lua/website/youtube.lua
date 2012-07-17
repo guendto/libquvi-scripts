@@ -192,15 +192,14 @@ function YouTube.choose_best(formats) -- Highest quality available
     return r
 end
 
-function YouTube.choose_default(formats) -- Lowest quality available
-    local r = {width=0xffff, height=0xffff, url=nil}
-    local U = require 'quvi/util'
+function YouTube.choose_default(formats)
+    local r = formats[1] -- Either whatever YouTube returns as the first.
     for _,v in pairs(formats) do
-        if U.is_lower_quality(v,r) then
+        if v.height == 480 then -- Or, whichever is of 480p and found first.
             r = v
+            break
         end
     end
---    for k,v in pairs(r) do print(k,v) end
     return r
 end
 
