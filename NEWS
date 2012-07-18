@@ -1,3 +1,30 @@
+v0.4.7  (2012-07-18) / Toni Gundogdu
+
+Adam Sampson:
+  - dailymotion.lua: Make urlback pattern more liberal [8eded85]
+brunorex:
+  - Add support for justin.tv and twitch.tv (#99) [86baf5d]
+Mikhail Gusarov:
+  - tvrain.lua: Adjust for new URL scheme on the site [7bf1682]
+Till Maas:
+  - Support spiegel.de with SEO URLs [6afe8e9]
+Toni Gundogdu:
+  - FIX: gaskrank.lua: stream URL, ID patterns [78817b8]
+  - FIX: gaskrank.lua: title pattern [52c6f6d]
+  - FIX: tvrain.lua: Change how media ID is parsed [7dfbc1e]
+  - FIX: vimeo.lua:115: no match: qualities (#106) [d7182ac]
+  - youtube.lua: Rewrite YouTube.choose_default [aec0afa]
+
+      Change how youtube.lua chooses the 'default' format for
+      YouTube media URLs:
+        - Either whichever is of 480p is found first
+        - Or whatever YouTube returns as the first format
+
+      The script previously defaulted to the lowest quality.
+
+ 15 files changed, 118 insertions(+), 44 deletions(-)
+
+
 v0.4.6 (2012-06-10) / Toni Gundogdu
 
 Mikhail Gusarov:
