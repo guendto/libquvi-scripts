@@ -49,11 +49,10 @@ function parse(self)
                   or error("no match: media title")
     self.title = self.title:gsub('Video', '')
 
-    self.id = p:match('unit_long(.-)"')
-                or error("no match: media id")
+    self.id = self.page_url:match("%-(%d+)%.h") or error("no match: media ID")
 
-    self.url = {p:match('file=(.-)"')
-                or error ("no match: media url")}
+    self.url = {p:match('file:%s+"(.-)"')
+                  or error("no match: media stream URL")}
 
     return self
 end
