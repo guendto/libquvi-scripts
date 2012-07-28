@@ -55,8 +55,9 @@ end
 function HaOgg.check_external_content(self)
     local p = quvi.fetch(self.page_url)
 
-    local a = p:match('<div id="space4para" class="post%-type%-gvideos">(.-)</div>')
-                or error("no match: article")
+    local m = '<div .- id="space4para" class="post%-type%-gvideos">'
+              ..'.-<script (.-)</script>'
+    local a = p:match(m) or error("no match: article")
 
     -- Self-hosted, and they use YouTube
     -- http://www.101greatgoals.com/gvideos/golazo-wanchope-abila-sarmiento-junin-v-merlo-2/
