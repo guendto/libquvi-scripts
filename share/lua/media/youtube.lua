@@ -104,31 +104,64 @@ function YouTube.append_begin_param(qargs)
   end
 end
 
-function YouTube.iter_formats(config, U)
-    local fmt_stream_map = config['url_encoded_fmt_stream_map']
-                        or error("no match: url_encoded_fmt_stream_map")
+-- Iterates the available streams.
+function YouTube.iter_streams(config, U)
 
-    fmt_stream_map = U.unescape(fmt_stream_map) .. ","
+  -- Stream map. Holds many of the essential properties,
+  -- e.g. the media stream URL.
 
-    local urls = {}
-    for f in fmt_stream_map:gmatch('([^,]*),') do
-        local d = U.decode(f)
-        if d['itag'] and d['url'] then
-            urls[U.unescape(d['itag'])] = U.unescape(d['url'])
-        end
+  local stream_map = U.unescape(config['url_encoded_fmt_stream_map']
+                      or error('no match: url_encoded_fmt_stream_map'))
+                        .. ','
+
+  local smr = {}
+  for d in stream_map:gmatch('([^,]*),') do
+    local d = U.decode(d)
+    if d['url'] then
+      local ct = U.unescape(d['type'])
+      local v_enc,a_enc = ct:match('codecs="([%w.]+),%s+([%w.]+)"')
+      local itag = d['itag']
+      local cnt = (ct:match('/([%w-]+)')):gsub('x%-', '')
+      local t = {
+        url = U.unescape(d['url']),
+        quality = d['quality'],
+        container = cnt,
+        v_enc = v_enc,
+        a_enc = a_enc
+      }
+      smr[itag] = t
     end
+  end
 
-    local fmt_map = config['fmt_list'] or error("no match: fmt_list")
-    fmt_map = U.unescape(fmt_map)
+  -- Format list. Combined with the above properties. This list is used
+  -- for collecting the video resolution.
 
-    local r = {}
-    for f,w,h in fmt_map:gmatch('(%d+)/(%d+)x(%d+)') do
---        print(f,w,h)
-        table.insert(r, {fmt_id=tonumber(f),    url=urls[f],
-                          width=tonumber(w), height=tonumber(h)})
-    end
+  local fmtl = U.unescape(config['fmt_list'] or error('no match: fmt_list'))
+  local S = require 'quvi/stream'
+  local r = {}
 
-    return r
+  for itag,w,h in fmtl:gmatch('(%d+)/(%d+)x(%d+)') do
+    local smri = smr[itag]
+    local t = S.stream_new(smri.url)
+
+    t.video.encoding = smri.v_enc or ''
+    t.audio.encoding = smri.a_enc or ''
+    t.container = smri.container or ''
+    t.video.height = tonumber(h)
+    t.video.width = tonumber(w)
+
+    -- Do this after we have the video resolution, as the to_fmt_id
+    -- function uses the height property.
+    t.fmt_id = YouTube.to_fmt_id(t, itag, smri)
+
+    table.insert(r, t)
+  end
+
+  if #r >1 then
+    YouTube.ch_best(S, r) -- Pick one stream as the 'best' quality.
+  end
+
+  return r
 end
 
 function YouTube.get_video_info(self)
