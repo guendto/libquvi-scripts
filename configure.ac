@@ -5,9 +5,8 @@ AC_PREREQ([2.67])
 
 m4_include([m4/version.m4])
 
-AC_INIT([libquvi-scripts], [_LIBQUVI_SCRIPTS_VERSION],
-  [http://sourceforge.net/apps/trac/quvi/], [],
-  [http://quvi.sourceforge.net/])
+AC_INIT([libquvi-scripts], [libquvi_scripts_rel],
+        [http://quvi.sf.net/bugs/], [], [http://quvi.sf.net/])
 
 AC_CONFIG_AUX_DIR([config.aux])
 AC_CONFIG_MACRO_DIR([m4])
