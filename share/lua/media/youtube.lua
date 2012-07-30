@@ -25,10 +25,11 @@ local YouTube = {} -- Utility functions unique to this script
 
 -- Identify the script.
 function ident(self)
+  local Y = require 'quvi/youtube'
     local C      = require 'quvi/const'
     local r      = {}
     r.categories  = C.proto_http
-    self.page_url = YouTube.normalize(self.page_url)
+  local u = Y.normalize(qargs.input_url)
     local U       = require 'quvi/util'
     r.handles     = U.handles(self.page_url,
                         {r.domain}, {"/watch"}, {"v=[%w-_]+"})
@@ -64,26 +65,6 @@ end
 --
 -- Utility functions
 --
-
-function YouTube.normalize(s)
-    if not s then return s end
-    local U = require 'quvi/url'
-    local t = U.parse(s)
-    if not t.host then return s end
-    t.host = t.host:gsub('youtu%.be', 'youtube.com')
-    t.host = t.host:gsub('-nocookie', '')
-    if t.path then
-        local p = {'/embed/([-_%w]+)', '/%w/([-_%w]+)', '/([-_%w]+)'}
-        for _,v in pairs(p) do
-            local m = t.path:match(v)
-            if m and #m == 11 then
-                t.query = 'v=' .. m
-                t.path  = '/watch'
-            end
-        end
-    end
-    return U.build(t)
-end
 
 function YouTube.get_config(self)
     local sch = self.page_url:match('^(%w+)://')
