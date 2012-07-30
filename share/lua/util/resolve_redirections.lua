@@ -1,6 +1,6 @@
 
 -- libquvi-scripts
--- Copyright (C) 2010,2012  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -20,9 +20,27 @@
 -- 02110-1301  USA
 --
 
--- Parse charset from data.
-function charset_from_data(data)
-    return (data:lower():match('charset="?([%w-_]+)'))
+local ResolveExceptions = {} -- Utility functions unique to this script
+
+function resolve_redirections(qargs)
+  -- Let libcURL resolve the URL redirections for us.
+  local resolved, dst = quvi.resolve(qargs.input_url)
+  if not resolved then return qargs.input_url end
+
+  -- Apply any exception rules to the destination URL.
+  return ResolveExceptions.YouTube(qargs, dst)
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+--
+-- Utility functions
+--
+
+function ResolveExceptions.YouTube(qargs, dst)
+  -- Preserve the t= parameter (if any). The g00gle servers
+  -- strip them from the destination URL after redirecting.
+  -- e.g. http://www.youtube.com/watch?v=LWxTGJ3TK1U#t=2m22s
+  --   -> http://www.youtube.com/watch?v=LWxTGJ3TK1U
+  return dst .. (qargs.input_url:match('(#t=%w+)') or '')
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:

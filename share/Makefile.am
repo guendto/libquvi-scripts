@@ -17,11 +17,14 @@ DIST_lua+=\
   lua/common/quvi/util.lua\
   lua/common/quvi/youtube.lua
 
+# Utility scripts.
+DIST_lua+=\
+  lua/util/resolve_redirections.lua\
+  lua/util/convert_entities.lua\
+  lua/util/to_file_ext.lua
+
 DIST_lua+=\
  lua/README \
- lua/util/content_type.lua \
- lua/util/charset.lua \
- lua/util/trim.lua \
  lua/website/README \
  lua/website/101greatgoals.lua \
  lua/website/1tvru.lua \

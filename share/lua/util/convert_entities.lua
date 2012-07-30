@@ -1,6 +1,5 @@
-
 -- libquvi-scripts
--- Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -20,20 +19,9 @@
 -- 02110-1301  USA
 --
 
-function trim_fields(video)
-    for k,v in pairs(video) do
-        if (type(v) == 'table') then
-            video[k] = trim_fields(v)
-        elseif (type(v) == 'string') then
-            video[k] = trim(v)
-        end
-    end
-    return video
+function convert_entities(qargs, s)
+  local E = require 'quvi/entity'
+  return E.convert_html(s)
 end
 
-function trim(s) -- Based on http://lua-users.org/wiki/StringTrim (trim1)
-    s = (s:gsub("^%s*(.-)%s*$", "%1"))
-    return (s:gsub("%s%s+", " "))
-end
-
--- vim: set ts=4 sw=4 tw=72 expandtab:
+-- vim: set ts=2 sw=2 tw=72 expandtab:
