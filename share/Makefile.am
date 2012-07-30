@@ -9,6 +9,7 @@ DIST_lua+=\
   lua/common/quvi/bit.lua\
   lua/common/quvi/const.lua\
   lua/common/quvi/debug.lua\
+  lua/common/quvi/entity.lua\
   lua/common/quvi/html.lua\
   lua/common/quvi/url.lua\
   lua/common/quvi/util.lua
