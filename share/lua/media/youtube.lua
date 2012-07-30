@@ -36,10 +36,8 @@ function ident(self)
   return r
 end
 
--- Parse URL.
+-- Parse media properties.
 function parse(self)
-    self.host_id = "youtube"
-
     local p_url = YouTube.normalize(self.page_url)
     self.start_time = p_url:match('#a?t=(.+)') or ''
 
