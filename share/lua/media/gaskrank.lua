@@ -59,4 +59,4 @@ function Gaskrank.iter_streams(p)
   return {S.stream_new(u)}
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+-- vim: set ts=2 sw=2 tw=72 expandtab:
