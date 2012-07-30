@@ -19,7 +19,7 @@
 -- 02110-1301  USA
 --
 
-function suffix_from_contenttype(c_type)
+function to_file_ext(qargs, c_type) -- from content-type
   -- Hardcoded.
   if c_type:match("audio/mpeg") then return "mp3" end
 
@@ -54,7 +54,7 @@ local a = {
   'invalid content-type',
 }
 for _,v in pairs(a) do
-  print(v,to_file_ext({utilscript_dir='.'},v))
+  print(v,to_file_ext({util_script_dir='.'},v))
 end
 ]]--
 
