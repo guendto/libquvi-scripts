@@ -1,16 +1,22 @@
 
 SUBDIRS=	lua
 
-DIST_lua=\
+DIST_lua=
+
+# Common scripts.
+DIST_lua+=\
+  lua/common/quvi/bit.lua\
+  lua/common/quvi/const.lua\
+  lua/common/quvi/html.lua\
+  lua/common/quvi/url.lua\
+  lua/common/quvi/util.lua
+
+DIST_lua+=\
  lua/README \
  lua/util/content_type.lua \
  lua/util/charset.lua \
  lua/util/trim.lua \
  lua/website/README \
- lua/website/quvi/bit.lua \
- lua/website/quvi/const.lua \
- lua/website/quvi/url.lua \
- lua/website/quvi/util.lua \
  lua/website/101greatgoals.lua \
  lua/website/1tvru.lua \
  lua/website/academicearth.lua \

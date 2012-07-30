@@ -227,7 +227,7 @@ function M.absolute(base_url, relative_url)
                         relative_parsed.query = base_parsed.query
                     end
                 end
-            else    
+            else
                 relative_parsed.path = absolute_path(base_parsed.path or "",
                     relative_parsed.path)
             end

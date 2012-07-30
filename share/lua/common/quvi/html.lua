@@ -29,7 +29,7 @@
 
 local M    = {}
 local char = string.char
- 
+
 function M.tail(n, k)
     local u, r=''
     for i=1,k do
@@ -38,7 +38,7 @@ function M.tail(n, k)
     end
     return u, n
 end
- 
+
 function M.to_utf8(a)
     local n, r, u = tonumber(a)
     if n<0x80 then                        -- 1 byte
@@ -60,7 +60,7 @@ function M.to_utf8(a)
         return char(n+0xfc) .. u
     end
 end
- 
+
 --
 --for line in io.lines() do
 --    out =  string.gsub(line, '&#(%d+);', to_utf8)
