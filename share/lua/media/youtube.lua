@@ -38,10 +38,8 @@ end
 
 -- Parse media properties.
 function parse(self)
-    local p_url = YouTube.normalize(self.page_url)
-    self.start_time = p_url:match('#a?t=(.+)') or ''
-
-    return YouTube.get_video_info(self)
+  local Y = require 'quvi/youtube'
+  return YouTube.parse_properties(qargs, Y)
 end
 
 --
