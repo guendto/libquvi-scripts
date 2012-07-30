@@ -5,6 +5,7 @@ DIST_lua=
 
 # Common scripts.
 DIST_lua+=\
+  lua/common/quvi/accepts.lua\
   lua/common/quvi/bit.lua\
   lua/common/quvi/const.lua\
   lua/common/quvi/html.lua\
