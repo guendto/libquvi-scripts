@@ -20,7 +20,6 @@ DIST_lua+=\
 DIST_lua+=\
  lua/README \
  lua/util/to_file_ext.lua \
- lua/util/trim.lua \
  lua/website/README \
  lua/website/101greatgoals.lua \
  lua/website/1tvru.lua \
