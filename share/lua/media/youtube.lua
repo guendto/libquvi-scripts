@@ -87,6 +87,23 @@ function YouTube.get_data(qargs, Y)
   return c, U
 end
 
+-- Appends the &begin parameter to the media stream URL.
+function YouTube.append_begin_param(qargs)
+  local m,s = qargs.input_url:match("t=(%d+)m(%d+)s")
+  if m or s then
+    m = tonumber(m) or 0
+    s = tonumber(s) or 0
+    local ms = (m*60000) + (s*1000)
+    if ms >0 then
+      for i,v in ipairs(qargs.streams) do
+        local url = qargs.streams[i].url
+        qargs.streams[i].url = url .."&begin=".. ms
+      end
+      qargs.start_time_ms = ms
+    end
+  end
+end
+
 function YouTube.iter_formats(config, U)
     local fmt_stream_map = config['url_encoded_fmt_stream_map']
                         or error("no match: url_encoded_fmt_stream_map")
