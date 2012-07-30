@@ -176,44 +176,6 @@ function YouTube.ch_best(S, t)
   end
 end
 
-function YouTube.get_video_info(self)
-    local config,U = YouTube.get_config(self)
-
-    self.title = config['title'] or error('no match: media title')
-    self.title = U.unescape(self.title)
-
-    self.thumbnail_url = config['thumbnail_url'] or ''
-    if #self.thumbnail_url > 0 then
-        self.thumbnail_url = U.unescape(self.thumbnail_url)
-    end
-    
-    self.duration = (config['length_seconds'] or 0)*1000 -- to msec
-
-    self.requested_format =
-        YouTube.convert_deprecated_id(self.requested_format)
-
-    local formats = YouTube.iter_formats(config, U)
-    local format  = U.choose_format(self, formats,
-                                    YouTube.choose_best,
-                                    YouTube.choose_default,
-                                    YouTube.to_s)
-                        or error("unable to choose format")
-    local url     = format.url or error("no match: media url")
-
-    if url and #self.start_time > 0 then
-        local min, sec = self.start_time:match("^(%d+)m(%d+)s$")
-        min = tonumber(min) or 0
-        sec = tonumber(sec) or 0
-        local msec = (min * 60000) + (sec * 1000)
-        if msec > 0 then
-            url = url .. "&begin=" .. msec
-        end
-    end
-
-    self.url = {url}
-    return self
-end
-
 YouTube.conv_table = { -- Deprecated.
     -- flv
     flv_240p =  '5',
