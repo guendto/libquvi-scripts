@@ -22,3 +22,4 @@ share/lua/Makefile.in
 tests/Makefile.in
 ChangeLog
 VERSION
+INSTALL
