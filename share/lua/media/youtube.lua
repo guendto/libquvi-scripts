@@ -24,7 +24,7 @@ local YouTube = {} -- Utility functions unique to this script
 -- <http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs>
 
 -- Identify the script.
-function ident(self)
+function ident(qargs)
   local A = require 'quvi/accepts'
   local Y = require 'quvi/youtube'
   local C = require 'quvi/const'
@@ -37,7 +37,7 @@ function ident(self)
 end
 
 -- Parse media properties.
-function parse(self)
+function parse(qargs)
   local Y = require 'quvi/youtube'
   return YouTube.parse_properties(qargs, Y)
 end
