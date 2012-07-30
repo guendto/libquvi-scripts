@@ -19,6 +19,7 @@ DIST_lua+=\
 
 # Utility scripts.
 DIST_lua+=\
+  lua/util/resolve_redirections.lua\
   lua/util/convert_entities.lua\
   lua/util/to_file_ext.lua
 
