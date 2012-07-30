@@ -23,6 +23,10 @@ DIST_lua+=\
   lua/util/convert_entities.lua\
   lua/util/to_file_ext.lua
 
+# Media property scripts.
+DIST_lua+=\
+  lua/media/youtube.lua
+
 DIST_lua+=\
  lua/README \
  lua/website/README \
@@ -65,8 +69,7 @@ DIST_lua+=\
  lua/website/videa.lua \
  lua/website/videobash.lua \
  lua/website/vimeo.lua \
- lua/website/yfrog.lua \
- lua/website/youtube.lua
+ lua/website/yfrog.lua
 
 if WITH_NSFW
 DIST_lua+=\
