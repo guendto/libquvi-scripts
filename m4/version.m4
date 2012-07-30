@@ -1,1 +1,1 @@
-m4_define([libquvi_scripts_rel], [0.4.7])
+m4_define([libquvi_scripts_rel], [0.9.0])
