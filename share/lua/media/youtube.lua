@@ -176,8 +176,10 @@ function YouTube.ch_best(S, t)
   end
 end
 
-function YouTube.to_s(t)
-    return string.format("fmt%02d_%sp", t.fmt_id, t.height)
+-- Returns a general purpose "format ID" for a stream.
+function YouTube.to_fmt_id(t, itag, smri)
+  return string.format("%s_%s_i%02d_%sp",
+          smri.quality, t.container, itag, t.video.height)
 end
 
 --[[
