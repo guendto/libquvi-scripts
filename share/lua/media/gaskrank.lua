@@ -32,8 +32,6 @@ end
 
 -- Parse media URL.
 function parse(self)
-    self.host_id = "gaskrank"
-
     local p = quvi.fetch(self.page_url)
 
     self.title = p:match('"og:title" content="(.-)"')
