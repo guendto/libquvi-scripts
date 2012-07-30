@@ -36,22 +36,6 @@ function ident(self)
   return r
 end
 
--- Query available formats.
-function query_formats(self)
-    local config,U  = YouTube.get_config(self)
-    local formats   = YouTube.iter_formats(config, U)
-
-    local t = {}
-    for _,v in pairs(formats) do
-        table.insert(t, YouTube.to_s(v))
-    end
-
-    table.sort(t)
-    self.formats = table.concat(t, "|")
-
-    return self
-end
-
 -- Parse URL.
 function parse(self)
     self.host_id = "youtube"
