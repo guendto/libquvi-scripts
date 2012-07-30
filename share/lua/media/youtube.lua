@@ -1,4 +1,3 @@
-
 -- libquvi-scripts
 -- Copyright (C) 2010-2012  Toni Gundogdu <legatvs@gmail.com>
 --
@@ -26,7 +25,6 @@ local YouTube = {} -- Utility functions unique to this script
 
 -- Identify the script.
 function ident(self)
-    package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local r      = {}
     r.domain     = "youtube%.com"
