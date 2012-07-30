@@ -14,7 +14,8 @@ DIST_lua+=\
   lua/common/quvi/lxph.lua\
   lua/common/quvi/stream.lua\
   lua/common/quvi/url.lua\
-  lua/common/quvi/util.lua
+  lua/common/quvi/util.lua\
+  lua/common/quvi/youtube.lua
 
 DIST_lua+=\
  lua/README \
