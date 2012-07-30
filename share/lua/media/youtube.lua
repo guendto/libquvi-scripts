@@ -164,6 +164,18 @@ function YouTube.iter_streams(config, U)
   return r
 end
 
+-- Picks the stream with the highest video height property
+-- as the best in quality.
+function YouTube.ch_best(S, t)
+  local r = t[1] -- Make the first one the 'best' by default.
+  r.flags.best = true
+  for _,v in pairs(t) do
+    if v.video.height > r.video.height then
+      r = S.swap_best(r, v)
+    end
+  end
+end
+
 function YouTube.get_video_info(self)
     local config,U = YouTube.get_config(self)
 
@@ -200,29 +212,6 @@ function YouTube.get_video_info(self)
 
     self.url = {url}
     return self
-end
-
-function YouTube.choose_best(formats) -- Highest quality available
-    local r = {width=0, height=0, url=nil}
-    local U = require 'quvi/util'
-    for _,v in pairs(formats) do
-        if U.is_higher_quality(v,r) then
-            r = v
-        end
-    end
---    for k,v in pairs(r) do print(k,v) end
-    return r
-end
-
-function YouTube.choose_default(formats)
-    local r = formats[1] -- Either whatever YouTube returns as the first.
-    for _,v in pairs(formats) do
-        if v.height == 480 then -- Or, whichever is of 480p and found first.
-            r = v
-            break
-        end
-    end
-    return r
 end
 
 YouTube.conv_table = { -- Deprecated.
