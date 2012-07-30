@@ -1,6 +1,5 @@
-
 -- libquvi-scripts
--- Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -20,14 +19,37 @@
 -- 02110-1301  USA
 --
 
+--
+-- NOTE: These are helper functions to be used with lua-expat (lxp)
+--
+
 local M = {}
 
--- Protocol categories.
-M.proto_http = 0x1
-M.proto_mms  = 0x2
-M.proto_rtsp = 0x4
-M.proto_rtmp = 0x8
+--
+-- Find first element with the matching tag.
+--
+-- Returns: The matching table element.
+--
+function M.find_first_tag(t, tag)
+  for i=1, #t do
+    if t[i].tag == tag then
+      return t[i]
+    end
+  end
+  error("[find_first_tag] no match: tag=" .. tag)
+end
+
+--[[
+function M.foo()
+  local xml = '<foo><bar>baz</bar></foo>'
+  require 'lxp.lom'
+  local t = lxp.lom.parse(xml)
+  local e = M.find_first_tag(t, 'bar')
+  if e[1] ~= 'baz' then error('should be "baz"') end
+end
+M.foo()
+]]--
 
 return M
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+-- vim: set ts=2 sw=2 tw=72 expandtab:
