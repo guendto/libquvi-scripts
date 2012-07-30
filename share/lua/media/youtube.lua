@@ -46,6 +46,19 @@ end
 -- Utility functions
 --
 
+-- Parses the video info from the server.
+function YouTube.parse_properties(qargs, Y)
+  local c, U = YouTube.get_data(qargs, Y)
+
+  qargs.duration_ms = (c['length_seconds'] or 0)*1000 -- to ms
+  qargs.thumb_url = U.unescape(c['thumbnail_url'] or '')
+  qargs.title = U.unescape(c['title'] or '')
+  qargs.streams = YouTube.iter_streams(c, U)
+  YouTube.append_begin_param(qargs)
+
+  return qargs
+end
+
 -- Queries the video data from the server.
 function YouTube.get_data(qargs, Y)
   local u = Y.normalize(qargs.input_url)
