@@ -46,30 +46,32 @@ end
 -- Utility functions
 --
 
-function YouTube.get_config(self)
-    local sch = self.page_url:match('^(%w+)://')
-                  or error("no match: scheme")
+-- Queries the video data from the server.
+function YouTube.get_data(qargs, Y)
+  local u = Y.normalize(qargs.input_url)
 
-    local p_url = YouTube.normalize(self.page_url)
+  qargs.id = u:match('v=([%w-_]+)')
+              or error('no match: media ID')
 
-    self.id = p_url:match("v=([%w-_]+)")
-                or error("no match: media ID")
+  local U = require 'quvi/url'
+  local u = U.parse(u)
+  local s = u.scheme or error('no match: scheme')
 
-    local s_fmt = "%s://www.youtube.com/get_video_info?&video_id=%s"
-                    .. "&el=detailpage&ps=default&eurl=&gl=US&hl=en"
+  local s_fmt = '%s://www.youtube.com/get_video_info?&video_id=%s'
+                  .. '&el=detailpage&ps=default&eurl=&gl=US&hl=en'
 
-    local c_url = string.format(s_fmt, sch, self.id)
+  local c_url = string.format(s_fmt, s, qargs.id)
 
-    local U = require 'quvi/util'
-    local c = U.decode(quvi.fetch(c_url, {fetch_type='config'}))
+  local U = require 'quvi/util'
+  local c = U.decode(quvi.fetch(c_url, {type = 'config'}))
 
-    if c['reason'] then
-        local reason = U.unescape(c['reason'])
-        local code = c['errorcode']
-        error(string.format("%s (code=%s)", reason, code))
-    end
+  if c['reason'] then
+    local reason = U.unescape(c['reason'])
+    local code = c['errorcode']
+    error(string.format("%s (code=%s)", reason, code))
+  end
 
-    return c, U
+  return c, U
 end
 
 function YouTube.iter_formats(config, U)
