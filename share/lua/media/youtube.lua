@@ -27,7 +27,6 @@ local YouTube = {} -- Utility functions unique to this script
 function ident(self)
     local C      = require 'quvi/const'
     local r      = {}
-    r.formats    = "default|best"
     r.categories  = C.proto_http
     self.page_url = YouTube.normalize(self.page_url)
     local U       = require 'quvi/util'
