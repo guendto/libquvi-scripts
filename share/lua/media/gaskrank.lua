@@ -19,8 +19,10 @@
 -- 02110-1301  USA
 --
 
--- Identify the script.
-function ident(self)
+local Gaskrank = {} -- Utility functions unique to this script
+
+-- Identify the media script.
+function ident(qargs)
   local A = require 'quvi/accepts'
   local C = require 'quvi/const'
   local r = {
@@ -30,20 +32,31 @@ function ident(self)
   return r
 end
 
--- Parse media URL.
-function parse(self)
-    local p = quvi.fetch(self.page_url)
+-- Parse media properties.
+function parse(qargs)
+  local p = quvi.fetch(qargs.input_url)
 
-    self.title = p:match('"og:title" content="(.-)"')
-                  or error("no match: media title")
-    self.title = self.title:gsub('Video', '')
+  qargs.thumb_url = p:match('"og:image" content="(.-)"') or ''
 
-    self.id = self.page_url:match("%-(%d+)%.h") or error("no match: media ID")
+  qargs.title = p:match('"og:title" content="(.-)"') or ''
 
-    self.url = {p:match('file:%s+"(.-)"')
-                  or error("no match: media stream URL")}
+  qargs.id = qargs.input_url:match("%-(%d+)%.h")
+              or error("no match: media ID")
 
-    return self
+  qargs.streams = Gaskrank.iter_streams(p)
+
+  return qargs
+end
+
+--
+-- Utility functions.
+--
+
+function Gaskrank.iter_streams(p)
+  local u = p:match("(http://movies.-%.flv)")
+              or error("no match: media stream URL")
+  local S = require 'quvi/stream'
+  return {S.stream_new(u)}
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
