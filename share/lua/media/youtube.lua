@@ -176,26 +176,6 @@ function YouTube.ch_best(S, t)
   end
 end
 
-YouTube.conv_table = { -- Deprecated.
-    -- flv
-    flv_240p =  '5',
-    flv_360p = '34',
-    flv_480p = '35',
-    -- mp4
-     mp4_360p = '18',
-     mp4_720p = '22',
-    mp4_1080p = '37',
-    mp4_3072p = '38'
-}
-
-function YouTube.convert_deprecated_id(r_fmt)
-    if YouTube.conv_table[r_fmt] then
-        local s = string.format("fmt%02d_", YouTube.conv_table[r_fmt])
-        r_fmt = r_fmt:gsub("^(%w+)_", s)
-    end
-    return r_fmt
-end
-
 function YouTube.to_s(t)
     return string.format("fmt%02d_%sp", t.fmt_id, t.height)
 end
