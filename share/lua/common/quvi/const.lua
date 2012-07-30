@@ -1,4 +1,3 @@
-
 -- libquvi-scripts
 -- Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
 --
@@ -23,11 +22,12 @@
 local M = {}
 
 -- Protocol categories.
-M.proto_http = 0x1
-M.proto_mms  = 0x2
-M.proto_rtsp = 0x4
-M.proto_rtmp = 0x8
+M.proto_http  = 0x1
+M.proto_mms   = 0x2
+M.proto_rtsp  = 0x4
+M.proto_rtmp  = 0x8
+M.proto_rtmpe = 0x10
 
 return M
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+-- vim: set ts=2 sw=2 tw=72 expandtab:
