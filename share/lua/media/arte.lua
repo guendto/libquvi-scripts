@@ -1,4 +1,3 @@
-
 -- libquvi-scripts
 -- Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
 -- Copyright (C) 2011  Raphaël Droz <raphael.droz+floss@gmail.com>
@@ -24,9 +23,8 @@
 
 local Arte = {} -- Utility functions unique to to this script.
 
--- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
+-- Identify the media script.
+function ident(qargs)
     local C      = require 'quvi/const'
     local r      = {}
     r.domain     = "videos%.arte%.tv"
