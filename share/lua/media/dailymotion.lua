@@ -37,10 +37,8 @@ function ident(qargs)
   return r
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "dailymotion"
-
+-- Parse media properties.
+function parse(qargs)
     local U = require 'quvi/util'
     local p = Dailymotion.fetch_page(self, U)
 
