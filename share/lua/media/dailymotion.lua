@@ -127,6 +127,14 @@ function Dailymotion.iter_streams(page, U)
   return r
 end
 
+-- Sanitizes the URL.
+function Dailymotion.cleanup(U, u)
+  u = U.unescape(u)
+  u = U.slash_unescape(u)
+  u = u:gsub('cell=secure%-vod&', '') -- http://is.gd/BzYPZJ
+  return u
+end
+
 function Dailymotion.choose_default(formats) -- Lowest quality available
     local r = {width=0xffff, height=0xffff, url=nil}
     local U = require 'quvi/util'
