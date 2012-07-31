@@ -39,25 +39,16 @@ end
 
 -- Parse media properties.
 function parse(qargs)
-    local U = require 'quvi/util'
-    local p = Dailymotion.fetch_page(self, U)
+  local U = require 'quvi/util'
+  local p = Dailymotion.fetch_page(qargs, U)
 
-    self.title = p:match('title="(.-)"')
-                  or error("no match: media title")
+  qargs.thumb_url = p:match('"og:image" content="(.-)"') or ''
+  qargs.title = p:match('title="(.-)"') or ''
+  qargs.id = p:match("video/([^%?_]+)") or ''
 
-    self.id = p:match("video/([^%?_]+)")
-                or error("no match: media ID")
+  qargs.streams = Dailymotion.iter_streams(p, U)
 
-    self.thumbnail_url = p:match('"og:image" content="(.-)"') or ''
-
-    local formats = Dailymotion.iter_formats(p, U)
-    local format  = U.choose_format(self, formats,
-                                     Dailymotion.choose_best,
-                                     Dailymotion.choose_default,
-                                     Dailymotion.to_s)
-                        or error("unable to choose format")
-    self.url      = {format.url or error("no match: media URL")}
-    return self
+  return qargs
 end
 
 --
