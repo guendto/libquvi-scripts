@@ -57,4 +57,4 @@ function Break.iter_streams(n, h)
   return {S.stream_new(u)}
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+-- vim: set ts=2 sw=2 tw=72 expandtab:
