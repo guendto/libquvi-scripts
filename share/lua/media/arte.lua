@@ -150,7 +150,7 @@ function Arte.iter_streams(config, L, P, lang_code)
 end
 
 function Arte.has_expired(s, U)
-    return U.to_timestamp(s) - os.time() < 0
+  return (U.to_timestamp(s) - os.time()) <0
 end
 
 function Arte.choose_best(formats) -- Whatever matches 'hd' first
