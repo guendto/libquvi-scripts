@@ -55,6 +55,16 @@ end
 -- Utility functions
 --
 
+-- "Normalizes" the embedded URLs.
+function Dailymotion.normalize(input_url)
+  if input_url:match("/swf/") then
+    input_url = input_url:gsub("/swf/", "/")
+  elseif input_url:match("/embed/") then
+    input_url = input_url:gsub("/embed/", "/")
+  end
+  return input_url
+end
+
 function Dailymotion.fetch_page(self, U)
     self.page_url = Dailymotion.normalize(self.page_url)
 
@@ -65,15 +75,6 @@ function Dailymotion.fetch_page(self, U)
 
     local opts = {arbitrary_cookie = 'family_filter=off'}
     return quvi.fetch(self.page_url, opts)
-end
-
-function Dailymotion.normalize(page_url) -- "Normalize" embedded URLs
-    if page_url:match("/swf/") then
-        page_url = page_url:gsub("/swf/", "/")
-    elseif page_url:match("/embed/") then
-        page_url = page_url:gsub("/embed/", "/")
-    end
-    return page_url
 end
 
 function Dailymotion.iter_formats(page, U)
