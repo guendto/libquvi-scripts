@@ -23,12 +23,13 @@ local Break = {} -- Utility functions unique to this script
 
 -- Identify the media script.
 function ident(qargs)
-    local C      = require 'quvi/const'
-    local r      = {}
-    r.categories = C.proto_http
-    local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, {r.domain}, {"/index/"})
-    return r
+  local A = require 'quvi/accepts'
+  local C = require 'quvi/const'
+  local r = {
+    accepts = A.accepts(qargs.input_url, {"break%.com"}, {"/index/"}),
+    categories = C.proto_http
+  }
+  return r
 end
 
 -- Query available formats.
