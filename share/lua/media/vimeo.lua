@@ -65,10 +65,9 @@ end
 -- Utility functions
 --
 
-function Vimeo.normalize(url)
-    url = url:gsub("player.", "") -- player.vimeo.com
-    url = url:gsub("/video/", "/") -- player.vimeo.com
-    return url
+function Vimeo.normalize(qargs)
+  local u = qargs.input_url:gsub("player.", "") -- player.vimeo.com
+  qargs.input_url = u:gsub("/video/", "/")
 end
 
 function Vimeo.get_config(self)
