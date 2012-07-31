@@ -34,23 +34,27 @@ end
 
 -- Parse media properties.
 function parse(qargs)
-    local p = quvi.fetch(self.page_url)
+  local p = quvi.fetch(qargs.input_url)
 
-    self.title = p:match('id="vid_title" content="(.-)"')
-                  or error("no match: media title")
+  qargs.title = p:match('id="vid_title" content="(.-)"') or ''
+  qargs.id = p:match("ContentID='(.-)'") or ''
 
-    self.id = p:match("ContentID='(.-)'")
-                or error("no match: media ID")
+  local n = p:match("FileName='(.-)'") or error("no match: file name")
+  local h = p:match('flashVars.icon = "(.-)"') or error("no match: file hash")
 
-    local fn = p:match("FileName='(.-)'")
-                or error("no match: file name")
+  qargs.streams = Break.iter_streams(n, h)
 
-    local fh = p:match('flashVars.icon = "(.-)"')
-                or error("no match: file hash")
+  return qargs
+end
 
-    self.url = {string.format("%s.flv?%s", fn, fh)}
+--
+-- Utility functions.
+--
 
-    return self
+function Break.iter_streams(n, h)
+  local u = string.format("%s.flv?%s", n, h)
+  local S = require 'quvi/stream'
+  return {S.stream_new(u)}
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
