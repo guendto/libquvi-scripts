@@ -85,7 +85,7 @@ function Vimeo.iter_streams(qargs, page)
   end
 
   if #r >1 then
-    Vimeo.ch_best(S, r)
+    Vimeo.ch_best(r)
   end
 
   return r
@@ -96,21 +96,8 @@ function Vimeo.normalize(qargs)
   qargs.input_url = u:gsub("/video/", "/")
 end
 
-function Vimeo.choose_best(t) -- First 'hd', then 'sd' and 'mobile' last.
-    for _,v in pairs(t) do
-        local f = Vimeo.to_s(v)
-        for _,q in pairs({'hd','sd','mobile'}) do
-            if f == q then return v end
-        end
-    end
-    return Vimeo.choose_default(t)
-end
-
-function Vimeo.choose_default(t)
-  for _,v in pairs(t) do
-      if Vimeo.to_s(v) == 'sd' then return v end -- Default to 'sd'.
-  end
-  return t[1] -- Or whatever is the first.
+function Vimeo.ch_best(t)
+  t[1].flags.best = true -- Should be the 'hd'.
 end
 
 function Vimeo.to_s(t)
