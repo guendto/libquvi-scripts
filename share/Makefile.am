@@ -23,6 +23,10 @@ DIST_lua+=\
   lua/util/convert_entities.lua\
   lua/util/to_file_ext.lua
 
+# Media property scripts.
+DIST_lua+=\
+  lua/media/dailymotion.lua
+
 DIST_lua+=\
  lua/README \
  lua/website/README \
@@ -39,7 +43,6 @@ DIST_lua+=\
  lua/website/charlierose.lua \
  lua/website/clipfish.lua \
  lua/website/collegehumor.lua \
- lua/website/dailymotion.lua \
  lua/website/foxnews.lua \
  lua/website/funnyordie.lua \
  lua/website/gaskrank.lua \
