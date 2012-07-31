@@ -37,23 +37,6 @@ function ident(qargs)
   return r
 end
 
--- Query available formats.
-function query_formats(self)
-    local U       = require 'quvi/util'
-    local page    = Dailymotion.fetch_page(self, U)
-    local formats = Dailymotion.iter_formats(page, U)
-
-    local t = {}
-    for _,v in pairs(formats) do
-        table.insert(t, Dailymotion.to_s(v))
-    end
-
-    table.sort(t)
-    self.formats = table.concat(t, "|")
-
-    return self
-end
-
 -- Parse media URL.
 function parse(self)
     self.host_id = "dailymotion"
