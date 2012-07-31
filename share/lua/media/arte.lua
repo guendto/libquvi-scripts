@@ -105,52 +105,48 @@ function Arte.opt_properties(qargs, lang_code)
   qargs.id = r.nostd.id
 end
 
-function Arte.get_lang_config(config)
-    local t = {}
-    for lang,url in config:gmatch('<video lang="(%w+)" ref="(.-)"') do
-        table.insert(t, {lang=lang,
-                         config=quvi.fetch(url, {fetch_type = 'config'})})
-    end
-    return t
-end
+function Arte.iter_streams(config, L, P, lang_code)
+  local S = require 'quvi/stream'
+  local U = require 'quvi/util'
+  local r = {}
 
-function Arte.iter_lang_formats(lang_config, t, U)
+  for _,v in pairs(config) do -- For each language in the config.
+    local c = P.parse(v.lang_data)
 
-    local p = '<video id="(%d+)" lang="(%w+)"'
-           .. '.-<name>(.-)<'
-           .. '.-<firstThumbnailUrl>(.-)<'
-           .. '.-<dateExpiration>(.-)<'
-           .. '.-<dateVideo>(.-)<'
-
-    local config = lang_config.config
-
-    local id,lang,title,thumb,exp,date = config:match(p)
-    if not id then error("no match: media id, etc.") end
-
-    if lang ~= lang_config.lang then
-        error("no match: lang")
+    local d = L.find_first_tag(c, 'dateExpiration')[1]
+    if Arte.has_expired(d, U) then
+      error('media no longer available (expired)')
     end
 
-    if Arte.has_expired(exp, U) then
-        error('error: media no longer available (expired)')
-    end
+    local urls = L.find_first_tag(c, 'urls')
 
-    local urls = config:match('<urls>(.-)</urls>')
-                  or error('no match: urls')
+    for i=1, #urls do
+      if urls[i].tag == 'url' then
+        local t = S.stream_new(urls[i][1])
 
-    for q,u in urls:gmatch('<url quality="(%w+)">(.-)<') do
---        print(q,u)
-        table.insert(t, {lang=lang,   quality=q,   url=u,
-                         thumb=thumb, title=title, id=id})
-    end
-end
+        -- Save the property values that may be used later, these depend
+        -- on the language setting. Many of these are the so called
+        -- "optional media properties".  The 'nostd' dictionary is used
+        -- only by this script. libquvi ignores it completely.
 
-function Arte.iter_formats(config, U)
-    local t = {}
-    for _,v in pairs(config) do
-        Arte.iter_lang_formats(v, t, U)
+        t.nostd = {
+          thumb_url = L.find_first_tag(c, 'firstThumbnailUrl')[1],
+          title = L.find_first_tag(c, 'name')[1],
+          quality = urls[i].attr['quality'],
+          lang_code = c.attr['lang'],
+          id = c.attr['id'] or ''
+        }
+        t.fmt_id = Arte.to_fmt_id(t)
+        table.insert(r, t)
+      end
     end
-    return t
+  end
+
+  if #r >1 then
+    Arte.ch_best(S, r, lang_code)
+  end
+
+  return r,S
 end
 
 function Arte.has_expired(s, U)
