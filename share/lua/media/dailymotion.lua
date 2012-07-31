@@ -78,35 +78,53 @@ function Dailymotion.fetch_page(qargs, U)
   return quvi.fetch(qargs.input_url, o)
 end
 
-function Dailymotion.iter_formats(page, U)
-    local seq = page:match('"sequence",%s+"(.-)"')
-    if not seq then
-        local e = "no match: sequence"
-        if page:match("_partnerplayer") then
-            e = e .. ": looks like a partner video which we do not support"
-        end
-        error(e)
+-- Iterates the available streams.
+function Dailymotion.iter_streams(page, U)
+
+  local seq = page:match('"sequence",%s+"(.-)"')
+                or error('no match: sequence')
+  seq = U.unescape(seq)
+
+  local urls = {}
+  for q,u in seq:gmatch('"(%w%w)URL":"(.-)"') do
+    table.insert(urls, {quality=q, url=Dailymotion.cleanup(U, u)})
+  end
+
+  -- Each media page should have at least have this, even if other
+  -- stream qualities are not available.
+  if #urls ==0 then
+    local u = seq:match('"video_url":"(.-)"')
+                or error('no match: media stream URL')
+    table.insert(urls, {url=Dailymotion.cleanup(U, u)})
+  end
+
+  local S = require 'quvi/stream'
+  local r = {}
+
+  for _,v in pairs(urls) do
+    local c,w,h,cn = v.url:match('(%w+)%-(%d+)x(%d+).-%.(%w+)')
+
+    if c then
+      local t = S.stream_new(v.url)
+
+      t.video.encoding = string.lower(c or '')
+      t.video.height = tonumber(h)
+      t.video.width = tonumber(w)
+      t.container = cn or ''
+
+      -- Must come after we have the video resolution, as the to_fmt_id
+      -- function uses the height property.
+      t.fmt_id = Dailymotion.to_fmt_id(t, v.quality)
+
+      table.insert(r, t)
     end
+  end
 
-    seq = U.unescape(seq)
+  if #r >1 then
+    Dailymotion.ch_best(S, r)
+  end
 
-    local t = {}
-    for url in seq:gmatch('%w+URL":"(.-)"') do
-        local c,w,h,cn = url:match('(%w+)%-(%d+)x(%d+).-%.(%w+)')
-        if c then
-            url = url:gsub('cell=secure%-vod&', '') -- http://is.gd/BzYPZJ
-            table.insert(t, {width=tonumber(w), height=tonumber(h),
-                             container=cn,      codec=string.lower(c),
-                             url=url:gsub("\\/", "/")})
---            print(c,w,h,cn)
-        end
-    end
-
-    if #t == 0 then
-        error("no match: media URL")
-    end
-
-    return t
+  return r
 end
 
 function Dailymotion.choose_default(formats) -- Lowest quality available
