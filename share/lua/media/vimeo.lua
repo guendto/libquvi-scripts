@@ -100,8 +100,8 @@ function Vimeo.ch_best(t)
   t[1].flags.best = true -- Should be the 'hd'.
 end
 
-function Vimeo.to_s(t)
-    return string.format("%s", t.quality)
+function Vimeo.to_fmt_id(t, quality)
+  return string.format("%s_%s", quality, t.video.encoding)
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
