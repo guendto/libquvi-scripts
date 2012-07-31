@@ -135,28 +135,16 @@ function Dailymotion.cleanup(U, u)
   return u
 end
 
-function Dailymotion.choose_default(formats) -- Lowest quality available
-    local r = {width=0xffff, height=0xffff, url=nil}
-    local U = require 'quvi/util'
-    for _,v in pairs(formats) do
-        if U.is_lower_quality(v,r) then
-            r = v
-        end
+-- Picks the stream with the highest video height property
+-- as the best in quality.
+function Dailymotion.ch_best(S, t)
+  local r = t[1] -- Make the first one the 'best' by default.
+  r.flags.best = true
+  for _,v in pairs(t) do
+    if v.video.height > r.video.height then
+      r = S.swap_best(r, v)
     end
---    for k,v in pairs(r) do print(k,v) end
-    return r
-end
-
-function Dailymotion.choose_best(formats) -- Highest quality available
-    local r = {width=0, height=0, url=nil}
-    local U = require 'quvi/util'
-    for _,v in pairs(formats) do
-        if U.is_higher_quality(v,r) then
-            r = v
-        end
-    end
---    for k,v in pairs(r) do print(k,v) end
-    return r
+  end
 end
 
 function Dailymotion.to_s(t)
