@@ -25,14 +25,16 @@
 local Dailymotion = {} -- Utility functions unique to this script.
 
 -- Identify the media script.
-function ident(self)
-    local C      = require 'quvi/const'
-    local r      = {}
-    r.categories = C.proto_http
-    local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, {r.domain, "dai.ly"},
-                    {"/video/","/%w+$","/family_filter"})
-    return r
+function ident(qargs)
+  local A = require 'quvi/accepts'
+  local C = require 'quvi/const'
+  local d = {"dailymotion%.%w+", "dai.ly"} -- domains
+  local p = {"/video/", "/%w+$", "/family_filter"} -- paths
+  local r = {
+    accepts = A.accepts(qargs.input_url, d, p),
+    categories = C.proto_http
+  }
+  return r
 end
 
 -- Query available formats.
