@@ -147,8 +147,10 @@ function Dailymotion.ch_best(S, t)
   end
 end
 
-function Dailymotion.to_s(t)
-    return string.format("%s_%sp", t.container, t.height)
+-- Returns a general purpose "format ID" for a stream.
+function Dailymotion.to_fmt_id(t, q)
+  return string.format("%s_%s_%s_%sp",
+    (q) and q or 'sd', t.container, t.video.encoding, t.video.height)
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
