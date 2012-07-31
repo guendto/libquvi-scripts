@@ -163,8 +163,8 @@ function Arte.ch_best(S, t, lang_code)
   end
 end
 
-function Arte.to_s(t)
-    return string.format("%s_%s", t.quality, t.lang)
+function Arte.to_fmt_id(t)
+  return string.format("%s_%s", t.nostd.quality, t.nostd.lang_code)
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
