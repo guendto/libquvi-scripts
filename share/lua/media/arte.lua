@@ -93,6 +93,18 @@ function Arte.get_config(qargs, L, P)
   return r, l
 end
 
+function Arte.opt_properties(qargs, lang_code)
+
+  -- The first stream should now be the default stream. This should
+  -- apply to the 'best' stream also, they are both the first streams
+  -- in the stream list.
+
+  local r = qargs.streams[1]
+  qargs.thumb_url = r.nostd.thumb_url
+  qargs.title = r.nostd.title
+  qargs.id = r.nostd.id
+end
+
 function Arte.get_lang_config(config)
     local t = {}
     for lang,url in config:gmatch('<video lang="(%w+)" ref="(.-)"') do
