@@ -29,7 +29,6 @@ local Vimeo = {} -- Utility functions unique to this script.
 function ident(qargs)
     local C      = require 'quvi/const'
     local r      = {}
-    r.domain     = "vimeo%.com"
     r.formats    = "default|best"
     r.categories = C.proto_http
     local U      = require 'quvi/util'
