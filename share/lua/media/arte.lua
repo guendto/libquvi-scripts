@@ -27,7 +27,6 @@ local Arte = {} -- Utility functions unique to to this script.
 function ident(qargs)
     local C      = require 'quvi/const'
     local r      = {}
-    r.domain     = "videos%.arte%.tv"
     r.formats    = "default|best"
     r.categories = C.proto_rtmp
     local U      = require 'quvi/util'
