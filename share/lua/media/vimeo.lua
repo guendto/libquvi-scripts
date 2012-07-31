@@ -36,10 +36,8 @@ function ident(qargs)
   return r
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id  = "vimeo"
-
+-- Parse media stream URL.
+function parse(qargs)
     local c = Vimeo.get_config(self)
 
     local s = c:match('"title":(.-),') or error("no match: media title")
