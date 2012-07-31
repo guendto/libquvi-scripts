@@ -38,27 +38,21 @@ end
 
 -- Parse media stream URL.
 function parse(qargs)
-    local c = Vimeo.get_config(self)
+  Vimeo.normalize(qargs)
 
-    local s = c:match('"title":(.-),') or error("no match: media title")
-    local U = require 'quvi/util'
-    self.title = U.slash_unescape(s):gsub('^"',''):gsub('"$','')
+  local p = quvi.fetch(qargs.input_url)
+  local U = require 'quvi/util'
 
-    self.duration = (tonumber(c:match('"duration":(%d+)')) or 0) * 1000
+  qargs.id = qargs.input_url:match('/(%d+)$') or error('no match: media ID')
+  qargs.duration_ms =(tonumber(p:match('"duration_ms":(%d+)')) or 0) * 1000
+  qargs.thumb_url = U.slash_unescape(p:match('"thumbnail":"(.-)"') or '')
 
-    local s = c:match('"thumbnail":"(.-)"') or ''
-    if #s >0 then
-      self.thumbnail_url = U.slash_unescape(s)
-    end
+  local s = p:match('"title":(.-),') or ''
+  qargs.title = U.slash_unescape(s):gsub('^"',''):gsub('"$','')
 
-    local formats = Vimeo.iter_formats(self, c)
-    local format  = U.choose_format(self, formats,
-                                     Vimeo.choose_best,
-                                     Vimeo.choose_default,
-                                     Vimeo.to_s)
-                        or error("unable to choose format")
-    self.url      = {format.url or error("no match: media stream URL")}
-    return self
+  qargs.streams = Vimeo.iter_streams(qargs, p)
+
+  return qargs
 end
 
 --
