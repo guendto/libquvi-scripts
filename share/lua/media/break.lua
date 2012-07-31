@@ -1,4 +1,3 @@
-
 -- libquvi-scripts
 -- Copyright (C) 2010-2012  Toni Gundogdu <legatvs@gmail.com>
 --
@@ -20,9 +19,10 @@
 -- 02110-1301  USA
 --
 
--- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
+local Break = {} -- Utility functions unique to this script
+
+-- Identify the media script.
+function ident(qargs)
     local C      = require 'quvi/const'
     local r      = {}
     r.domain     = "break%.com"
