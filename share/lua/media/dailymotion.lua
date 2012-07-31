@@ -65,16 +65,17 @@ function Dailymotion.normalize(input_url)
   return input_url
 end
 
-function Dailymotion.fetch_page(self, U)
-    self.page_url = Dailymotion.normalize(self.page_url)
+-- Fetches the page contents from the media URL.
+function Dailymotion.fetch_page(qargs, U)
+  qargs.input_url = Dailymotion.normalize(qargs.input_url)
 
-    local s = self.page_url:match('[%?%&]urlback=(.+)')
-    if s then
-        self.page_url = 'http://dailymotion.com' .. U.unescape(s)
-    end
+  local s = qargs.input_url:match('[%?%&]urlback=(.+)')
+  if s then
+    qargs.input_url = 'http://dailymotion.com' .. U.unescape(s)
+  end
 
-    local opts = {arbitrary_cookie = 'family_filter=off'}
-    return quvi.fetch(self.page_url, opts)
+  local o = {arbitrary_cookie = 'family_filter=off'}
+  return quvi.fetch(qargs.input_url, o)
 end
 
 function Dailymotion.iter_formats(page, U)
