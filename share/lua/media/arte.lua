@@ -35,23 +35,24 @@ function ident(qargs)
   return r
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id  = 'arte'
-    local config  = Arte.get_config(self)
-    local U       = require 'quvi/util'
-    local formats = Arte.iter_formats(config, U)
-    local format  = U.choose_format(self, formats,
-                                    Arte.choose_best,
-                                    Arte.choose_default,
-                                    Arte.to_s)
-                        or error("unable to choose format")
-    self.title         = format.title or error('no match: title')
-    self.id            = format.id or error('no match: id')
-    self.thumbnail_url = format.thumb or ''
-    self.url           = {format.url or error("no match: media url")}
+-- Parse media properties.
+function parse(qargs)
+  local L = require 'quvi/lxph'
+  local P = require 'lxp.lom'
 
-    return self
+  -- Config data ('c') contains config data for each available language.
+  -- Each language consists of >0 media streams, e.g. 'hd', 'sd'.
+
+  local c,lang_code = Arte.get_config(qargs, L, P)
+  qargs.streams,S = Arte.iter_streams(c, L, P, lang_code)
+
+  -- Many of the optional properties depend on the language setting.
+  -- e.g. title, even the media ID. Have these parsed _after_ the
+  -- streams have been parsed.
+
+  Arte.opt_properties(qargs, lang_code);
+
+  return qargs
 end
 
 --
