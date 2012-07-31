@@ -59,41 +59,41 @@ end
 -- Utility functions
 --
 
+function Vimeo.iter_streams(qargs, page)
+  local p = page:match('"profiles":{(.-)},') or error('no match: profiles')
+
+  local rs = page:match('"signature":"(.-)"')
+              or error('no match: request signature')
+
+  local rt = page:match('"timestamp":(%d+)')
+              or error('no match: request timestamp')
+
+  local f = "http://player.vimeo.com/play_redirect?clip_id=%s"
+              .. "&sig=%s&time=%s&quality=%s&type=moogaloop_local"
+
+  local S = require 'quvi/stream'
+  local r = {}
+
+  for e,a in p:gmatch('"(.-)":{(.-)}') do -- For each profile.
+    for q in a:gmatch('"(.-)":%d+') do    -- For each quality in the profile.
+      local u = string.format(f, qargs.id, rs, rt, q)
+      local t = S.stream_new(u)
+      t.video.encoding = string.lower(e or '')
+      t.fmt_id = Vimeo.to_fmt_id(t, q)
+      table.insert(r, t)
+    end
+  end
+
+  if #r >1 then
+    Vimeo.ch_best(S, r)
+  end
+
+  return r
+end
+
 function Vimeo.normalize(qargs)
   local u = qargs.input_url:gsub("player.", "") -- player.vimeo.com
   qargs.input_url = u:gsub("/video/", "/")
-end
-
-function Vimeo.get_config(self)
-    self.page_url = Vimeo.normalize(self.page_url)
-
-    self.id = self.page_url:match('vimeo.com/(%d+)')
-                or error("no match: media ID")
-
-    local c_url = "http://vimeo.com/" .. self.id
-    local c = quvi.fetch(c_url, {fetch_type='config'})
-
-    if c:match('<error>') then
-        local s = c:match('<message>(.-)[\n<]')
-        error( (not s) and "no match: error message" or s )
-    end
-
-    return c
-end
-
-function Vimeo.iter_formats(self, config)
-    local t = {}
-    local qualities = config:match('"qualities":%[(.-)%]')
-                        or error('no match: qualities')
-    for q in qualities:gmatch('"(.-)"') do
-        Vimeo.add_format(self, config, t, q)
-    end
-    return t
-end
-
-function Vimeo.add_format(self, config, t, quality)
-    table.insert(t, {quality=quality,
-                     url=Vimeo.to_url(self, config, quality)})
 end
 
 function Vimeo.choose_best(t) -- First 'hd', then 'sd' and 'mobile' last.
@@ -111,19 +111,6 @@ function Vimeo.choose_default(t)
       if Vimeo.to_s(v) == 'sd' then return v end -- Default to 'sd'.
   end
   return t[1] -- Or whatever is the first.
-end
-
-function Vimeo.to_url(self, config, quality)
-    local sign = config:match('"signature":"(.-)"')
-                  or error("no match: request signature")
-
-    local exp = config:match('"timestamp":(%d+)')
-                  or error("no match: request timestamp")
-
-    local s = "http://player.vimeo.com/play_redirect?clip_id=%s"
-              .. "&sig=%s&time=%s&quality=%s&type=moogaloop_local"
-
-    return string.format(s, self.id, sign, exp, quality)
 end
 
 function Vimeo.to_s(t)
