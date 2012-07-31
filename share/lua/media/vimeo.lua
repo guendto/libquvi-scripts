@@ -36,22 +36,6 @@ function ident(qargs)
   return r
 end
 
--- Query available formats.
-function query_formats(self)
-    local config  = Vimeo.get_config(self)
-    local formats = Vimeo.iter_formats(self, config)
-
-    local t = {}
-    for _,v in pairs(formats) do
-        table.insert(t, Vimeo.to_s(v))
-    end
-
-    table.sort(t)
-    self.formats = table.concat(t, "|")
-
-    return self
-end
-
 -- Parse media URL.
 function parse(self)
     self.host_id  = "vimeo"
