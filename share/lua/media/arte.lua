@@ -153,24 +153,14 @@ function Arte.has_expired(s, U)
   return (U.to_timestamp(s) - os.time()) <0
 end
 
-function Arte.choose_best(formats) -- Whatever matches 'hd' first
-    local r
-    for _,v in pairs(formats) do
-        if Arte.to_s(v):match('hd') then
-            return v
-        end
+function Arte.ch_best(S, t, lang_code)
+  local r = t[1] -- Make the first one the 'best' by default.
+  r.flags.best = true
+  for _,v in pairs(t) do  -- Whatever matches 'hd' first.
+    if v.fmt_id:match('hd') and v.nostd.lang_code == lang_code then
+      r = S.swap_best(r, v)
     end
-    return r
-end
-
-function Arte.choose_default(formats) -- Whatever matches 'sd' first
-    local r
-    for _,v in pairs(formats) do
-        if Arte.to_s(v):match('sd') then
-            return v
-        end
-    end
-    return r
+  end
 end
 
 function Arte.to_s(t)
