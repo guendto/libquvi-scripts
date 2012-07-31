@@ -32,10 +32,8 @@ function ident(qargs)
   return r
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "break"
-
+-- Parse media properties.
+function parse(qargs)
     local p = quvi.fetch(self.page_url)
 
     self.title = p:match('id="vid_title" content="(.-)"')
