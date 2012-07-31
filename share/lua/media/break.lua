@@ -25,7 +25,6 @@ local Break = {} -- Utility functions unique to this script
 function ident(qargs)
     local C      = require 'quvi/const'
     local r      = {}
-    r.domain     = "break%.com"
     r.formats    = "default"
     r.categories = C.proto_http
     local U      = require 'quvi/util'
