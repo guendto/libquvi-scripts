@@ -1,7 +1,5 @@
-
-SUBDIRS=	lua
-
-DIST_lua=
+SUBDIRS=lua
+DIST_lua=lua/README
 
 # Common scripts.
 DIST_lua+=\
@@ -23,76 +21,26 @@ DIST_lua+=\
   lua/util/convert_entities.lua\
   lua/util/to_file_ext.lua
 
+# Media property scripts.
 DIST_lua+=\
- lua/README \
- lua/website/README \
- lua/website/101greatgoals.lua \
- lua/website/1tvru.lua \
- lua/website/academicearth.lua \
- lua/website/arte.lua \
- lua/website/audioboo.lua \
- lua/website/bbc.lua \
- lua/website/bloomberg.lua \
- lua/website/break.lua \
- lua/website/canalplus.lua \
- lua/website/cbsnews.lua \
- lua/website/charlierose.lua \
- lua/website/clipfish.lua \
- lua/website/collegehumor.lua \
- lua/website/dailymotion.lua \
- lua/website/foxnews.lua \
- lua/website/funnyordie.lua \
- lua/website/gaskrank.lua \
- lua/website/golem.lua \
- lua/website/guardian.lua \
- lua/website/imdb.lua \
- lua/website/justintv.lua \
- lua/website/liveleak.lua \
- lua/website/mgnetwork.lua \
- lua/website/metacafe.lua \
- lua/website/publicsenat.lua \
- lua/website/sapo.lua \
- lua/website/senat.lua \
- lua/website/sevenload.lua \
- lua/website/soundcloud.lua \
- lua/website/spiegel.lua \
- lua/website/tagtele.lua \
- lua/website/ted.lua \
- lua/website/tvlux.lua \
- lua/website/tvrain.lua \
- lua/website/tmunderground.lua \
- lua/website/theonion.lua \
- lua/website/videa.lua \
- lua/website/videobash.lua \
- lua/website/vimeo.lua \
- lua/website/yfrog.lua \
- lua/website/youtube.lua
+  lua/media/arte.lua\
+  lua/media/break.lua\
+  lua/media/gaskrank.lua\
+  lua/media/dailymotion.lua\
+  lua/media/vimeo.lua\
+  lua/media/youtube.lua
 
+# Media property scripts that are NSFW.
 if WITH_NSFW
-DIST_lua+=\
- lua/website/empflix.lua \
- lua/website/pornhub.lua \
- lua/website/redtube.lua \
- lua/website/spankwire.lua \
- lua/website/tcmag.lua \
- lua/website/tnaflix.lua \
- lua/website/totallynsfw.lua \
- lua/website/xhamster.lua \
- lua/website/xvideos.lua \
- lua/website/youjizz.lua
+#DIST_lua+=
 endif
 
+# Media property scripts that are need fixing.
 if WITH_FIXME
-DIST_lua+=\
- lua/website/bikeradar.lua \
- lua/website/blip.lua \
- lua/website/francetelevisions.lua \
- lua/website/globo.lua \
- lua/website/pluzz.lua
+#DIST_lua+=
+# Media property scripts that need fixing and are NSFW.
 if WITH_NSFW
-DIST_lua+=\
- lua/website/tube8.lua \
- lua/website/keezmovies.lua
+#DIST_lua+=
 endif
 endif # WITH_FIXME
 
