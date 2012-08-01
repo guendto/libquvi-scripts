@@ -1,6 +1,5 @@
-
 -- libquvi-scripts
--- Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2010-2012  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -20,14 +19,20 @@
 -- 02110-1301  USA
 --
 
--- academicearth.org hosts videos at either blip.tv or youtube.com
--- This webscript uses the "redirect_url" to point to the source.
+--
+-- NOTE
+--
+-- academicearth.org hosts media at blip.tv or youtube.com .
+-- Set "goto_url" to point to the actual location of the media.
+--
+-- The library will then relay the new URL to a media script that
+-- accepts it.
+--
 
 local AcademicEarth = {} -- Utility functions specific to this script
 
--- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
+-- Identify the media script.
+function ident(qargs)
     local C      = require 'quvi/const'
     local r      = {}
     r.domain     = "academicearth%.org"
