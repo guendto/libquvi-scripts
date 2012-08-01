@@ -43,11 +43,6 @@ function ident(qargs)
   return r
 end
 
--- Query available formats.
-function query_formats(self)
-    return AcademicEarth.get_redirect_url(self)
-end
-
 -- Parse media URL.
 function parse(self)
     return AcademicEarth.get_redirect_url(self)
