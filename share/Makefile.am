@@ -28,7 +28,8 @@ DIST_lua+=\
   lua/media/arte.lua\
   lua/media/break.lua\
   lua/media/gaskrank.lua\
-  lua/media/dailymotion.lua
+  lua/media/dailymotion.lua\
+  lua/media/vimeo.lua
 
 DIST_lua+=\
  lua/README \
@@ -67,7 +68,6 @@ DIST_lua+=\
  lua/website/theonion.lua \
  lua/website/videa.lua \
  lua/website/videobash.lua \
- lua/website/vimeo.lua \
  lua/website/yfrog.lua \
  lua/website/youtube.lua
 
