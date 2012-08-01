@@ -81,7 +81,7 @@ end
 -- Iterates the available streams.
 function Dailymotion.iter_streams(page, U)
 
-  local seq = page:match('"sequence",%s+"(.-)"')
+  local seq = page:match('"sequence":"(.-)"')
                 or error('no match: sequence')
   seq = U.unescape(seq)
 
