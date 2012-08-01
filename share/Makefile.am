@@ -23,13 +23,16 @@ DIST_lua+=\
   lua/util/convert_entities.lua\
   lua/util/to_file_ext.lua
 
+# Media property scripts.
+DIST_lua+=\
+  lua/media/arte.lua
+
 DIST_lua+=\
  lua/README \
  lua/website/README \
  lua/website/101greatgoals.lua \
  lua/website/1tvru.lua \
  lua/website/academicearth.lua \
- lua/website/arte.lua \
  lua/website/audioboo.lua \
  lua/website/bbc.lua \
  lua/website/bloomberg.lua \
