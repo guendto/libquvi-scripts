@@ -29,7 +29,8 @@ DIST_lua+=\
   lua/media/break.lua\
   lua/media/gaskrank.lua\
   lua/media/dailymotion.lua\
-  lua/media/vimeo.lua
+  lua/media/vimeo.lua\
+  lua/media/youtube.lua
 
 DIST_lua+=\
  lua/README \
@@ -68,8 +69,7 @@ DIST_lua+=\
  lua/website/theonion.lua \
  lua/website/videa.lua \
  lua/website/videobash.lua \
- lua/website/yfrog.lua \
- lua/website/youtube.lua
+ lua/website/yfrog.lua
 
 if WITH_NSFW
 DIST_lua+=\
