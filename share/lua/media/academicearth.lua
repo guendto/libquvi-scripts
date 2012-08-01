@@ -35,7 +35,6 @@ local AcademicEarth = {} -- Utility functions specific to this script
 function ident(qargs)
     local C      = require 'quvi/const'
     local r      = {}
-    r.formats    = "default"
     r.categories = C.proto_http
     local U      = require 'quvi/util'
     r.handles    = U.handles(self.page_url, {r.domain}, {"/lectures/"})
