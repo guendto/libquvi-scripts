@@ -52,20 +52,16 @@ end
 -- Utility functions
 --
 
-function AcademicEarth.get_redirect_url(self)
-    local p = quvi.fetch(self.page_url)
-    local s = p:match('ytID = "(.-)"')
-    if s then
-        self.redirect_url = 'http://youtube.com/e/' .. s
-    else
-        local s = p:match('embed src="(.-)"') -- blip
-        if s then
-            self.redirect_url = s
-        else
-            error('no match: blip or youtube pattern')
-        end
-    end
-    return self
+function AcademicEarth.to_media_url(qargs)
+  local p = quvi.fetch(qargs.input_url)
+  local s = p:match('id="idPlayer".-src="(.-youtube%.com/.-)"')
+  if s then -- hosted at youtube?
+    qargs.goto_url = s
+  else -- hosted at blip?
+    qargs.goto_url = p:match('embed src="(.-)"')
+                      or error('no match: unrecognized media source')
+  end
+  return qargs
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
