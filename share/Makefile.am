@@ -44,5 +44,9 @@ if WITH_NSFW
 endif
 endif # WITH_FIXME
 
+# Playlist property scripts.
+DIST_lua+=\
+  lua/playlist/soundcloud.lua
+
 nobase_dist_pkgdata_DATA=	$(DIST_lua)
 EXTRA_DIST=	$(DIST_lua)
