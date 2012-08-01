@@ -64,4 +64,4 @@ function AcademicEarth.to_media_url(qargs)
   return qargs
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+-- vim: set ts=2 sw=2 tw=72 expandtab:
