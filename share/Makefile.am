@@ -25,7 +25,8 @@ DIST_lua+=\
 
 # Media property scripts.
 DIST_lua+=\
-  lua/media/arte.lua
+  lua/media/arte.lua\
+  lua/media/break.lua
 
 DIST_lua+=\
  lua/README \
@@ -36,7 +37,6 @@ DIST_lua+=\
  lua/website/audioboo.lua \
  lua/website/bbc.lua \
  lua/website/bloomberg.lua \
- lua/website/break.lua \
  lua/website/canalplus.lua \
  lua/website/cbsnews.lua \
  lua/website/charlierose.lua \
