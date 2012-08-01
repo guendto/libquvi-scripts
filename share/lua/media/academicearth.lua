@@ -43,9 +43,9 @@ function ident(qargs)
   return r
 end
 
--- Parse media URL.
-function parse(self)
-    return AcademicEarth.get_redirect_url(self)
+-- Parse media properties.
+function parse(qargs)
+  return AcademicEarth.to_media_url(qargs)
 end
 
 --
