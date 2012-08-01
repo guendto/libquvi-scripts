@@ -27,7 +27,8 @@ DIST_lua+=\
 DIST_lua+=\
   lua/media/arte.lua\
   lua/media/break.lua\
-  lua/media/gaskrank.lua
+  lua/media/gaskrank.lua\
+  lua/media/dailymotion.lua
 
 DIST_lua+=\
  lua/README \
@@ -43,7 +44,6 @@ DIST_lua+=\
  lua/website/charlierose.lua \
  lua/website/clipfish.lua \
  lua/website/collegehumor.lua \
- lua/website/dailymotion.lua \
  lua/website/foxnews.lua \
  lua/website/funnyordie.lua \
  lua/website/golem.lua \
