@@ -23,6 +23,7 @@ DIST_lua+=\
 
 # Media property scripts.
 DIST_lua+=\
+  lua/media/academicearth.lua\
   lua/media/arte.lua\
   lua/media/break.lua\
   lua/media/gaskrank.lua\
