@@ -49,5 +49,9 @@ DIST_lua+=\
   lua/playlist/soundcloud.lua\
   lua/playlist/youtube.lua
 
+# Scan embedded media URL scripts.
+DIST_lua+=\
+  lua/scan/youtube.lua
+
 nobase_dist_pkgdata_DATA=	$(DIST_lua)
 EXTRA_DIST=	$(DIST_lua)
