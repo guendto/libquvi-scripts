@@ -39,9 +39,20 @@ function parse(qargs)
 
   local p = quvi.fetch(qargs.input_url, {type='playlist'})
 
-  qargs.media_url = {}
-  for u in p:gmatch('class="info">.-href="(.-)"') do
-    table.insert(qargs.media_url, "http://soundcloud" ..u)
+  local m = 'class="info">.-href="(.-)"'
+         .. '.-class="set%-track%-title">(.-)<'
+         .. '.-class="time">(.-)<'
+
+  qargs.media = {}
+
+  for u,t,d in p:gmatch(m) do
+    local m,s = d:match('(%d+)%.(%d+)')
+    local r = {
+      duration_ms = ((tonumber(m or '0')*60) + tonumber(s or '0')) *1000,
+      url = "http://soundcloud" ..u,
+      title = t
+    }
+    table.insert(qargs.media, r)
   end
 
   return qargs
