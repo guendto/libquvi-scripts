@@ -41,8 +41,10 @@ function parse(qargs)
 
   qargs.media = {}
 
-  for u in p:gmatch('class="info">.-href="(.-)"') do
+  for u,d in p:gmatch('class="info">.-href="(.-)".-class="time">(.-)<') do
+    local m,s = d:match('(%d+)%.(%d+)')
     local t = {
+      duration_ms = ((tonumber(m or '0')*60) + tonumber(s or '0')) *1000,
       url = "http://soundcloud" ..u
     }
     table.insert(qargs.media, t)
