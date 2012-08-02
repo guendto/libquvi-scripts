@@ -83,6 +83,8 @@ function YouTube.config_url(qargs, start_index, max_results)
 end
 
 function YouTube.parse_media_urls(t)
+  -- TODO: Return duration_ms
+  -- TODO: Return title
   local r = {}
   if not t then return r end
   for i=1, #t do
