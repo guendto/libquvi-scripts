@@ -47,21 +47,26 @@ function parse(qargs)
   local max_results = 25
   local start_index = 1
 
-  qargs.media_url = {}
-  local t = {}
+  qargs.media = {}
+  local r = {}
 
   repeat -- Get the entire playlist.
     local u = YouTube.config_url(qargs, start_index, max_results)
     local c = quvi.fetch(u, {type='playlist'})
-    local r = P.parse(c)
+    local x = P.parse(c)
 
-    YouTube.chk_error_resp(r)
-    t = YouTube.parse_media_urls(r)
+    YouTube.chk_error_resp(x)
+    r = YouTube.parse_media_urls(x)
 
-    for _,u in pairs(t) do Y.append_if_unique(qargs, u) end
+    for _,u in pairs(r) do
+      local t = {
+        url = u
+      }
+      table.insert(qargs.media, t)
+    end
 
-    start_index = start_index + #t
-  until #t == 0
+    start_index = start_index + #r
+  until #r == 0
 
   return qargs
 end
