@@ -39,9 +39,13 @@ function parse(qargs)
 
   local p = quvi.fetch(qargs.input_url, {type='playlist'})
 
-  qargs.media_url = {}
+  qargs.media = {}
+
   for u in p:gmatch('class="info">.-href="(.-)"') do
-    table.insert(qargs.media_url, "http://soundcloud" ..u)
+    local t = {
+      url = "http://soundcloud" ..u
+    }
+    table.insert(qargs.media, t)
   end
 
   return qargs
