@@ -1,5 +1,5 @@
 -- libquvi-scripts
--- Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2010-2012  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -27,6 +27,57 @@ M.proto_mms   = 0x2
 M.proto_rtsp  = 0x4
 M.proto_rtmp  = 0x8
 M.proto_rtmpe = 0x10
+
+-- (q)uvi.(f)etch (o)ption
+M.qfo_from_charset = 0x0 -- Convert (to UTF-8) from this charset
+M.qfo_user_agent   = 0x1 -- Set user-agent string value
+M.qfo_cookie       = 0x2 -- Set an arbitrary cookie
+M.qfo_type         = 0x3 -- Fetch type (see qft_*)
+
+-- (q)uvi.(f)etch (t)ype
+M.qft_playlist = 0x0
+M.qft_config   = 0x1
+M.qft_url      = 0x2 -- default
+
+--[[
+NOTES
+=====
+
+qfo_from_charset
+----------------
+Instructs the library to convert from this charset to UTF-8. Using this
+option may be required with the websites that use a specific (non-UTF8)
+encoding.
+
+The purpose of this option is to make sure that the data is encoded to
+unicode (UTF-8) before any of it is parsed and returned to the
+application using libquvi.
+
+By default, libquvi converts the data which is in the encoding used for
+the strings by the C runtime in the current locale into UTF-8.  IF this
+fails, and the 'from charset' option is set, the library will then try
+to convert to UTF-8 using the 'from charset' value.
+
+qfo_cookie
+----------
+When set, the arbitrary cookie will be used with the quvi.fetch .
+The cookies are handled by libcurl, look up the CURLOPT_COOKIE
+description for details. If you must define >1 cookies, use the
+following format: "foo=1; bar=2;" .
+
+EXAMPLES
+========
+local C = require 'quvi/const'
+
+local p = quvi.fetch(URL, {[C.qfo_cookie] = 'foo=1'})
+local p = quvi.fetch(URL, {[C.qfo_type] = C.qft_config})
+
+local t = {
+  [C.qfo_cookie] = 'foo=1; bar=2;',
+  [C.qfo_type] = C.qft_config
+}
+local p = quvi.fetch(URL, t)
+]]--
 
 return M
 
