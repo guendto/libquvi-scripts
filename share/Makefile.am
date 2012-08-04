@@ -32,6 +32,7 @@ DIST_lua=\
  lua/website/guardian.lua \
  lua/website/imdb.lua \
  lua/website/justintv.lua \
+ lua/website/lego.lua \
  lua/website/liveleak.lua \
  lua/website/mgnetwork.lua \
  lua/website/metacafe.lua \
