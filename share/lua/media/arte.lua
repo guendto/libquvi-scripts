@@ -72,14 +72,17 @@ function Arte.get_config(qargs, L, P)
 
   local l = u:match('%.tv/(%w+)/') or error('no match: lang code')
 
-  local c = quvi.fetch(u, {type='config'})
+  local C = require 'quvi/const'
+  local o = { [C.qfo_type] = C.qft_config }
+  local c = quvi.fetch(u, o)
+
   local x = lxp.lom.parse(c)
   local v = L.find_first_tag(x, 'videos')
   local r = {}
 
   for i=1, #v do -- For each language in the config.
     if v[i].tag == 'video' then
-      local d = quvi.fetch(v[i].attr['ref'], {type='config'})
+      local d = quvi.fetch(v[i].attr['ref'], o)
       local t = {
         lang_code = v[i].attr['lang'],
         lang_data = d
