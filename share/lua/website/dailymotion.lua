@@ -107,7 +107,8 @@ function Dailymotion.normalize(page_url) -- "Normalize" embedded URLs
 end
 
 function Dailymotion.iter_formats(page, U)
-    local seq = page:match('"sequence",%s+"(.-)"')
+    local seq = page:match('"sequence":"(.-)"')
+                  or error('no match: sequence')
     if not seq then
         local e = "no match: sequence"
         if page:match("_partnerplayer") then
