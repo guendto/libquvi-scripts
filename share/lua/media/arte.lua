@@ -30,7 +30,7 @@ function ident(qargs)
   local r = {
     accepts = A.accepts(qargs.input_url,
                           {"videos%.arte%.tv"}, {"/%w+/videos/"}),
-    categories = C.proto_rtmp
+    categories = C.qmspc_rtmp
   }
   return r
 end

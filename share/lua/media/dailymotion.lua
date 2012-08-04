@@ -32,7 +32,7 @@ function ident(qargs)
   local p = {"/video/", "/%w+$", "/family_filter"} -- paths
   local r = {
     accepts = A.accepts(qargs.input_url, d, p),
-    categories = C.proto_http
+    categories = C.qmspc_http
   }
   return r
 end

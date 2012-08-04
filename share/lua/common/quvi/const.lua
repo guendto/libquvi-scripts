@@ -21,12 +21,12 @@
 
 local M = {}
 
--- Protocol categories.
-M.proto_http  = 0x1
-M.proto_mms   = 0x2
-M.proto_rtsp  = 0x4
-M.proto_rtmp  = 0x8
-M.proto_rtmpe = 0x10
+-- (q)uvi (m)edia (s)cript (p)rotocol (c)ategory
+M.qmspc_rtmpe = 0x1
+M.qmspc_rtmp  = 0x2
+M.qmspc_rtsp  = 0x4
+M.qmspc_http  = 0x8
+M.qmspc_mms   = 0x10
 
 -- (q)uvi.(f)etch (o)ption
 M.qfo_from_charset = 0x0 -- Convert (to UTF-8) from this charset

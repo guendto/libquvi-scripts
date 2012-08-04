@@ -38,7 +38,7 @@ function ident(qargs)
   local r = {
     accepts = A.accepts(qargs.input_url,
                           {"academicearth%.org"}, {"/lectures/"}),
-    categories = C.proto_http
+    categories = C.qmspc_http
   }
   return r
 end
