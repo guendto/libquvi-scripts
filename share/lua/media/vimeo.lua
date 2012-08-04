@@ -31,7 +31,7 @@ function ident(qargs)
   local C = require 'quvi/const'
   local r = {
     accepts = A.accepts(qargs.input_url, {"vimeo%.com"}, {"/%d+$"}),
-    categories = C.proto_http
+    categories = C.qmspc_http
   }
   return r
 end
