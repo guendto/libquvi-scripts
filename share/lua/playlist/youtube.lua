@@ -48,11 +48,15 @@ function parse(qargs)
   local start_index = 1
 
   qargs.media = {}
+
+  local C = require 'quvi/const'
+  local o = { [C.qfo_type] = C.qft_playlist }
+
   local r = {}
 
   repeat -- Get the entire playlist.
     local u = YouTube.config_url(qargs, start_index, max_results)
-    local c = quvi.fetch(u, {type='playlist'})
+    local c = quvi.fetch(u, o)
     local x = P.parse(c)
 
     YouTube.chk_error_resp(x)

@@ -37,7 +37,9 @@ function parse(qargs)
     qargs.id = qargs.id .."_".. s
   end
 
-  local p = quvi.fetch(qargs.input_url, {type='playlist'})
+  local C = require 'quvi/const'
+  local o = { [C.qfo_type] = C.qft_playlist }
+  local p = quvi.fetch(qargs.input_url, o)
 
   local m = 'class="info">.-href="(.-)"'
          .. '.-class="set%-track%-title">(.-)<'
