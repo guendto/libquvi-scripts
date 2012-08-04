@@ -72,11 +72,13 @@ function YouTube.get_data(qargs, Y)
 
   local s_fmt = '%s://www.youtube.com/get_video_info?&video_id=%s'
                   .. '&el=detailpage&ps=default&eurl=&gl=US&hl=en'
+  local u = string.format(s_fmt, s, qargs.id)
 
-  local c_url = string.format(s_fmt, s, qargs.id)
-
+  local C = require 'quvi/const'
   local U = require 'quvi/util'
-  local c = U.decode(quvi.fetch(c_url, {type = 'config'}))
+
+  local o = { [C.qfo_type] = C.qft_config }
+  local c = U.decode(quvi.fetch(u, o))
 
   if c['reason'] then
     local reason = U.unescape(c['reason'])
