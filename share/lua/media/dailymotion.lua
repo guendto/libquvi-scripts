@@ -74,7 +74,8 @@ function Dailymotion.fetch_page(qargs, U)
     qargs.input_url = 'http://dailymotion.com' .. U.unescape(s)
   end
 
-  local o = {arbitrary_cookie = 'family_filter=off'}
+  local C = require 'quvi/const'
+  local o = { [C.qfo_cookie] = 'family_filter=off' }
   return quvi.fetch(qargs.input_url, o)
 end
 
