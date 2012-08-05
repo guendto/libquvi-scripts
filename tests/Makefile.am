@@ -1,14 +1,35 @@
+SUBDIRS=lib
+noinst_PROGRAMS=$(TEST_PROGS)
 
-if WITH_FIXME
-endif
+TEST_PROGS=
+TEST_OPTS=-k -m=thorough --verbose #--g-fatal-warnings
 
-if WITH_FIXME
-endif
+testsuite_cppflags=\
+  -I$(top_srcdir)/tests/lib\
+  $(libquvi_CFLAGS) $(libcurl_CFLAGS) $(glib_CFLAGS)\
+  $(AM_CPPFLAGS)
 
-if WITH_NLFY
-endif
+testsuite_ldflags=\
+  $(AM_LDFLAGS)
 
-if WITH_NSFW
-endif
+testsuite_ldadd=\
+  $(top_builddir)/tests/lib/libconvenience_test.la\
+  $(libquvi_LIBS) $(libcurl_LIBS) $(glib_LIBS)
+
+include $(top_srcdir)/tests/media/tests.mk
+
+test: all
+	@ok=1; for t in $(TEST_PROGS); do \
+		LIBQUVI_SCRIPTS_DIR=$(top_srcdir)/share/ \
+			gtester $(TEST_OPTS) $(top_builddir)/tests/$$t -o $$t.xml \
+		|| { \
+			echo NOTE: Check $(abs_builddir)/$$t.xml for details; \
+			ok=; gtester-report $$t.xml >$$t.html; \
+		} \
+	done; \
+	if test -z "$$ok"; then exit 1; fi
+
+clean-local:
+	@for t in $(TEST_PROGS); do rm -f $$t.xml $$t.html; done
 
 EXTRA_DIST=README
