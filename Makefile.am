@@ -16,8 +16,8 @@ SUBDIRS+=	tests
 
 check: test
 
-test:
-	@(cd tests; $(MAKE) all test)
+test: all
+	@(cd tests ; $(MAKE) test)
 endif # WITH_TESTS
 
 stamp_scripts:
