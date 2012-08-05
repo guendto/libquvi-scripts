@@ -11,7 +11,12 @@ usr/
 *~
 Makefile.in
 aclocal.m4
+config.aux/compile
+config.aux/config.guess
+config.aux/config.sub
+config.aux/depcomp
 config.aux/install-sh
+config.aux/ltmain.sh
 config.aux/missing
 configure
 doc/Makefile.in
@@ -20,6 +25,13 @@ doc/man7/libquvi-scripts.7
 share/Makefile.in
 share/lua/Makefile.in
 tests/Makefile.in
+tests/lib/Makefile.in
 ChangeLog
 VERSION
 INSTALL
+config.h.in
+m4/ltoptions.m4
+m4/lt~obsolete.m4
+m4/ltsugar.m4
+m4/ltversion.m4
+m4/libtool.m4
