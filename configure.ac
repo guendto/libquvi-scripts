@@ -8,12 +8,17 @@ m4_include([m4/version.m4])
 AC_INIT([libquvi-scripts], [libquvi_scripts_rel],
         [http://quvi.sf.net/bugs/], [], [http://quvi.sf.net/])
 
+AC_CONFIG_SRCDIR([tests/lib/env.c])
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([config.aux])
 AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar])
 AM_SILENT_RULES([yes])
 #AM_PROG_AR
+
+LT_INIT([disable-static])
+LT_PREREQ([2.2.6])
 
 # Checks for programs.
 AC_PROG_CC
@@ -71,6 +76,7 @@ AC_CONFIG_FILES([
   share/Makefile
   share/lua/Makefile
   tests/Makefile
+  tests/lib/Makefile
   libquvi-scripts-1.0.pc])
 AC_OUTPUT
 
