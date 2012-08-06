@@ -36,6 +36,7 @@ end
 function parse(qargs)
   local p = quvi.fetch(qargs.input_url)
 
+  qargs.thumb_url = p:match('"og:image" content="(.-)"') or ''
   qargs.title = p:match('id="vid_title" content="(.-)"') or ''
   qargs.id = p:match("ContentID='(.-)'") or ''
 
