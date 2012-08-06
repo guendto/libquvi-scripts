@@ -25,7 +25,8 @@
 
 #include "tests.h"
 
-/* Test media properties. */
+/* Test media properties. The 'e' parameter may be a NULL in which case
+ * the test for exact values (title and ID) will be skipped. */
 void qm_test(const gchar *func, const gchar *url,
              const qm_test_exact_t e, const qm_test_opts_t o)
 {
@@ -54,11 +55,14 @@ void qm_test(const gchar *func, const gchar *url,
 
       /* Exact values. */
 
-      g_assert(e->title != NULL);
-      qm_cmp_s(QUVI_MEDIA_PROPERTY_TITLE, e->title);
+      if (e != NULL)
+        {
+          if (e->title != NULL)
+            qm_cmp_s(QUVI_MEDIA_PROPERTY_TITLE, e->title);
 
-      g_assert(e->id != NULL);
-      qm_cmp_s(QUVI_MEDIA_PROPERTY_ID, e->id);
+          if (e->id != NULL)
+            qm_cmp_s(QUVI_MEDIA_PROPERTY_ID, e->id);
+        }
 
       /* Thumbnail, expected, but check length only. */
 
