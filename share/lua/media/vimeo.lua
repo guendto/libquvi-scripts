@@ -44,7 +44,7 @@ function parse(qargs)
   local U = require 'quvi/util'
 
   qargs.id = qargs.input_url:match('/(%d+)$') or error('no match: media ID')
-  qargs.duration_ms =(tonumber(p:match('"duration_ms":(%d+)')) or 0) * 1000
+  qargs.duration_ms =(tonumber(p:match('"duration":(%d+)')) or 0) * 1000
   qargs.thumb_url = U.slash_unescape(p:match('"thumbnail":"(.-)"') or '')
 
   local s = p:match('"title":(.-),') or ''
