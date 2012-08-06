@@ -57,16 +57,16 @@ end
 -- Utility functions
 --
 
-function Soundcloud.normalize(self) -- "Normalize" an embedded URL
-    local url = self.page_url:match('swf%?url=(.-)$')
-    if not url then return end
+function Soundcloud.normalize(qargs) -- "Normalize" an embedded URL
+  local url = qargs.input_url:match('swf%?url=(.-)$')
+  if not url then return end
 
-    local U = require 'quvi/util'
-    local oe_url = string.format(
-        'http://soundcloud.com/oembed?url=%s&format=json', U.unescape(url))
+  local U = require 'quvi/util'
+  local u = string.format('http://soundcloud.com/oembed?url=%s&format=json',
+                            U.unescape(url))
 
-    local s = quvi.fetch(oe_url):match('href=\\"(.-)\\"')
-    self.page_url = s or error('no match: page url')
+  qargs.input_url = quvi.fetch(u):match('href=\\"(.-)\\"')
+                      or error('no match: media URL')
 end
 
 function Soundcloud.iter_streams(p)
