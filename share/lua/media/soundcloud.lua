@@ -1,5 +1,5 @@
-
 -- libquvi-scripts
+-- Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
 -- Copyright (C) 2011  Bastien Nocera <hadess@hadess.net>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
@@ -21,9 +21,8 @@
 
 local Soundcloud = {} -- Utility functions unique to this script
 
--- Identify the script.
+-- Identify the media script.
 function ident(self)
-    package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local r      = {}
     r.domain     = "soundcloud%.com"
