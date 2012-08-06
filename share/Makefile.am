@@ -26,8 +26,9 @@ DIST_lua+=\
   lua/media/academicearth.lua\
   lua/media/arte.lua\
   lua/media/break.lua\
-  lua/media/gaskrank.lua\
   lua/media/dailymotion.lua\
+  lua/media/gaskrank.lua\
+  lua/media/soundcloud.lua\
   lua/media/vimeo.lua\
   lua/media/youtube.lua
 
