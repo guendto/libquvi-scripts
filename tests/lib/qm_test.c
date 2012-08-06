@@ -42,6 +42,7 @@ void qm_test(const gchar *func, const gchar *url,
   chk_verbose(q);
 
   qm = quvi_media_new(q, url);
+  g_test_message("errmsg=%s", quvi_errmsg(q));
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
   g_assert(qm != NULL);
 
