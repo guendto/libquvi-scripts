@@ -35,31 +35,22 @@ end
 
 -- Parse media properties.
 function parse(qargs)
-    Soundcloud.normalize(self)
+  Soundcloud.normalize(qargs)
 
-    local p = quvi.fetch(self.page_url)
-    local m = p:match("window%.SC%.bufferTracks%.push(%(.-%);)")
-                or error("no match: metadata")
+  local p = quvi.fetch(qargs.input_url)
 
-    self.id = m:match('"uid":"(%w-)"') or error("no match: media id")
+  qargs.thumb_url = p:match('.+content="(.-)"%s+property="og:image"') or ''
+  qargs.title = p:match('.+content="(.-)"%s+property="og:title"') or ''
 
-    self.thumbnail_url = ''
-    self.title = nil -- Ugly but works.
-    for c,p in p:gmatch('<meta content="(.-)" property="(.-)"') do
-        if p == 'og:title' then
-            self.title = c
-        elseif p == 'og:image' then
-            self.thumbnail_url = c
-        end
-    end
+  local m = p:match("window%.SC%.bufferTracks%.push(%(.-%);)")
+              or error("no match: metadata")
 
-    self.title = self.title or error("no match: media title")
-    self.duration = tonumber(m:match('"duration":(%d-),')) or 0
+  qargs.duration_ms = tonumber(m:match('"duration":(%d-),')) or 0
+  qargs.id = m:match('"uid":"(%w-)"') or ''
 
-    local s  = m:match('"streamUrl":"(.-)"') or error("no match: media URL")
-    self.url = {s}
+  qargs.streams = Soundcloud.iter_streams(m);
 
-    return self
+  return qargs
 end
 
 --
@@ -78,4 +69,11 @@ function Soundcloud.normalize(self) -- "Normalize" an embedded URL
     self.page_url = s or error('no match: page url')
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function Soundcloud.iter_streams(p)
+  local u = p:match('"streamUrl":"(.-)"')
+              or error("no match: media stream URL")
+  local S = require 'quvi/stream'
+  return {S.stream_new(u)}
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
