@@ -26,7 +26,7 @@
 
 #include "tests.h"
 
-static gboolean chk(const gchar *w, const gchar *m)
+gboolean chk_env(const gchar *w, const gchar *m)
 {
   const gchar *s = g_getenv(w);
   if (s == NULL || strlen(s) == 0)
@@ -40,18 +40,18 @@ static gboolean chk(const gchar *w, const gchar *m)
 
 gboolean chk_nsfw()
 {
-  return (chk("TEST_NSFW", "SKIP: Set TEST_NSFW to enable"));
+  return (chk_env("TEST_NSFW", "SKIP: Set TEST_NSFW to enable"));
 }
 
 gboolean chk_fixme()
 {
-  return (chk("TEST_FIXME", "SKIP: Set TEST_FIXME to enable"));
+  return (chk_env("TEST_FIXME", "SKIP: Set TEST_FIXME to enable"));
 }
 
 void chk_verbose(quvi_t q)
 {
   g_assert(q != NULL);
-  if (chk("TEST_VERBOSE", NULL) == TRUE)
+  if (chk_env("TEST_VERBOSE", NULL) == TRUE)
     {
       CURL *c = NULL;
       quvi_get(q, QUVI_INFO_CURL_HANDLE, &c);

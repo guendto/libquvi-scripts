@@ -58,6 +58,7 @@ glong qerr(quvi_t);
 
 /* env.c */
 
+gboolean chk_env(const gchar*, const gchar*);
 gboolean chk_skip(const gchar*);
 void chk_verbose(quvi_t);
 gboolean chk_complete();
