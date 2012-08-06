@@ -33,9 +33,8 @@ function ident(qargs)
   return r
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "soundcloud"
+-- Parse media properties.
+function parse(qargs)
     Soundcloud.normalize(self)
 
     local p = quvi.fetch(self.page_url)
