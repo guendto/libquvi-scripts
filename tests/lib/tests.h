@@ -115,6 +115,12 @@ typedef struct qm_test_opts_s *qm_test_opts_t;
 void qm_test(const gchar*, const gchar*,
              const qm_test_exact_t, const qm_test_opts_t);
 
+/* Other. */
+
+gboolean match(const gchar*, const gchar*);
+gchar *capture(const gchar*, const gchar*);
+gchar *fetch(const gchar*);
+
 #endif /* tests_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
