@@ -33,12 +33,6 @@ function ident(qargs)
   return r
 end
 
--- Query available formats.
-function query_formats(self)
-    self.formats = 'default'
-    return self
-end
-
 -- Parse media URL.
 function parse(self)
     self.host_id = "soundcloud"
