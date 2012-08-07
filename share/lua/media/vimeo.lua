@@ -79,7 +79,7 @@ function Vimeo.iter_streams(qargs, page)
       local u = string.format(f, qargs.id, rs, rt, q)
       local t = S.stream_new(u)
       t.video.encoding = string.lower(e or '')
-      t.fmt_id = Vimeo.to_fmt_id(t, q)
+      t.id = Vimeo.to_id(t, q)
       table.insert(r, t)
     end
   end
@@ -100,7 +100,8 @@ function Vimeo.ch_best(t)
   t[1].flags.best = true -- Should be the 'hd'.
 end
 
-function Vimeo.to_fmt_id(t, quality)
+-- Return an ID for a stream.
+function Vimeo.to_id(t, quality)
   return string.format("%s_%s", quality, t.video.encoding)
 end
 
