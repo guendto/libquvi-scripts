@@ -139,7 +139,7 @@ function Arte.iter_streams(config, L, P, lang_code)
           lang_code = c.attr['lang'],
           id = c.attr['id'] or ''
         }
-        t.fmt_id = Arte.to_fmt_id(t)
+        t.id = Arte.to_id(t)
         table.insert(r, t)
       end
     end
@@ -160,14 +160,15 @@ function Arte.ch_best(S, t, lang_code)
   local r = t[1] -- Make the first one the 'best' by default.
   r.flags.best = true
   for _,v in pairs(t) do  -- Whatever matches 'hd' first.
-    if v.fmt_id:match('hd') and v.nostd.lang_code == lang_code then
+    if v.id:match('hd') and v.nostd.lang_code == lang_code then
       r = S.swap_best(r, v)
     end
   end
 end
 
-function Arte.to_fmt_id(t)
+-- Return an ID for a stream.
+function Arte.to_id(t)
   return string.format("%s_%s", t.nostd.quality, t.nostd.lang_code)
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+-- vim: set ts=2 sw=2 tw=72 expandtab:
