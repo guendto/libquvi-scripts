@@ -1,4 +1,4 @@
-src=env.c fetch.c re.c qerr.c qm_test.c
+src=env.c fetch.c re.c qerr.c qm_test.c qp_test.c
 hdr=tests.h
 
 noinst_LTLIBRARIES=libconvenience_test.la

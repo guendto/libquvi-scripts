@@ -20,38 +20,6 @@
 #ifndef tests_h
 #define tests_h
 
-/* Compare media property string values. */
-#define qm_cmp_s(qmp, e)\
-  do {\
-    gchar *s = NULL;\
-    quvi_media_get(qm, qmp, &s);\
-    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
-    g_assert(s != NULL);\
-    g_test_message("%s=%s", #qmp, s);\
-    g_assert_cmpstr(s, ==, e);\
-  } while (0)
-
-/* Media property string value length >0 */
-#define qm_chk_l(qmp)\
-  do {\
-    gchar *s = NULL;\
-    quvi_media_get(qm, qmp, &s);\
-    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
-    g_assert(s != NULL);\
-    g_test_message("%s=%s", #qmp, s);\
-    g_assert_cmpint(strlen(s), >, 0);\
-  } while (0)
-
-/* Media property value (double) >0 */
-#define qm_chk_gt0(qmp)\
-  do {\
-    gdouble v = 0;\
-    quvi_media_get(qm, qmp, &v);\
-    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
-    g_test_message("%s=%g", #qmp, v);\
-    g_assert_cmpfloat(v, >, 0);\
-  } while (0)
-
 /* qerr.c */
 
 glong qerr(quvi_t);
@@ -65,7 +33,7 @@ gboolean chk_complete();
 gboolean chk_fixme();
 gboolean chk_nsfw();
 
-/* Media */
+/* Media. */
 
 struct qm_test_exact_s
 {
@@ -112,8 +80,104 @@ struct qm_test_opts_s
 };
 typedef struct qm_test_opts_s *qm_test_opts_t;
 
+/* Compare media property string values. */
+#define qm_cmp_s(qmp, e)\
+  do {\
+    gchar *s = NULL;\
+    quvi_media_get(qm, qmp, &s);\
+    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
+    g_assert(s != NULL);\
+    g_test_message("%s=%s", #qmp, s);\
+    g_assert_cmpstr(s, ==, e);\
+  } while (0)
+
+/* Media property string value length >0 */
+#define qm_chk_l(qmp)\
+  do {\
+    gchar *s = NULL;\
+    quvi_media_get(qm, qmp, &s);\
+    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
+    g_assert(s != NULL);\
+    g_test_message("%s=%s", #qmp, s);\
+    g_assert_cmpint(strlen(s), >, 0);\
+  } while (0)
+
+/* Media property value (double) >0 */
+#define qm_chk_gt0(qmp)\
+  do {\
+    gdouble v = 0;\
+    quvi_media_get(qm, qmp, &v);\
+    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
+    g_test_message("%s=%g", #qmp, v);\
+    g_assert_cmpfloat(v, >, 0);\
+  } while (0)
+
 void qm_test(const gchar*, const gchar*,
              const qm_test_exact_t, const qm_test_opts_t);
+
+/* Playlist. */
+
+struct qp_test_exact_s
+{
+  const gchar *id;
+};
+typedef struct qp_test_exact_s *qp_test_exact_t;
+
+struct qp_test_opts_s
+{
+  struct
+  {
+    struct
+    {
+      gboolean title;
+    } media;
+    gboolean thumbnail_url;
+    gboolean title;
+  } s_len_gt0;
+  struct
+  {
+    struct
+    {
+      gboolean duration_ms;
+    } media;
+  } gt0;
+};
+typedef struct qp_test_opts_s *qp_test_opts_t;
+
+/* Compare playlist property string values. */
+#define qp_cmp_s(qpp, e)\
+  do {\
+    gchar *s = NULL;\
+    quvi_playlist_get(qp, qpp, &s);\
+    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
+    g_assert(s != NULL);\
+    g_test_message("%s=%s", #qpp, s);\
+    g_assert_cmpstr(s, ==, e);\
+  } while (0)
+
+/* Playist property string value length >0 */
+#define qp_chk_l(qpp)\
+  do {\
+    gchar *s = NULL;\
+    quvi_playlist_get(qp, qpp, &s);\
+    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
+    g_assert(s != NULL);\
+    g_test_message("%s=%s", #qpp, s);\
+    g_assert_cmpint(strlen(s), >, 0);\
+  } while (0)
+
+/* Media property value (double) >0 */
+#define qp_chk_gt0(qpp)\
+  do {\
+    gdouble v = 0;\
+    quvi_playlist_get(qp, qpp, &v);\
+    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
+    g_test_message("%s=%g", #qpp, v);\
+    g_assert_cmpfloat(v, >, 0);\
+  } while (0)
+
+void qp_test(const gchar*, const gchar*,
+             const qp_test_exact_t, const qp_test_opts_t);
 
 /* Other. */
 
