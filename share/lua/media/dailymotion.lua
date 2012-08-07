@@ -113,9 +113,9 @@ function Dailymotion.iter_streams(page, U)
       t.video.width = tonumber(w)
       t.container = cn or ''
 
-      -- Must come after we have the video resolution, as the to_fmt_id
+      -- Must come after we have the video resolution, as the to_id
       -- function uses the height property.
-      t.fmt_id = Dailymotion.to_fmt_id(t, v.quality)
+      t.id = Dailymotion.to_id(t, v.quality)
 
       table.insert(r, t)
     end
@@ -148,8 +148,8 @@ function Dailymotion.ch_best(S, t)
   end
 end
 
--- Returns a general purpose "format ID" for a stream.
-function Dailymotion.to_fmt_id(t, q)
+-- Return an ID for a stream.
+function Dailymotion.to_id(t, q)
   return string.format("%s_%s_%s_%sp",
     (q) and q or 'sd', t.container, t.video.encoding, t.video.height)
 end
