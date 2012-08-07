@@ -85,7 +85,7 @@ void qm_test(const gchar *func, const gchar *url,
           qm_chk_l(QUVI_MEDIA_STREAM_PROPERTY_URL);
 
           if (c >1) /* Must have a stream ID, when there are >1 streams. */
-            qm_chk_l(QUVI_MEDIA_STREAM_PROPERTY_FORMAT_ID);
+            qm_chk_l(QUVI_MEDIA_STREAM_PROPERTY_ID);
 
           /* Optional. */
 
