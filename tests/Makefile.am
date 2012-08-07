@@ -17,6 +17,7 @@ testsuite_ldadd=\
   $(libquvi_LIBS) $(libcurl_LIBS) $(glib_LIBS)
 
 include $(top_srcdir)/tests/media/tests.mk
+include $(top_srcdir)/tests/playlist/tests.mk
 
 test: all
 	@ok=1; for t in $(TEST_PROGS); do \
