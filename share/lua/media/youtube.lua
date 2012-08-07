@@ -150,9 +150,9 @@ function YouTube.iter_streams(config, U)
     t.video.height = tonumber(h)
     t.video.width = tonumber(w)
 
-    -- Do this after we have the video resolution, as the to_fmt_id
+    -- Do this after we have the video resolution, as the to_id
     -- function uses the height property.
-    t.fmt_id = YouTube.to_fmt_id(t, itag, smri)
+    t.id = YouTube.to_id(t, itag, smri)
 
     table.insert(r, t)
   end
@@ -176,8 +176,8 @@ function YouTube.ch_best(S, t)
   end
 end
 
--- Returns a general purpose "format ID" for a stream.
-function YouTube.to_fmt_id(t, itag, smri)
+-- Return an ID for a stream.
+function YouTube.to_id(t, itag, smri)
   return string.format("%s_%s_i%02d_%sp",
           smri.quality, t.container, itag, t.video.height)
 end
