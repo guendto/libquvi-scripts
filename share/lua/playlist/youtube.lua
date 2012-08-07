@@ -87,6 +87,7 @@ function YouTube.config_url(qargs, start_index, max_results)
 end
 
 function YouTube.parse_media_urls(t)
+  -- TODO: Return playlist thumbnail URL
   -- TODO: Return duration_ms
   -- TODO: Return title
   local r = {}
