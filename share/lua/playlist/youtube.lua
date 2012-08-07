@@ -54,6 +54,9 @@ function parse(qargs)
 
   local r = {}
 
+  -- TODO: Return playlist thumbnail URL
+  -- TODO: Return playlist title
+
   repeat -- Get the entire playlist.
     local u = YouTube.config_url(qargs, start_index, max_results)
     local c = quvi.fetch(u, o)
@@ -87,9 +90,8 @@ function YouTube.config_url(qargs, start_index, max_results)
 end
 
 function YouTube.parse_media_urls(t)
-  -- TODO: Return playlist thumbnail URL
-  -- TODO: Return duration_ms
-  -- TODO: Return title
+  -- TODO: Return media duration_ms
+  -- TODO: Return media title
   local r = {}
   if not t then return r end
   for i=1, #t do
