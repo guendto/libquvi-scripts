@@ -42,6 +42,7 @@ function parse(qargs)
   local p = quvi.fetch(qargs.input_url, o)
 
   qargs.thumb_url = p:match('.+content="(.-)"%s+property="og:image"') or ''
+  qargs.title = p:match('.+content="(.-)"%s+property="og:title"') or ''
 
   local m = 'class="info">.-href="(.-)"'
          .. '.-class="set%-track%-title">(.-)<'
