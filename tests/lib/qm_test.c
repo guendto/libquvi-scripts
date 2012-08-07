@@ -25,8 +25,8 @@
 
 #include "tests.h"
 
-/* Test media properties. The 'e' parameter may be a NULL in which case
- * the test for exact values (title and ID) will be skipped. */
+/* Test media properties. The 'e' parameter may be NULL, in which case
+ * the test for exact values (e.g. title and ID) will be skipped. */
 void qm_test(const gchar *func, const gchar *url,
              const qm_test_exact_t e, const qm_test_opts_t o)
 {
@@ -79,6 +79,7 @@ void qm_test(const gchar *func, const gchar *url,
       /* Streams. */
 
       for (c=0; quvi_media_stream_next(qm) == QUVI_TRUE; ++c);
+      g_assert_cmpint(c, >, 0);
 
       while (quvi_media_stream_next(qm) == QUVI_TRUE)
         {
@@ -118,7 +119,9 @@ void qm_test(const gchar *func, const gchar *url,
   else
     {
       g_test_message("TEST_LEVEL=basic");
-      /* Must return at least >0 media stream. */
+
+      /* Must return >0 media streams. */
+
       qm_chk_l(QUVI_MEDIA_STREAM_PROPERTY_URL);
     }
 
