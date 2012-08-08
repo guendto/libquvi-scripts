@@ -83,6 +83,8 @@ AC_OUTPUT
 AC_MSG_NOTICE([
   version:    ${VERSION} (${VN})
   prefix:     ${prefix}
+  compiler    ${CC}
+  cflags      ${CFLAGS}
 Options:
   with tests: ${with_tests} (libquvi, .pc modversion ${libquvi_modver})
   with fixme: ${with_fixme}
