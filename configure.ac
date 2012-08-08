@@ -51,7 +51,7 @@ AM_CONDITIONAL([WITH_NSFW], [test x"$with_nsfw" != "xno"])
 # --with-fixme
 AC_ARG_WITH([fixme],
   [AS_HELP_STRING([--with-fixme],
-    [with website scripts marked as "fixme" @<:@default=no@:>@])],
+    [Install scripts marked as "FIXME" @<:@default=no@:>@])],
   [], [with_fixme=no])
 AM_CONDITIONAL([WITH_FIXME], [test x"$with_fixme" != "xno"])
 
