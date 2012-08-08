@@ -74,10 +74,6 @@ gboolean chk_complete()
   return (chk_level("complete"));
 }
 
-/* Check if test was set to be skipped.
- * Example:
- *  env TEST_SKIP=test_supports_online,test_query_formats make test
- */
 gboolean chk_skip(const gchar *test)
 {
   const gchar *e = g_getenv("TEST_SKIP");
@@ -91,9 +87,10 @@ gboolean chk_skip(const gchar *test)
 
     while (s != NULL && s[++i] != NULL)
       {
-        if (g_strcmp0(test, s[i]) == 0)
+        if (match(test, s[i]) == TRUE)
           {
-            g_test_message("SKIP: Remove '%s' from TEST_SKIP to enable", test);
+            g_test_message("SKIP: Remove '%s' from TEST_SKIP to enable",
+                           test);
             r = TRUE;
             break;
           }
