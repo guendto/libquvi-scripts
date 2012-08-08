@@ -38,6 +38,11 @@ gboolean chk_env(const gchar *w, const gchar *m)
   return (TRUE);
 }
 
+gboolean chk_geoblocked()
+{
+  return (chk_env("TEST_GEOBLOCKED", "SKIP: Set TEST_GEOBLOCKED to enable"));
+}
+
 gboolean chk_nsfw()
 {
   return (chk_env("TEST_NSFW", "SKIP: Set TEST_NSFW to enable"));

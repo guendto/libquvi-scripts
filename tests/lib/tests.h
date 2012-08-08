@@ -29,6 +29,7 @@ glong qerr(quvi_t);
 gboolean chk_env(const gchar*, const gchar*);
 gboolean chk_skip(const gchar*);
 void chk_verbose(quvi_t);
+gboolean chk_geoblocked();
 gboolean chk_complete();
 gboolean chk_fixme();
 gboolean chk_nsfw();
