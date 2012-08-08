@@ -44,7 +44,7 @@ AM_CONDITIONAL([WITH_TESTS], [test x"$with_tests" = "xyes"])
 # --with-nsfw
 AC_ARG_WITH([nsfw],
   [AS_HELP_STRING([--with-nsfw],
-    [build with adult website support @<:@default=no@:>@])],
+    [Install scripts marked as "NSFW" @<:@default=no@:>@])],
   [], [with_nsfw=no])
 AM_CONDITIONAL([WITH_NSFW], [test x"$with_nsfw" != "xno"])
 
