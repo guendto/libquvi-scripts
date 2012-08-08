@@ -27,7 +27,6 @@ DIST_lua+=\
 
 DIST_lua+=\
   lua/media/academicearth.lua\
-  lua/media/arte.lua\
   lua/media/break.lua\
   lua/media/dailymotion.lua\
   lua/media/gaskrank.lua\
@@ -36,6 +35,8 @@ DIST_lua+=\
   lua/media/youtube.lua
 
 if WITH_GEOBLOCKED
+DIST_lua+=\
+  lua/media/arte.lua
 endif
 
 if WITH_NSFW
