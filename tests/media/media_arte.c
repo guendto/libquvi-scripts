@@ -39,6 +39,9 @@ static void test_media_arte()
 
   memset(&o, 0, sizeof(o));
 
+  if (chk_geoblocked() == FALSE)
+    return;
+
   /* Normally done in qm_test but due to the fetch-parse circumstances,
    * do it here. */
   if (chk_skip(__func__) == TRUE)
