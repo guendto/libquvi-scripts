@@ -32,7 +32,8 @@ AM_CONDITIONAL([HAVE_VN], [test -n "$VN"])
 # --with-tests
 pkg_libquvi=libquvi-1.0
 AC_ARG_WITH([tests],
-  [AS_HELP_STRING([--with-tests], [with tests @<:@default=no@:>@])],
+  [AS_HELP_STRING([--with-tests],
+    [Enable tests for scripts @<:@default=no@:>@])],
   [PKG_CHECK_MODULES([libquvi], ["$pkg_libquvi" >= 1.0],
     [libquvi_modver=`$PKG_CONFIG --modversion $pkg_libquvi 2>/dev/null`
       PKG_CHECK_MODULES([glib], [glib-2.0 >= 2.24],
