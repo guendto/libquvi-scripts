@@ -16,8 +16,9 @@ testsuite_ldadd=\
   $(top_builddir)/tests/lib/libconvenience_test.la\
   $(libquvi_LIBS) $(libcurl_LIBS) $(glib_LIBS)
 
-include $(top_srcdir)/tests/media/tests.mk
 include $(top_srcdir)/tests/playlist/tests.mk
+include $(top_srcdir)/tests/media/tests.mk
+include $(top_srcdir)/tests/scan/tests.mk
 
 test: all
 	@ok=1; for t in $(TEST_PROGS); do \
