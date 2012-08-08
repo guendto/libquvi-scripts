@@ -35,10 +35,15 @@ DIST_lua+=\
   lua/media/vimeo.lua\
   lua/media/youtube.lua
 
+if WITH_GEOBLOCKED
+endif
+
 if WITH_NSFW
 endif
 
 if WITH_FIXME
+if WITH_GEOBLOCKED
+endif
 if WITH_NSFW
 endif
 endif # WITH_FIXME
