@@ -55,12 +55,12 @@ AC_ARG_WITH([fixme],
   [], [with_fixme=no])
 AM_CONDITIONAL([WITH_FIXME], [test x"$with_fixme" != "xno"])
 
-# --with-nlfy
-AC_ARG_WITH([nlfy],
-  [AS_HELP_STRING([--with-nlfy],
-    [test scripts marked as "nlfy" @<:@default=no@:>@])],
-  [], [with_nlfy=no])
-AM_CONDITIONAL([WITH_NLFY], [test x"$with_nlfy" != "xno"])
+# --with-geoblocked
+AC_ARG_WITH([geoblocked],
+  [AS_HELP_STRING([--with-geoblocked],
+    [Install scripts marked as "geoblocked" @<:@default=yes@:>@])],
+  [], [with_geoblocked=yes])
+AM_CONDITIONAL([WITH_GEOBLOCKED], [test x"$with_geoblocked" = "xyes"])
 
 # --with-manual
 AC_ARG_WITH([manual],
@@ -85,8 +85,11 @@ AC_MSG_NOTICE([
   prefix:     ${prefix}
   compiler    ${CC}
   cflags      ${CFLAGS}
-Options:
-  with tests: ${with_tests} (libquvi, .pc modversion ${libquvi_modver})
-  with fixme: ${with_fixme}
-  with nsfw:  ${with_nsfw}
-  with nlfy:  ${with_nlfy}])
+Testsuite options:
+  with:
+  - tests: ${with_tests} (libquvi, .pc modversion ${libquvi_modver})
+Install options:
+  with:
+  - geoblocked:  ${with_geoblocked}
+  - fixme:       ${with_fixme}
+  - nsfw:        ${with_nsfw}])
