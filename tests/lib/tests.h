@@ -179,6 +179,17 @@ typedef struct qp_test_opts_s *qp_test_opts_t;
 void qp_test(const gchar*, const gchar*,
              const qp_test_exact_t, const qp_test_opts_t);
 
+/* Scan. */
+
+struct qs_test_exact_s
+{
+  const gchar *url;
+  const gint n; /* Expected no. of returned media URLs. */
+};
+typedef struct qs_test_exact_s *qs_test_exact_t;
+
+void qs_test(const gchar*, qs_test_exact_t);
+
 /* Other. */
 
 gboolean match(const gchar*, const gchar*);
