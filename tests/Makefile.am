@@ -34,4 +34,4 @@ test: all
 clean-local:
 	@for t in $(TEST_PROGS); do rm -f $$t.xml $$t.html; done
 
-EXTRA_DIST=find_tests.sh
+EXTRA_DIST=find_tests.sh run_tests.sh
