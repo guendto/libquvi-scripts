@@ -65,7 +65,7 @@ AM_CONDITIONAL([WITH_GEOBLOCKED], [test x"$with_geoblocked" = "xyes"])
 # --with-manual
 AC_ARG_WITH([manual],
   [AS_HELP_STRING([--with-manual],
-    [install manual pages @<:@default=yes@:>@])],
+    [Install manual page(s) @<:@default=yes@:>@])],
   [], [with_manual=yes])
 AM_CONDITIONAL([WITH_MANUAL], [test x"$with_manual" != "xno"])
 
