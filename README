@@ -1,16 +1,207 @@
-
-
 General
 =======
 
-libquvi-scripts contains the embedded lua scripts that libquvi uses for
-parsing the media details. Some additional utility scripts are also
-included.
+libquvi-scripts contains the Lua scripts for libquvi that it uses to parse
+the media properties.
 
-Home  : <http://quvi.sourceforge.net/>
 gitweb: <http://repo.or.cz/w/libquvi-scripts.git>
+Home  : <http://quvi.sourceforge.net/>
+
+
+Installation
+============
+
+Notes
+-----
+
+  * This document does not cover how to use GNU Autotools for building
+and installing software, instead, refer to the GNU Autotools documentation,
+the INSTALL file and the "configure --help" output for more information.
+
+  * If you're not familiar with GNU Autotools and/or installing software
+from the source code, you may prefer to install libquvi-scripts using a
+binary package, instead. You can find libquvi-scripts packaged for many
+distros already.
+
+  * If you have previously installed libquvi-scripts from the source code
+to your system, the recommended practice is to uninstall the previous
+installation first, before you continue with the new one. You would,
+typically, run "make uninstall" (as root if necessary) from the same
+directory you ran "make install" from.
+
+  * If you are building libquvi-scripts from the git repository code, run
+the `autogen.sh' first. This generates the configuration files. See also
+the -h output for any additional info.
+
+
+Simple install procedure
+------------------------
+
+  % ./configure && make
+
+  [ Become root if necessary ]
+  % make install
+
+The configure script supports also the following options which are
+relevant to the installation:
+
+  --with(out)-geoblocked (default: yes)
+
+    Install the scripts written for websites that are known to geoblock
+    IP addresses outside of their definition of the accepted IP ranges.
+
+    These are usually websites that block IPs from countries, sometimes
+    even cities, based on the registered geological location of the IP
+    address.
+
+  --with(out)-fixme (default: no)
+
+    Install the scripts that have been marked as "FIXME". These are
+    known to be broken and need to be fixed. Patches welcome.
+
+  --with(out)-nsfw (default: no)
+
+    Install the scripts written for websites that host NSFW media.
+
+  --with(out)-manual (default:yes)
+
+    Install the manual page for libquvi-scripts.
+
+  --with(out)-tests (default: no)
+
+    Install with the tests. This enables the testsuite, see "Tests"
+    for more information.
+
+    Note that the --with(out)-* options are ignored by the testsuite.
+    If you need more control over which of the tests should be run,
+    see the "Tests: Environment variables" for more information.
+
+
+Requirements
+------------
+
+* pkg-config for tracking the compilation flags needed for libraries
+  http://www.freedesktop.org/software/pkgconfig/
+
+* GNU make is recommended
+  http://www.gnu.org/software/make
+
+When the configure script is run with the `--with-tests':
+
+  * libquvi 0.9
+    http://quvi.sf.net/
+
+  * GLib 2.24.2
+    http://library.gnome.org/devel/glib/
+
+  * libcurl 7.21.0
+    http://curl.haxx.se/
+
+
+Installation directories
+------------------------
+
+The location of the installed files is determined by the --prefix
+and the --exec-prefix options given to the configure script.
+
+The .pc file for libquvi-scripts is installed in $exec_prefix/lib/pkgconfig
+to provide information when compiling packages that depend on libquvi-scripts.
+
+
+Tests
+=====
+
+The tests use the GLib framework for testing. All of these tests require
+the presence of the libquvi and a working internet connection. The tests
+reside in the tests/ directory.
+
+When building with GNU Autotools,
+
+  'make check'  will run the test programs listed in the TEST_PROGS
+  variable in the tests/Makefile.am . It will fail if any of the
+  tests fail. This is identical to running 'make test'.
+
+    NOTE: You must run `configure --with-tests' to enable the tests,
+          they are not enabled by default.
+
+  'make distcheck'  will fail if any of the tests fail. Note that this
+  would, typically, require:
+    env DISTCHECK_CONFIGURE_FLAGS=--with-tests  make distcheck
+
+The tests use the gtester(1) and gtester-report(1) commands to produce
+the logs. These programs are part of GLib. The test programs produce:
+  $(top_builddir)/tests/$test_program.html  # gtester-report
+  $(top_builddir)/tests/$test_program.xml   # gtester
+
+
+Tests: Environment variables
+----------------------------
+
+The testsuite supports the following environment variables:
+
+  TEST_VERBOSE  will enable verbose libcurl(3) output.
+
+  TEST_SKIP  will disable the specified tests. This list is a comma-separated
+  list of test names. The comma-separated values are treated as regular
+  expression patterns.
+
+  TEST_GEOBLOCKED  will enable the tests for the scripts that have been
+  marked as "geoblocked". These are skipped by default.
+
+  TEST_FIXME  will enable the tests for the scripts that have been marked
+  as "FIXME". These are skipped by default.
+
+  TEST_NSFW  will enable the tests for the scripts that have been marked
+  as "NSFW". These are skipped by default.
+
+  TEST_LEVEL  will set the level ('basic', 'complete') of the tests.
+    'complete'  - additional and mandatory script tests
+    'basic'     - mandatory script tests only (default)
+
+Example:
+
+  % env TEST_SKIP=test_media_,test_scan_  make test
+
+  % env TEST_VERBOSE=1 TEST_FIXME=1 TEST_GEOBLOCKED=1 TEST_LEVEL=complete \
+      TEST_SKIP=test_media_vimeo,test_playlist_youtube  make test
+
+
+Tests: Scripts
+--------------
+
+The tests/ directory contains:
+
+  'find_tests.sh'   will dump a list of available tests.
+
+  'run_tests.sh'  is a convenience script that wraps many of the
+  testsuite features making them available via GUI. Note that
+  this script requires zenity(1).
+
+For more info, run these scripts with the '-h' switch.
+
+
+Tests: Proxy
+------------
+
+If you need to use a proxy, refer to the curl(1) manual page for a
+complete list of the supported environment variables (e.g. http_proxy).
+
+  libquvi (and libquvi-scripts) uses libcurl to connect to the internet.
+
+
+How to report bugs
+==================
+
+Please see: http://quvi.sourceforge.net/#bugs
+
+
+Patches
+=======
+
+Please see: http://quvi.sourceforge.net/#contrib
+
 
 License
 =======
 
-libquvi-scripts are free software, licensed under the LGPLv2.1+.
+libquvi-scripts is Free Software, licensed under the LGPLv2.1+.
