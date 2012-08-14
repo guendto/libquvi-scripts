@@ -16,6 +16,7 @@ AM_SILENT_RULES([yes])
 #AM_PROG_AR
 
 # Checks for programs.
+AC_PROG_LN_S
 
 AC_PATH_PROG([QUVI], [quvi], [], [$QUVI_PATH$PATH_SEPARATOR$PATH])
 AM_CONDITIONAL([HAVE_QUVI], [test -n "$QUVI"])
