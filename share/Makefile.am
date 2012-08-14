@@ -61,6 +61,18 @@ scandir=$(pkgdatadir)/$(VERSION)/scan
 dist_scan_DATA=\
   scan/youtube.lua
 
+.PHONY: version
+
+version:
+	@if test -d "$(top_srcdir)/.git" -o -f "$(top_srcdir)/.git"; then \
+		"$(top_srcdir)/gen-ver.sh" "$(top_srcdir)" > $@; \
+	fi
+
+dist-hook: version
+
+versiondir=$(pkgdatadir)/$(VERSION)
+dist_version_DATA=version
+
 install-data-hook:
 	cd $(DESTDIR)$(pkgdatadir) && rm -f $(VERSION_MM) && \
 		$(LN_S) $(VERSION) $(VERSION_MM)
