@@ -81,7 +81,6 @@ AC_CONFIG_FILES([
   doc/Makefile
   doc/man7/Makefile
   share/Makefile
-  share/lua/Makefile
   tests/Makefile
   libquvi-scripts-1.0.pc])
 AC_OUTPUT

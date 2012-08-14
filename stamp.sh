@@ -10,7 +10,7 @@ stamp_scripts()
     D='common/ media/ playlist/ scan/ util/'
     VN=`$2/gen-ver.sh $1`
     for d in $D; do
-      find "$2/share/lua/$d" -name '*.lua' \
+      find "$2/share/$d" -name '*.lua' \
         -exec echo "Stamp {}" \; \
         -exec sed -i "s/^\(-- libquvi-scripts\).*/\1 $VN/" {} \;
     done
