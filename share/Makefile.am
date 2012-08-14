@@ -1,9 +1,8 @@
-SUBDIRS=lua
-DIST_lua=README
-
 # Common scripts.
 
-DIST_lua+=\
+commondir=$(pkgdatadir)/$(VERSION)/common/quvi/
+
+dist_common_DATA=\
   common/quvi/accepts.lua\
   common/quvi/bit.lua\
   common/quvi/const.lua\
@@ -18,14 +17,18 @@ DIST_lua+=\
 
 # Utility scripts.
 
-DIST_lua+=\
+utildir=$(pkgdatadir)/$(VERSION)/util
+
+dist_util_DATA=\
   util/resolve_redirections.lua\
   util/convert_entities.lua\
   util/to_file_ext.lua
 
 # Media property scripts.
 
-DIST_lua+=\
+mediadir=$(pkgdatadir)/$(VERSION)/media
+
+dist_media_DATA=\
   media/academicearth.lua\
   media/arte.lua\
   media/break.lua\
@@ -45,14 +48,15 @@ endif # WITH_FIXME
 
 # Playlist property scripts.
 
-DIST_lua+=\
+playlistdir=$(pkgdatadir)/$(VERSION)/playlist
+
+dist_playlist_DATA=\
   playlist/soundcloud.lua\
   playlist/youtube.lua
 
 # Scan embedded media URL scripts.
 
-DIST_lua+=\
-  scan/youtube.lua
+scandir=$(pkgdatadir)/$(VERSION)/scan
 
-nobase_dist_pkgdata_DATA=	$(DIST_lua)
-EXTRA_DIST=	$(DIST_lua)
+dist_scan_DATA=\
+  scan/youtube.lua
