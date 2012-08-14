@@ -60,3 +60,7 @@ scandir=$(pkgdatadir)/$(VERSION)/scan
 
 dist_scan_DATA=\
   scan/youtube.lua
+
+install-data-hook:
+	cd $(DESTDIR)$(pkgdatadir) && rm -f $(VERSION_MM) && \
+		$(LN_S) $(VERSION) $(VERSION_MM)
