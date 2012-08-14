@@ -31,6 +31,16 @@ AM_CONDITIONAL([HAVE_VALGRIND], [test -n "$VALGRIND"])
 AC_SUBST([VALGRIND])
 
 # Version.
+VN_RMAJ=libquvi_scripts_rmaj
+VN_RMIN=libquvi_scripts_rmin
+VN_RMIC=libquvi_scripts_rmic
+AC_SUBST([VN_RMAJ])
+AC_SUBST([VN_RMIN])
+AC_SUBST([VN_RMIC])
+
+VERSION_MM="$VN_RMAJ.$VN_RMIN"
+AC_SUBST([VERSION_MM])
+
 genver="$srcdir/gen-ver.sh"
 AS_IF([test -x "$genver"], [VN=`"$genver" "$srcdir"`])
 AM_CONDITIONAL([HAVE_VN], [test -n "$VN"])
