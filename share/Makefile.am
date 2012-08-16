@@ -2,6 +2,7 @@ SUBDIRS=lua
 DIST_lua=lua/README
 
 # Common scripts.
+
 DIST_lua+=\
   lua/common/quvi/accepts.lua\
   lua/common/quvi/bit.lua\
@@ -16,12 +17,14 @@ DIST_lua+=\
   lua/common/quvi/youtube.lua
 
 # Utility scripts.
+
 DIST_lua+=\
   lua/util/resolve_redirections.lua\
   lua/util/convert_entities.lua\
   lua/util/to_file_ext.lua
 
 # Media property scripts.
+
 DIST_lua+=\
   lua/media/academicearth.lua\
   lua/media/arte.lua\
@@ -32,26 +35,22 @@ DIST_lua+=\
   lua/media/vimeo.lua\
   lua/media/youtube.lua
 
-# Media property scripts that are NSFW.
 if WITH_NSFW
-#DIST_lua+=
 endif
 
-# Media property scripts that are need fixing.
 if WITH_FIXME
-#DIST_lua+=
-# Media property scripts that need fixing and are NSFW.
 if WITH_NSFW
-#DIST_lua+=
 endif
 endif # WITH_FIXME
 
 # Playlist property scripts.
+
 DIST_lua+=\
   lua/playlist/soundcloud.lua\
   lua/playlist/youtube.lua
 
 # Scan embedded media URL scripts.
+
 DIST_lua+=\
   lua/scan/youtube.lua
 
