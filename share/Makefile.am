@@ -30,7 +30,6 @@ mediadir=$(pkgdatadir)/$(VERSION)/media
 
 dist_media_DATA=\
   media/academicearth.lua\
-  media/arte.lua\
   media/break.lua\
   media/dailymotion.lua\
   media/gaskrank.lua\
@@ -38,10 +37,17 @@ dist_media_DATA=\
   media/vimeo.lua\
   media/youtube.lua
 
+if WITH_GEOBLOCKED
+dist_media_DATA+=\
+  media/arte.lua
+endif
+
 if WITH_NSFW
 endif
 
 if WITH_FIXME
+if WITH_GEOBLOCKED
+endif
 if WITH_NSFW
 endif
 endif # WITH_FIXME

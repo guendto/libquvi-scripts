@@ -1,56 +1,37 @@
+SUBDIRS=lib
+noinst_PROGRAMS=$(TEST_PROGS)
 
-TESTS_T=\
- t/format_default.t \
- t/format_other.t \
- t/shortened.t \
- t/nosupport.t \
- t/expire.t
+TEST_PROGS=
+TEST_OPTS=-k -m=thorough --verbose #--g-fatal-warnings
 
-if WITH_FIXME
-TESTS_T+=t/redirect.t # TODO: Uses scripts marked as FIXME; use new URLs.
-TESTS_T+=t/mem.t # TODO: Ditto.
-endif
+testsuite_cppflags=\
+  -I$(top_srcdir)/tests/lib\
+  $(libquvi_CFLAGS) $(libcurl_CFLAGS) $(glib_CFLAGS)\
+  $(AM_CPPFLAGS)
 
-TESTS_D_T=	t/d/url.t
-TESTS_LIB=	lib/Test/Quvi.pm
-TESTS_JSON=	data
+testsuite_ldflags=\
+  $(AM_LDFLAGS)
 
-EXTRA_DIST=\
- README \
- $(TESTS_NSFW_T) \
- $(TESTS_JSON) \
- $(TESTS_LIB) \
- $(TESTS_D_T) \
- $(TESTS_T)
+testsuite_ldadd=\
+  $(top_builddir)/tests/lib/libconvenience_test.la\
+  $(libquvi_LIBS) $(libcurl_LIBS) $(glib_LIBS)
 
-PROVE_OPTS=	-I $(top_srcdir)/tests/lib/
-PROVE_OPTS+=	--nocolor
-
-TESTQUVI_OPTS=\
- -q $(QUVI) \
- -d $(top_srcdir)/tests \
- -b $(top_srcdir)/share
-
-if HAVE_VALGRIND
-TESTQUVI_OPTS+=	-v $(VALGRIND)
-endif
-
-if WITH_FIXME
-TESTQUVI_OPTS+=	--fixme
-endif
-
-if WITH_NLFY
-TESTQUVI_OPTS+=	--nlfy
-endif
-
-if WITH_NSFW
-TESTQUVI_OPTS+=	--nsfw
-endif
+include $(top_srcdir)/tests/playlist/tests.mk
+include $(top_srcdir)/tests/media/tests.mk
+include $(top_srcdir)/tests/scan/tests.mk
 
 test: all
-	@verbose=; test -n "$$TEST_VERBOSE" && verbose=-v; \
-	ok=1; for t in $(TESTS_T); do \
-		( $(PROVE) $$verbose $(PROVE_OPTS) $(top_srcdir)/tests/$$t \
-		:: $(TESTQUVI_OPTS) ) || ok=; \
+	@ok=1; for t in $(TEST_PROGS); do \
+		LIBQUVI_SCRIPTS_DIR=$(top_srcdir)/share/ \
+			gtester $(TEST_OPTS) $(top_builddir)/tests/$$t -o $$t.xml \
+		|| { \
+			echo NOTE: Check $(abs_builddir)/$$t.xml for details; \
+			ok=; gtester-report $$t.xml >$$t.html; \
+		} \
 	done; \
 	if test -z "$$ok"; then exit 1; fi
+
+clean-local:
+	@for t in $(TEST_PROGS); do rm -f $$t.xml $$t.html; done
+
+EXTRA_DIST=find_tests.sh run_tests.sh
