@@ -1,39 +1,42 @@
-SUBDIRS=lua
-DIST_lua=lua/README
-
 # Common scripts.
 
-DIST_lua+=\
-  lua/common/quvi/accepts.lua\
-  lua/common/quvi/bit.lua\
-  lua/common/quvi/const.lua\
-  lua/common/quvi/debug.lua\
-  lua/common/quvi/entity.lua\
-  lua/common/quvi/html.lua\
-  lua/common/quvi/lxph.lua\
-  lua/common/quvi/stream.lua\
-  lua/common/quvi/url.lua\
-  lua/common/quvi/util.lua\
-  lua/common/quvi/youtube.lua
+commondir=$(pkgdatadir)/$(VERSION)/common/quvi/
+
+dist_common_DATA=\
+  common/quvi/accepts.lua\
+  common/quvi/bit.lua\
+  common/quvi/const.lua\
+  common/quvi/debug.lua\
+  common/quvi/entity.lua\
+  common/quvi/html.lua\
+  common/quvi/lxph.lua\
+  common/quvi/stream.lua\
+  common/quvi/url.lua\
+  common/quvi/util.lua\
+  common/quvi/youtube.lua
 
 # Utility scripts.
 
-DIST_lua+=\
-  lua/util/resolve_redirections.lua\
-  lua/util/convert_entities.lua\
-  lua/util/to_file_ext.lua
+utildir=$(pkgdatadir)/$(VERSION)/util
+
+dist_util_DATA=\
+  util/resolve_redirections.lua\
+  util/convert_entities.lua\
+  util/to_file_ext.lua
 
 # Media property scripts.
 
-DIST_lua+=\
-  lua/media/academicearth.lua\
-  lua/media/arte.lua\
-  lua/media/break.lua\
-  lua/media/dailymotion.lua\
-  lua/media/gaskrank.lua\
-  lua/media/soundcloud.lua\
-  lua/media/vimeo.lua\
-  lua/media/youtube.lua
+mediadir=$(pkgdatadir)/$(VERSION)/media
+
+dist_media_DATA=\
+  media/academicearth.lua\
+  media/arte.lua\
+  media/break.lua\
+  media/dailymotion.lua\
+  media/gaskrank.lua\
+  media/soundcloud.lua\
+  media/vimeo.lua\
+  media/youtube.lua
 
 if WITH_NSFW
 endif
@@ -45,14 +48,31 @@ endif # WITH_FIXME
 
 # Playlist property scripts.
 
-DIST_lua+=\
-  lua/playlist/soundcloud.lua\
-  lua/playlist/youtube.lua
+playlistdir=$(pkgdatadir)/$(VERSION)/playlist
+
+dist_playlist_DATA=\
+  playlist/soundcloud.lua\
+  playlist/youtube.lua
 
 # Scan embedded media URL scripts.
 
-DIST_lua+=\
-  lua/scan/youtube.lua
+scandir=$(pkgdatadir)/$(VERSION)/scan
 
-nobase_dist_pkgdata_DATA=	$(DIST_lua)
-EXTRA_DIST=	$(DIST_lua)
+dist_scan_DATA=\
+  scan/youtube.lua
+
+.PHONY: version
+
+version:
+	@if test -d "$(top_srcdir)/.git" -o -f "$(top_srcdir)/.git"; then \
+		"$(top_srcdir)/gen-ver.sh" "$(top_srcdir)" > $@; \
+	fi
+
+dist-hook: version
+
+versiondir=$(pkgdatadir)/$(VERSION)
+dist_version_DATA=version
+
+install-data-hook:
+	cd $(DESTDIR)$(pkgdatadir) && rm -f $(VERSION_MM) && \
+		$(LN_S) $(VERSION) $(VERSION_MM)
