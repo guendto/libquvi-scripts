@@ -58,7 +58,9 @@ function parse(self)
         if p == 'og:title' then
             self.title = c
         elseif p == 'og:image' then
-            self.thumbnail_url = c
+            if not c:find('placeholder%.png') then
+                self.thumbnail_url = c
+            end
         end
     end
 
