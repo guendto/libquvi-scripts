@@ -41,11 +41,11 @@ AS_IF([test -x "$genver"], [VN=`"$genver" "$srcdir"`])
 AM_CONDITIONAL([HAVE_VN], [test -n "$VN"])
 
 # --with-tests
-pkg_libquvi=libquvi-1.0
+pkg_libquvi=libquvi-0.9
 AC_ARG_WITH([tests],
   [AS_HELP_STRING([--with-tests],
     [Enable tests for scripts @<:@default=no@:>@])],
-  [PKG_CHECK_MODULES([libquvi], ["$pkg_libquvi" >= 1.0],
+  [PKG_CHECK_MODULES([libquvi], ["$pkg_libquvi" >= 0.9],
     [libquvi_modver=`$PKG_CONFIG --modversion $pkg_libquvi 2>/dev/null`
       PKG_CHECK_MODULES([glib], [glib-2.0 >= 2.24],
       [PKG_CHECK_MODULES([libcurl], [libcurl >= 7.21], [with_tests=yes])])
