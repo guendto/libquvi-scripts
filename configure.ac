@@ -72,6 +72,9 @@ AM_CONDITIONAL([WITH_MANUAL], [test x"$with_manual" != "xno"])
 VERSION_MM=`$srcdir/gen-ver.sh -c -m`
 AC_SUBST([VERSION_MM])
 
+VN_C=`$srcdir/gen-ver.sh -c` # Use this value in the .pc file
+AC_SUBST([VN_C])
+
 AC_CONFIG_FILES([
   Makefile
   doc/Makefile
