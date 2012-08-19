@@ -40,10 +40,9 @@ function parse(qargs)
 
   qargs.title = p:match('"og:title" content="(.-)"') or ''
 
-  qargs.id = qargs.input_url:match("%-(%d+)%.h")
-              or error("no match: media ID")
-
   qargs.streams = Gaskrank.iter_streams(p)
+
+  qargs.id = qargs.streams[1].url:match("/%d+/(%d+)%.%w+") or ''
 
   return qargs
 end
