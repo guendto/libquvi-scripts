@@ -1,3 +1,22 @@
+v0.4.8  (2012-08-21) / Toni Gundogdu
+
+anon:
+  - totallynsfw.lua: Handle embedded media hosted elsewhere [e5a0d97]
+Bastien Nocera:
+  - FIX: 101greatgoals.lua: article pattern [e4ae322]
+  - souncloud.lua: Never offer placeholder as thumbnail [2ffd344]
+  and Pierre Carrier:
+  - Add support for BBC iPlayer (#28) [282632e]
+Ross Burton:
+  - Add website/lego.lua (#107) [c38aa05]
+Toni Gundogdu:
+  - FIX: dailymotion.lua: sequence pattern (#108) [41e4bd9]
+  - FIX: media/gaskrank.lua: Media ID, stream URL patterns [186b41e]
+  - FIXME: website/bloomberg.lua [48ca011]
+
+ 13 files changed, 402 insertions(+), 37 deletions(-)
+
+
 v0.4.7  (2012-07-18) / Toni Gundogdu
 
 Adam Sampson:
