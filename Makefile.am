@@ -22,7 +22,7 @@ endif # WITH_TESTS
 
 stamp_scripts:
 	@if test -x "$(top_srcdir)/stamp.sh"; then \
-		"$(top_srcdir)/stamp.sh" "$(top_srcdir)" "$(top_distdir)"; \
+		"$(top_srcdir)/stamp.sh" "`$(top_srcdir)/gen-ver.sh`" "$(top_distdir)"; \
 	fi
 
 VERSION:

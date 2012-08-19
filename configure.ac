@@ -3,10 +3,8 @@
 
 AC_PREREQ([2.67])
 
-m4_include([m4/version.m4])
-
-AC_INIT([libquvi-scripts], [libquvi_scripts_rel],
-        [http://quvi.sf.net/bugs/], [], [http://quvi.sf.net/])
+AC_INIT([libquvi-scripts], m4_esyscmd([./gen-ver.sh -c | tr -d '\n']),
+        [http://quvi.sf.net/bugs/],[],[http://quvi.sf.net/])
 
 AC_CONFIG_SRCDIR([tests/lib/env.c])
 AC_CONFIG_HEADERS([config.h])
@@ -24,21 +22,6 @@ LT_PREREQ([2.2.6])
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_LN_S
-
-# Version.
-VN_RMAJ=libquvi_scripts_rmaj
-VN_RMIN=libquvi_scripts_rmin
-VN_RMIC=libquvi_scripts_rmic
-AC_SUBST([VN_RMAJ])
-AC_SUBST([VN_RMIN])
-AC_SUBST([VN_RMIC])
-
-VERSION_MM="$VN_RMAJ.$VN_RMIN"
-AC_SUBST([VERSION_MM])
-
-genver="$srcdir/gen-ver.sh"
-AS_IF([test -x "$genver"], [VN=`"$genver" "$srcdir"`])
-AM_CONDITIONAL([HAVE_VN], [test -n "$VN"])
 
 # --with-tests
 pkg_libquvi=libquvi-0.9
@@ -81,6 +64,17 @@ AC_ARG_WITH([manual],
   [], [with_manual=yes])
 AM_CONDITIONAL([WITH_MANUAL], [test x"$with_manual" != "xno"])
 
+# Version: Major/minor -pair, used to symlink
+# from
+#   $prefix/share/libquvi-scripts/$version/
+# to
+#   $prefix/share/libquvi-scripts/$major.$minor/
+VERSION_MM=`$srcdir/gen-ver.sh -c -m`
+AC_SUBST([VERSION_MM])
+
+VN_C=`$srcdir/gen-ver.sh -c` # Use this value in the .pc file
+AC_SUBST([VN_C])
+
 AC_CONFIG_FILES([
   Makefile
   doc/Makefile
@@ -92,7 +86,7 @@ AC_CONFIG_FILES([
 AC_OUTPUT
 
 AC_MSG_NOTICE([
-  version:    ${VERSION} (${VN})
+  version:    ${VERSION}
   prefix:     ${prefix}
   compiler    ${CC}
   cflags      ${CFLAGS}
