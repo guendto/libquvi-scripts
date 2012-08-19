@@ -1,6 +1,6 @@
 
 -- libquvi-scripts
--- Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2010,2012  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -46,13 +46,13 @@ function parse(self)
     local p = quvi.fetch(self.page_url)
 
     self.title = p:match('"og:title" content="(.-)"')
-                  or error("no match: media title")
-    self.title = self.title:gsub('Video', '')
+                  or error('no match: media title')
 
-    self.id = self.page_url:match("%-(%d+)%.h") or error("no match: media ID")
+    local u = p:match("(http://movies.-%.flv)")
+                or error("no match: media stream URL")
 
-    self.url = {p:match('file:%s+"(.-)"')
-                  or error("no match: media stream URL")}
+    self.id = u:match("/%d+/(%d+)%.%w+") or error("no match: media ID")
+    self.url = {u}
 
     return self
 end
