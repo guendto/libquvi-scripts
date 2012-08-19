@@ -25,27 +25,43 @@
 
 #include "tests.h"
 
-static const gchar URL[] =
-  "http://www.gaskrank.tv/tv/motorrad-oldtimer/1928-henderson-deluxe-alt-und--19115.htm";
+static const gchar *URLs[] =
+{
+  "http://www.gaskrank.tv/tv/motorrad-oldtimer/1928-henderson-deluxe-alt-und--19115.htm",
+  "http://www.gaskrank.tv/tv/rennstrecken/idm-streckenvorstellung-schleiz-von-michael-ranseder.htm",
+  NULL
+};
 
-static const gchar TITLE[] =
-  "1928 Henderson Deluxe - alt und mit der Patina des Alters aber läuft";
+static const gchar *TITLEs[] =
+{
+  "1928 Henderson Deluxe - alt und mit der Patina des Alters aber läuft",
+  "IDM Streckenvorstellung Schleiz von Michael Ranseder",
+  NULL
+};
 
-static const gchar ID[] =
-  "19115";
+static const gchar *IDs[] =
+{
+  "19115",
+  "19746",
+  NULL
+};
 
 static void test_media_gaskrank()
 {
   struct qm_test_exact_s e;
   struct qm_test_opts_s o;
+  gint i;
 
-  memset(&e, 0, sizeof(e));
-  memset(&o, 0, sizeof(o));
+  for (i=0; URLs[i] != NULL; ++i)
+    {
+      memset(&e, 0, sizeof(e));
+      memset(&o, 0, sizeof(o));
 
-  e.title = TITLE;
-  e.id = ID;
+      e.title = TITLEs[i];
+      e.id = IDs[i];
 
-  qm_test(__func__, URL, &e, &o);
+      qm_test(__func__, URLs[i], &e, &o);
+    }
 }
 
 gint main(gint argc, gchar **argv)
