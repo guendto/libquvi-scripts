@@ -1,25 +1,20 @@
 =head1 NAME
 
-libquvi-scripts - Overview of query media library scripts
+libquvi-scripts - Overview of the library scripts
 
 =head1 DESCRIPTION
 
-libquvi-scripts contains the embedded lua scripts that libquvi uses for
-parsing the media details. Some additional utility scripts are also
-included.
-
-=head2 Documentation
-
-E<lt>http://quvi.sourceforge.net/doc/E<gt>
+libquvi-scripts contains the Lua scripts for libquvi that it uses to parse
+the media properties.
 
 =head1 WWW
 
- Home  : <http://quvi.sourceforge.net>
  gitweb: <http://repo.or.cz/w/libquvi-scripts.git>
+ Home  : <http://quvi.sourceforge.net>
 
 =head1 LICENSE
 
-libquvi-scripts is free software, licensed under the LGPLv2.1+.
+libquvi-scripts are Free Software, licensed under the LGPLv2.1+
 
 =head1 SEE ALSO
 
