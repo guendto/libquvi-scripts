@@ -68,5 +68,7 @@ do
   shift
 done
 
+mkdir -p m4
+
 echo "Generate configuration files..."
 autoreconf -if && gen_manual && echo "You can now run 'configure'"
