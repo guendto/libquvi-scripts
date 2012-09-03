@@ -42,6 +42,7 @@ DIST_lua=\
  lua/website/soundcloud.lua \
  lua/website/spiegel.lua \
  lua/website/tagtele.lua \
+ lua/website/tapuz.lua \
  lua/website/ted.lua \
  lua/website/tvlux.lua \
  lua/website/tvrain.lua \
