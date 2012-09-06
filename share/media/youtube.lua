@@ -31,7 +31,7 @@ function ident(qargs)
   local u = Y.normalize(qargs.input_url)
   local r = {
     accepts = A.accepts(u, {"youtube%.com"}, {"/watch"}, {"v=[%w-_]+"}),
-    categories = C.qmspc_http
+    categories = C.qmspc_http_family
   }
   return r
 end

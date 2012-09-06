@@ -22,11 +22,17 @@
 local M = {}
 
 -- (q)uvi (m)edia (s)cript (p)rotocol (c)ategory
-M.qmspc_rtmpe = 0x1
-M.qmspc_rtmp  = 0x2
-M.qmspc_rtsp  = 0x4
-M.qmspc_http  = 0x8
-M.qmspc_mms   = 0x10
+M.qmspc_https = 0x1
+M.qmspc_http  = 0x2
+M.qmspc_rtmpt = 0x4
+M.qmspc_rtmps = 0x8
+M.qmspc_rtmpe = 0x10
+M.qmspc_rtmp  = 0x20
+M.qmspc_rtsp  = 0x40
+M.qmspc_mms   = 0x80
+
+M.qmspc_http_family = 0x3
+M.qmspc_rtmp_family = 0x3c
 
 -- (q)uvi.(f)etch (o)ption
 M.qfo_from_charset = 0x0 -- Convert (to UTF-8) from this charset
