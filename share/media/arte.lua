@@ -26,11 +26,9 @@ local Arte = {} -- Utility functions unique to to this script.
 -- Identify the media script.
 function ident(qargs)
   local A = require 'quvi/accepts'
-  local C = require 'quvi/const'
   local r = {
     accepts = A.accepts(qargs.input_url,
-                          {"videos%.arte%.tv"}, {"/%w+/videos/"}),
-    categories = C.qmspc_rtmp
+                          {"videos%.arte%.tv"}, {"/%w+/videos/"})
   }
   return r
 end

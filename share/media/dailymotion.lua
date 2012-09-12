@@ -27,12 +27,10 @@ local Dailymotion = {} -- Utility functions unique to this script.
 -- Identify the media script.
 function ident(qargs)
   local A = require 'quvi/accepts'
-  local C = require 'quvi/const'
   local d = {"dailymotion%.%w+", "dai.ly"} -- domains
   local p = {"/video/", "/%w+$", "/family_filter"} -- paths
   local r = {
-    accepts = A.accepts(qargs.input_url, d, p),
-    categories = C.qmspc_http
+    accepts = A.accepts(qargs.input_url, d, p)
   }
   return r
 end
