@@ -24,10 +24,8 @@ local Break = {} -- Utility functions unique to this script
 -- Identify the media script.
 function ident(qargs)
   local A = require 'quvi/accepts'
-  local C = require 'quvi/const'
   local r = {
-    accepts = A.accepts(qargs.input_url, {"break%.com"}, {"/index/"}),
-    categories = C.qmspc_http
+    accepts = A.accepts(qargs.input_url, {"break%.com"}, {"/index/"})
   }
   return r
 end

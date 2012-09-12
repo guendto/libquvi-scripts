@@ -27,11 +27,9 @@ local YouTube = {} -- Utility functions unique to this script
 function ident(qargs)
   local A = require 'quvi/accepts'
   local Y = require 'quvi/youtube'
-  local C = require 'quvi/const'
   local u = Y.normalize(qargs.input_url)
   local r = {
-    accepts = A.accepts(u, {"youtube%.com"}, {"/watch"}, {"v=[%w-_]+"}),
-    categories = C.qmspc_http_family
+    accepts = A.accepts(u, {"youtube%.com"}, {"/watch"}, {"v=[%w-_]+"})
   }
   return r
 end

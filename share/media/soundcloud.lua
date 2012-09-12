@@ -24,11 +24,9 @@ local Soundcloud = {} -- Utility functions unique to this script
 -- Identify the media script.
 function ident(qargs)
   local A = require 'quvi/accepts'
-  local C = require 'quvi/const'
   local p = {"/.+/.+$", "/player.swf"} -- paths
   local r = {
-    accepts = A.accepts(qargs.input_url, {"soundcloud%.com"}, p),
-    categories = C.qmspc_http
+    accepts = A.accepts(qargs.input_url, {"soundcloud%.com"}, p)
   }
   return r
 end
