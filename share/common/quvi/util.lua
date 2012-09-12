@@ -78,43 +78,6 @@ function M.is_lower_quality(a, b)
 end
 
 --[[
-Choose a media entity best matching the "requested format" which is string
-set by an application using libquvi API.
-Parameters:
-  qargs   .. Library args (containing .req_format)
-  t       .. Table containing the media properties (incl. media stream URLs)
-  cb_best .. Best format callback function
-  cb_def  .. Default format callback function
-  cb_to_s .. Format to string callback function
-Returns:
-  Chosen media entity.
-
-The req_format string may be an array of format strings (e.g.
-"foo,bar,baz").
-
-A format string may be:
-  - default .. Use whatever a media script determines the 'default'
-  - croak   .. Fail if nothing matched
-  - best    .. Whatever a media script determines to be the 'best'
-
-By default, the function falls back to 'default' format if nothing
-matches. To override this, 'croak' may be used to trigger an error
-instead.
-]]--
-function M.choose_format(qargs, t, cb_default, cb_best, cb_fmt_to_s)
-  for f in M.tokenize(qargs.req_format, '[%w-_]+') do
-    if     f == 'croak' then error('no match: requested format')
-    elseif f == 'best'  then return cb_best(t)
-    else
-      for _,v in pairs(t) do -- Match to user format string.
-        if f == cb_fmt_to_s(v) then return v end
-      end
-    end
-  end
-  return cb_default(t) -- Fall back to the 'default' format.
-end
-
---[[
 Try to match an array of patterns to a string.
 Parameters:
   t .. Array of patterns (if nil, simply return false)
