@@ -26,13 +26,10 @@ local Dailymotion = {} -- Utility functions unique to this script.
 
 -- Identify the media script.
 function ident(qargs)
-  local A = require 'quvi/accepts'
-  local d = {"dailymotion%.%w+", "dai.ly"} -- domains
-  local p = {"/video/", "/%w+$", "/family_filter"} -- paths
-  local r = {
-    accepts = A.accepts(qargs.input_url, d, p)
+  return {
+    can_parse_url = Dailymotion.can_parse_url(qargs),
+    domains = table.concat({'dailymotion.com'}, ',')
   }
-  return r
 end
 
 -- Parse media properties.
@@ -53,19 +50,36 @@ end
 -- Utility functions
 --
 
--- "Normalizes" the embedded URLs.
-function Dailymotion.normalize(input_url)
-  if input_url:match("/swf/") then
-    input_url = input_url:gsub("/swf/", "/")
-  elseif input_url:match("/embed/") then
-    input_url = input_url:gsub("/embed/", "/")
+function Dailymotion.can_parse_url(qargs)
+  Dailymotion.normalize(qargs)
+  local U = require 'quvi/url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and (
+           t.host:lower():match('dailymotion%.com$')
+           or t.host:lower():match('dai%.ly$')
+       )
+       and t.path   and (
+           t.path:lower():match('^/video/')
+           or t.path:lower():match('^/%w+$')
+           or t.path:lower():match('/family_filter')
+       )
+  then
+    return true
+  else
+    return false
   end
-  return input_url
+end
+
+-- "Normalizes" the embedded URLs.
+function Dailymotion.normalize(qargs)
+  qargs.input_url = qargs.input_url:gsub("/embed/", "/")
+  qargs.input_url = qargs.input_url:gsub("/swf/", "/")
 end
 
 -- Fetches the page contents from the media URL.
 function Dailymotion.fetch_page(qargs, U)
-  qargs.input_url = Dailymotion.normalize(qargs.input_url)
+  Dailymotion.normalize(qargs)
 
   local s = qargs.input_url:match('[%?%&]urlback=(.+)')
   if s then
