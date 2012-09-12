@@ -25,12 +25,10 @@ local Arte = {} -- Utility functions unique to to this script.
 
 -- Identify the media script.
 function ident(qargs)
-  local A = require 'quvi/accepts'
-  local r = {
-    accepts = A.accepts(qargs.input_url,
-                          {"videos%.arte%.tv"}, {"/%w+/videos/"})
+  return {
+    can_parse_url = Arte.can_parse_url(qargs),
+    domains = table.concat({'videos.arte.tv'}, ',')
   }
-  return r
 end
 
 -- Parse media properties.
@@ -56,6 +54,19 @@ end
 --
 -- Utility functions
 --
+
+function Arte.can_parse_url(qargs)
+  local U = require 'quvi/url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('^videos%.arte%.tv$')
+       and t.path   and t.path:lower():match('^/%w+/videos/')
+  then
+    return true
+  else
+    return false
+  end
+end
 
 function Arte.get_config(qargs, L, P)
 
