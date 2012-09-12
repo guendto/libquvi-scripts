@@ -78,22 +78,6 @@ function M.is_lower_quality(a, b)
 end
 
 --[[
-Try to match an array of patterns to a string.
-Parameters:
-  t .. Array of patterns (if nil, simply return false)
-  s .. A string
-Returns:
-  true if a pattern matched, otherwise false.
-]]--
-function M.match_any(t, s)
-  if not s then return false end
-  for _,p in pairs(t) do
-    if s:match(p) then return true end
-  end
-  return false
-end
-
---[[
 Tokenize a string.
 Parameters:
   s .. String to tokenize
