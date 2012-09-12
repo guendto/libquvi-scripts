@@ -19,14 +19,14 @@
 -- 02110-1301  USA
 --
 
+local Soundcloud = {} -- Utility functions unique to this script
+
 -- Identify the playlist script.
 function ident(qargs)
-  local A = require 'quvi/accepts'
-  local r = {
-    accepts = A.accepts(qargs.input_url,
-                          {"soundcloud%.com"}, {'/sets/[%w-_]+/'})
+  return {
+    domains = table.concat({'soundcloud.com'}, ','),
+    can_parse_url = Soundcloud.can_parse_url(qargs)
   }
-  return r
 end
 
 -- Parse playlist properties.
@@ -61,6 +61,23 @@ function parse(qargs)
   end
 
   return qargs
+end
+
+--
+-- Utility functions
+--
+
+function Soundcloud.can_parse_url(qargs)
+  local U = require 'quvi/url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^https?$')
+       and t.host   and t.host:lower():match('soundcloud%.com$')
+       and t.path   and t.path:lower():match('/sets/[%w-_]+/')
+  then
+    return true
+  else
+    return false
+  end
 end
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:
