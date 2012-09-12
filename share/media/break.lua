@@ -23,11 +23,10 @@ local Break = {} -- Utility functions unique to this script
 
 -- Identify the media script.
 function ident(qargs)
-  local A = require 'quvi/accepts'
-  local r = {
-    accepts = A.accepts(qargs.input_url, {"break%.com"}, {"/index/"})
+  return {
+    can_parse_url = Break.can_parse_url(qargs),
+    domains = table.concat({'break.com'}, ',')
   }
-  return r
 end
 
 -- Parse media properties.
@@ -49,6 +48,19 @@ end
 --
 -- Utility functions.
 --
+
+function Break.can_parse_url(qargs)
+  local U = require 'quvi/url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('break%.com$')
+       and t.path   and t.path:lower():match('^/index/')
+  then
+    return true
+  else
+    return false
+  end
+end
 
 function Break.iter_streams(n, h)
   local u = string.format("%s.flv?%s", n, h)

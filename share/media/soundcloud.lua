@@ -23,12 +23,10 @@ local Soundcloud = {} -- Utility functions unique to this script
 
 -- Identify the media script.
 function ident(qargs)
-  local A = require 'quvi/accepts'
-  local p = {"/.+/.+$", "/player.swf"} -- paths
-  local r = {
-    accepts = A.accepts(qargs.input_url, {"soundcloud%.com"}, p)
+  return {
+    can_parse_url = Soundcloud.can_parse_url(qargs),
+    domains = table.concat({'soundcloud.com'}, ',')
   }
-  return r
 end
 
 -- Parse media properties.
@@ -54,6 +52,23 @@ end
 --
 -- Utility functions
 --
+
+function Soundcloud.can_parse_url(qargs)
+  Soundcloud.normalize(qargs)
+  local U = require 'quvi/url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http?$')
+       and t.host   and t.host:lower():match('soundcloud%.com$')
+       and t.path   and (
+           t.path:lower():match('^/.+/.+$')
+           or t.path:lower():match('/player%.swf$')
+       )
+  then
+    return true
+  else
+    return false
+  end
+end
 
 function Soundcloud.normalize(qargs) -- "Normalize" an embedded URL
   local url = qargs.input_url:match('swf%?url=(.-)$')

@@ -25,13 +25,12 @@ local YouTube = {} -- Utility functions unique to this script
 
 -- Identify the script.
 function ident(qargs)
-  local A = require 'quvi/accepts'
   local Y = require 'quvi/youtube'
   local u = Y.normalize(qargs.input_url)
-  local r = {
-    accepts = A.accepts(u, {"youtube%.com"}, {"/watch"}, {"v=[%w-_]+"})
+  return {
+    domains = table.concat({'youtube.com'}, ','),
+    can_parse_url = YouTube.can_parse_url(u)
   }
-  return r
 end
 
 -- Parse media properties.
@@ -43,6 +42,20 @@ end
 --
 -- Utility functions
 --
+
+function YouTube.can_parse_url(url)
+  local U = require 'quvi/url'
+  local t = U.parse(url)
+  if t and t.scheme and t.scheme:lower():match('^https?$')
+       and t.host   and t.host:lower():match('youtube%.com$')
+       and t.query  and t.query:lower():match('^v=[%w-_]+')
+       and t.path   and t.path:lower():match('^/watch')
+  then
+    return true
+  else
+    return false
+  end
+end
 
 -- Parses the video info from the server.
 function YouTube.parse_properties(qargs, Y)

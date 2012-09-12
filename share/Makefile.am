@@ -3,7 +3,6 @@
 commondir=$(pkgdatadir)/$(VERSION)/common/quvi/
 
 dist_common_DATA=\
-  common/quvi/accepts.lua\
   common/quvi/bit.lua\
   common/quvi/const.lua\
   common/quvi/debug.lua\

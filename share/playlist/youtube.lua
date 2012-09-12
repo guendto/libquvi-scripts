@@ -23,11 +23,10 @@ local YouTube = {} -- Utility functions unique to this script
 
 -- Identify the playlist script.
 function ident(qargs)
-  local A = require 'quvi/accepts'
-  local r = {
-    accepts = A.accepts(qargs.input_url, {"youtube%.com"}, nil, {"list=%w+"})
+  return {
+    domains = table.concat({'youtube.com'}, ','),
+    can_parse_url = YouTube.can_parse_url(qargs)
   }
-  return r
 end
 
 -- Parse playlist properties.
@@ -81,6 +80,19 @@ end
 --
 -- Utility functions
 --
+
+function YouTube.can_parse_url(qargs)
+  local U = require 'quvi/url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^https?$')
+       and t.host   and t.host:lower():match('youtube%.com$')
+       and t.query  and t.query:lower():match('list=%w+')
+  then
+    return true
+  else
+    return false
+  end
+end
 
 function YouTube.config_url(qargs, start_index, max_results)
   return string.format( -- Refer to http://is.gd/0msY8X

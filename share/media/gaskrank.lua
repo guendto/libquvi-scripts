@@ -23,11 +23,10 @@ local Gaskrank = {} -- Utility functions unique to this script
 
 -- Identify the media script.
 function ident(qargs)
-  local A = require 'quvi/accepts'
-  local r = {
-    accepts = A.accepts(qargs.input_url, {"gaskrank%.tv"}, {"/tv/"})
+  return {
+    can_parse_url = Gaskrank.can_parse_url(qargs),
+    domains = table.concat({'gaskrank.tv'}, ',')
   }
-  return r
 end
 
 -- Parse media properties.
@@ -48,6 +47,19 @@ end
 --
 -- Utility functions.
 --
+
+function Gaskrank.can_parse_url(qargs)
+  local U = require 'quvi/url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('gaskrank%.tv$')
+       and t.path   and t.path:lower():match('^/tv/')
+  then
+    return true
+  else
+    return false
+  end
+end
 
 function Gaskrank.iter_streams(p)
   local u = p:match("(http://movies.-%.flv)")
