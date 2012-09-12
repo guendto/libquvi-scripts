@@ -27,11 +27,10 @@ local Vimeo = {} -- Utility functions unique to this script.
 
 -- Identify the media script.
 function ident(qargs)
-  local A = require 'quvi/accepts'
-  local r = {
-    accepts = A.accepts(qargs.input_url, {"vimeo%.com"}, {"/%d+$"})
+  return {
+    can_parse_url = Vimeo.can_parse_url(qargs),
+    domains = table.concat({'vimeo.com'}, ',')
   }
-  return r
 end
 
 -- Parse media stream URL.
@@ -56,6 +55,20 @@ end
 --
 -- Utility functions
 --
+
+function Vimeo.can_parse_url(qargs)
+  Vimeo.normalize(qargs)
+  local U = require 'quvi/url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('vimeo%.com$')
+       and t.path   and t.path:lower():match('^/%d+$')
+  then
+    return true
+  else
+    return false
+  end
+end
 
 function Vimeo.iter_streams(qargs, page)
   local p = page:match('"profiles":{(.-)},') or error('no match: profiles')
@@ -90,8 +103,8 @@ function Vimeo.iter_streams(qargs, page)
 end
 
 function Vimeo.normalize(qargs)
-  local u = qargs.input_url:gsub("player.", "") -- player.vimeo.com
-  qargs.input_url = u:gsub("/video/", "/")
+  qargs_input_url = qargs.input_url:gsub("player.", "")
+  qargs.input_url = qargs.input_url:gsub("/video/", "/")
 end
 
 function Vimeo.ch_best(t)
