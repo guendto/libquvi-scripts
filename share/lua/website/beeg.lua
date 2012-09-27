@@ -1,6 +1,6 @@
 
 -- libquvi-scripts
--- Copyright (C) 2010 Paul Kocialkowski <contact@paulk.fr>
+-- Copyright (C) 2012  quvi project
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -21,15 +21,15 @@
 --
 
 -- Identify the script.
-function ident (self)
+function ident(self)
     package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local r      = {}
-    r.domain     = "keezmovies%.com"
+    r.domain     = "beeg%.com"
     r.formats    = "default"
     r.categories = C.proto_http
     local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, {r.domain}, {"/video/"})
+    r.handles    = U.handles(self.page_url, {r.domain}, {"/%d+"})
     return r
 end
 
@@ -40,33 +40,19 @@ function query_formats(self)
 end
 
 -- Parse media URL.
-function parse (self)
-    self.host_id = "keezmovies"
+function parse(self)
+    self.host_id = "beeg"
+
+    self.id = self.page_url:match('/(%d+)')
+                or error("no match: media ID")
 
     local p = quvi.fetch(self.page_url)
 
-    self.title = p:match("<title>(.-)%s+-%s+KeezMovies.com")
+    self.title = p:match('<title>(.-)</title>')
                   or error("no match: media title")
 
-    self.id = p:match("id%%3D(.-)&amp;")
-                or error("no match: media id")
-
-    local flashvars = p:match('flashvars" value="(.-)"/>')
-                or error("no match: flashvars")
-
-    local s = flashvars:match("video_url=(.-)&amp;")
-                or error("no match: flv url")
-
-    local U  = require 'quvi/util'
-    self.url = {U.unescape(s)}
-
-    local encrypted = flashvars:match('encrypted=true')
-    if encrypted ~= nil then
-        local key = flashvars:match("video_title=(-.)&amp;")
-        -- XXX No support for AES encrypted URLs
-        -- AESCounterModeDecrypt(self.url, key, 256)
-        error("No support for encrypted streams")
-    end
+    self.url = {p:match("'file': '(http://.-)'")
+                  or error("no match: media stream URL")}
 
     return self
 end
