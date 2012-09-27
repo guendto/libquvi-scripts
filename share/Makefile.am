@@ -9,6 +9,7 @@ DIST_lua=\
  lua/website/README \
  lua/website/quvi/bit.lua \
  lua/website/quvi/const.lua \
+ lua/website/quvi/html.lua \
  lua/website/quvi/url.lua \
  lua/website/quvi/util.lua \
  lua/website/101greatgoals.lua \
