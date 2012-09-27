@@ -125,7 +125,11 @@ function YouTube.iter_formats(config, U)
     for f in fmt_stream_map:gmatch('([^,]*),') do
         local d = U.decode(f)
         if d['itag'] and d['url'] then
-            urls[U.unescape(d['itag'])] = U.unescape(d['url'])
+            local uurl = U.unescape(d['url'])
+            if d['sig'] then
+                uurl = uurl .. "&signature=" .. U.unescape(d['sig'])
+            end
+            urls[U.unescape(d['itag'])] = uurl
         end
     end
 
