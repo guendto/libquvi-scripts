@@ -60,6 +60,7 @@ DIST_lua+=\
  lua/website/beeg.lua \
  lua/website/deviantclip.lua \
  lua/website/empflix.lua \
+ lua/website/fastjizz.lua \
  lua/website/keezmovies.lua \
  lua/website/pornhub.lua \
  lua/website/redtube.lua \
