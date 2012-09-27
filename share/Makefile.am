@@ -70,6 +70,7 @@ DIST_lua+=\
  lua/website/tnaflix.lua \
  lua/website/totallynsfw.lua \
  lua/website/xhamster.lua \
+ lua/website/xnxx.lua \
  lua/website/xvideos.lua \
  lua/website/youjizz.lua
 endif
