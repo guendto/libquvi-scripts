@@ -1,3 +1,26 @@
+v0.4.9  (2012-10-01) / Toni Gundogdu
+
+anon:
+  - Add website/beeg.lua (NSFW) [5d7233f]
+  - Add website/deviantclip.lua (NSFW) [1b12bc4]
+  - Add website/fastjizz.lua (NSFW) [9f1ce8b]
+  - Add website/jizzhut.lua (NSFW) [d509b1b]
+  - Add website/xnxx.lua (NSFW) [ac72d16]
+  - FIX: website/youjizz.lua [ebc42da]
+  - website/keezmovies.lua: Detect encrypted streams [9498be7]
+Martin Herkt:
+  - FIX: youtube.lua [5b1c002] (aka. server response code 403 (conncode=0))
+Toni Gundogdu:
+  - FIX: Add quvi/html.lua to DIST_lua [c681d03]
+  - website/arte.lua: Mark as FIXME [e815821]
+  - website/collegehumor.lua: Mark as FIXME [4f65343]
+  - website/xvideos.lua: Improve title parsing (#109) [e657f45]
+Tzafrir Cohen:
+  - website/tapuz.lua: Add tapuz flix support [bc24554]
+
+ 27 files changed, 622 insertions(+), 86 deletions(-)
+
+
 v0.4.8  (2012-08-21) / Toni Gundogdu
 
 anon:
