@@ -134,7 +134,8 @@ function YouTube.iter_streams(config, U)
       local itag = d['itag']
       local cnt = (ct:match('/([%w-]+)')):gsub('x%-', '')
       local t = {
-        url = U.unescape(d['url']),
+        url = U.unescape(d['url']) -- d['sig'] ? "&signature=val" : ""
+              .. (d['sig'] and ('&signature='..d['sig']) or ''),
         quality = d['quality'],
         container = cnt,
         v_enc = v_enc,
