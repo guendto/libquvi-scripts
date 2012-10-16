@@ -86,15 +86,16 @@ AC_CONFIG_FILES([
 AC_OUTPUT
 
 AC_MSG_NOTICE([
-  version:    ${VERSION}
-  prefix:     ${prefix}
-  compiler    ${CC}
-  cflags      ${CFLAGS}
-Testsuite options:
-  with:
-  - tests: ${with_tests} (libquvi, .pc modversion ${libquvi_modver})
-Install options:
-  with:
-  - geoblocked:  ${with_geoblocked}
-  - fixme:       ${with_fixme}
-  - nsfw:        ${with_nsfw}])
+  version       ${VERSION}
+  prefix        ${prefix}
+  compiler      ${CC}
+  cflags        ${CFLAGS}
+Testsuite options
+  with
+  - tests       ${with_tests}
+    - libquvi .pc modversion ${libquvi_modver}
+Install options
+  with
+  - geoblocked  ${with_geoblocked}
+  - fixme       ${with_fixme}
+  - nsfw        ${with_nsfw}])
