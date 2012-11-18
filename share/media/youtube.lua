@@ -44,7 +44,7 @@ end
 --
 
 function YouTube.can_parse_url(url)
-  local U = require 'quvi/url'
+  local U = require 'socket.url'
   local t = U.parse(url)
   if t and t.scheme and t.scheme:lower():match('^https?$')
        and t.host   and t.host:lower():match('youtube%.com$')
@@ -77,7 +77,7 @@ function YouTube.get_data(qargs, Y)
   qargs.id = u:match('v=([%w-_]+)')
               or error('no match: media ID')
 
-  local U = require 'quvi/url'
+  local U = require 'socket.url'
   local u = U.parse(u)
   local s = u.scheme or error('no match: scheme')
 

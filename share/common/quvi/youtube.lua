@@ -31,7 +31,7 @@ Returns:
 function M.normalize(url)
   if not url then return url end
 
-  local U = require 'quvi/url'
+  local U = require 'socket.url'
   local t = U.parse(url)
 
   if not t.host then return url end
@@ -62,7 +62,7 @@ function M.append_if_unique(qargs, url)
 
   url = M.normalize(url)
 
-  local U = require 'quvi/url'
+  local U = require 'socket.url'
   local t = U.parse(url)
 
   if not t.host or not t.query then return end

@@ -56,7 +56,7 @@ end
 --
 
 function Arte.can_parse_url(qargs)
-  local U = require 'quvi/url'
+  local U = require 'socket.url'
   local t = U.parse(qargs.input_url)
   if t and t.scheme and t.scheme:lower():match('^http$')
        and t.host   and t.host:lower():match('^videos%.arte%.tv$')
