@@ -10,7 +10,6 @@ dist_common_DATA=\
   common/quvi/html.lua\
   common/quvi/lxph.lua\
   common/quvi/stream.lua\
-  common/quvi/url.lua\
   common/quvi/util.lua\
   common/quvi/youtube.lua
 
