@@ -65,7 +65,7 @@ function Break.can_parse_url(qargs)
 end
 
 function Break.iter_streams(n, h)
-  local u = string.format("%s.flv?%s", n, h)
+  local u = string.format("%s?%s", n, h)
   local S = require 'quvi/stream'
   return {S.stream_new(u)}
 end
