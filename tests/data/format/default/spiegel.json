@@ -1,14 +1,14 @@
 {
   "host": "spiegel",
-  "page_title": "Wiedeking-Nachfolger gefunden",
-  "page_url": "http://www.spiegel.de/video/video-1012582.html",
-  "id": "1012582",
+  "page_title": "Lage im Nahen Osten spitzt sich zu",
+  "page_url": "http://www.spiegel.de/video/kein-waffenstillstand-zwischen-israel-und-palaestinensern-video-1235307.html",
+  "id": "1235307",
   "format_requested": "default",
-  "duration": "52000",
+  "duration": "102000",
   "link": [
     {
       "id": "1",
-      "length_bytes": "2462477",
+      "length_bytes": "4875897",
       "content_type": "video/x-flv",
       "file_suffix": "flv",
       "url": ""
