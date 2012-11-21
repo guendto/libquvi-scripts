@@ -80,11 +80,11 @@ relevant to the installation:
 Requirements
 ------------
 
-* LuaExpat 1.2.0  (not checked by configure)
-  http://matthewwild.co.uk/projects/luaexpat/
-
-* LuaSocket 2.0.2  (not checked by configure)
+* LuaSocket 2.0.2
   http://w3.impa.br/~diego/software/luasocket/
+
+* LuaExpat 1.2.0
+  http://matthewwild.co.uk/projects/luaexpat/
 
 * pkg-config for tracking the compilation flags needed for libraries
   http://www.freedesktop.org/software/pkgconfig/
