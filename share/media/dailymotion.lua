@@ -37,7 +37,7 @@ function parse(qargs)
   local p = Dailymotion.fetch_page(qargs, U)
 
   qargs.thumb_url = p:match('"og:image" content="(.-)"') or ''
-  qargs.title = p:match('title="(.-)"') or ''
+  qargs.title = p:match('"og:title" content="(.-)"') or ''
   qargs.id = p:match("video/([^%?_]+)") or ''
 
   qargs.streams = Dailymotion.iter_streams(p, U)
