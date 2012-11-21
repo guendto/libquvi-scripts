@@ -45,19 +45,21 @@ function parse(self)
 
     local p = quvi.fetch(self.page_url)
 
-    self.title = p:match('id="vid_title" content="(.-)"')
+    self.title = p:match("sVidTitle:%s+['\"](.-)['\"]")
                   or error("no match: media title")
 
-    self.id = p:match("ContentID='(.-)'")
+    self.id = p:match("iContentID:%s+'(.-)'")
                 or error("no match: media ID")
 
-    local fn = p:match("FileName='(.-)'")
-                or error("no match: file name")
+    self.thumbnail_url = p:match('"og:image" content="(.-)"') or ''
 
-    local fh = p:match('flashVars.icon = "(.-)"')
+    local n = p:match("videoPath:%s+['\"](.-)['\"]")
+                or error("no match: file path")
+
+    local h = p:match("icon:%s+['\"](.-)['\"]")
                 or error("no match: file hash")
 
-    self.url = {string.format("%s.flv?%s", fn, fh)}
+    self.url = {string.format("%s?%s", n, h)}
 
     return self
 end
