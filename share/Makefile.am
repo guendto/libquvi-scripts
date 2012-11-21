@@ -31,13 +31,13 @@ dist_media_DATA=\
   media/break.lua\
   media/dailymotion.lua\
   media/gaskrank.lua\
-  media/soundcloud.lua\
   media/vimeo.lua\
   media/youtube.lua
+#  media/soundcloud.lua -- On hold: still under LGPLv2.1+
 
 if WITH_GEOBLOCKED
-dist_media_DATA+=\
-  media/arte.lua
+dist_media_DATA+=
+#  media/arte.lua -- On hold: still under LGPLv2.1+
 endif
 
 if WITH_NSFW
@@ -55,8 +55,8 @@ endif # WITH_FIXME
 playlistdir=$(pkgdatadir)/$(VERSION)/playlist
 
 dist_playlist_DATA=\
-  playlist/soundcloud.lua\
   playlist/youtube.lua
+#  playlist/soundcloud.lua -- On hold: media script still under LGPLv2.1+
 
 # Scan embedded media URL scripts.
 
