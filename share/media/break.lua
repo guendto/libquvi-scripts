@@ -33,11 +33,14 @@ function parse(qargs)
   local p = quvi.fetch(qargs.input_url)
 
   qargs.thumb_url = p:match('"og:image" content="(.-)"') or ''
-  qargs.title = p:match('id="vid_title" content="(.-)"') or ''
-  qargs.id = p:match("ContentID='(.-)'") or ''
+  qargs.title = p:match("sVidTitle:%s+['\"](.-)['\"]") or ''
+  qargs.id = p:match("iContentID:%s+'(.-)'") or ''
 
-  local n = p:match("FileName='(.-)'") or error("no match: file name")
-  local h = p:match('flashVars.icon = "(.-)"') or error("no match: file hash")
+  local n = p:match("videoPath:%s+['\"](.-)['\"]")
+              or error("no match: file path")
+
+  local h = p:match("icon:%s+['\"](.-)['\"]")
+              or error("no match: file hash")
 
   qargs.streams = Break.iter_streams(n, h)
 
