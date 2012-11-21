@@ -63,7 +63,7 @@ function parse(self)
     local U = require 'quvi/util'
     local p = Dailymotion.fetch_page(self, U)
 
-    self.title = p:match('title="(.-)"')
+    self.title = p:match('"og:title" content="(.-)"')
                   or error("no match: media title")
 
     self.id = p:match("video/([^%?_]+)")
