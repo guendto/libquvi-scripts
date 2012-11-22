@@ -1,3 +1,13 @@
+v0.4.10  (2012-11-22) / Toni Gundogdu
+
+Toni Gundogdu:
+  - FIX: audioboo.lua: multiple patterns [b182505]
+  - FIX: break.lua: multiple patterns [6357cd1]
+  - FIX: dailymotion.lua: title pattern [bc35f74]
+
+ 10 files changed, 28 insertions(+), 127 deletions(-)
+
+
 v0.4.9  (2012-10-01) / Toni Gundogdu
 
 anon:
