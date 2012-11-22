@@ -28,7 +28,7 @@ Parameters:
 Returns:
   true if string A ends with string B.
 ]]--
-function M.ends(a, b) -- http://lua-users.org/wiki/StringRecipes
+function M.ends_with(a, b) -- http://lua-users.org/wiki/StringRecipes
   return a:sub(-#b) == b
 end
 
