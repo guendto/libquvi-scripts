@@ -31,11 +31,8 @@ end
 -- Parse playlist properties.
 function parse(qargs)
 
-  qargs.id = qargs.input_url:match('list=(%w+)')
-  while #qargs.id > 16 do -- Strip playlist ID prefix (e.g. "PL")
-    qargs.id = qargs.id:gsub("^%w", "")
-  end
-  if #qargs.id < 16 then
+  qargs.id = qargs.input_url:match('list=([%w_-]+)')
+  if #qargs.id <16 then
     error('no match: playlist ID')
   end
 
@@ -85,7 +82,7 @@ function YouTube.can_parse_url(qargs)
   local t = U.parse(qargs.input_url)
   if t and t.scheme and t.scheme:lower():match('^https?$')
        and t.host   and t.host:lower():match('youtube%.com$')
-       and t.query  and t.query:lower():match('list=%w+')
+       and t.query  and t.query:lower():match('list=[%w_-]+')
   then
     return true
   else
