@@ -35,18 +35,26 @@ static const gchar *URLs[] =
   "http://is.gd/B4BBAA",
   "http://www.youtube.com/watch?v=XIKFORGW3Ig&list=PL2484FAEB06A4FB74&",
   "http://www.youtube.com/playlist?list=PL5BF9E09ECEC8F88F",
+  "http://www.youtube.com/playlist?list=PLuzuQWCPP75rIQ7BhECPx4VftKyMwrQUN",
+  "http://www.youtube.com/watch?feature=player_embedded&list=PLyALKMPGOR5dJs6G6ZsJslZODdb1G35Eu&v=3N69hRav3WI",
+  "http://www.youtube.com/playlist?list=PLlbnzwCkgkTBBXWz595XaKs_kkXek0gQP",
+  "http://www.youtube.com/playlist?list=PLn83-N7Bdu2aHMVgBPoJfr0gmvXLVBMlF",
   NULL
 };
 
 static const gchar *IDs[] =
 {
-  "954CCC04F8437E14",
-  "1C90BDF46E6EACFD",
-  "EE6E4AF38BC19EC2",
-  "AAF3A1D0CA1E304F",
-  "5BF9E09ECEC8F88F",
-  "2484FAEB06A4FB74",
-  "5BF9E09ECEC8F88F",
+  "PL954CCC04F8437E14",
+  "SP1C90BDF46E6EACFD",
+  "PLEE6E4AF38BC19EC2",
+  "PLAAF3A1D0CA1E304F",
+  "PL5BF9E09ECEC8F88F",
+  "PL2484FAEB06A4FB74",
+  "PL5BF9E09ECEC8F88F",
+  "PLuzuQWCPP75rIQ7BhECPx4VftKyMwrQUN",
+  "PLyALKMPGOR5dJs6G6ZsJslZODdb1G35Eu",
+  "PLlbnzwCkgkTBBXWz595XaKs_kkXek0gQP",
+  "PLn83-N7Bdu2aHMVgBPoJfr0gmvXLVBMlF",
   NULL
 };
 
