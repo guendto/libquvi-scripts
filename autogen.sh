@@ -24,16 +24,6 @@ set -e
 source=.gitignore
 cachedir=autom4te.cache
 
-gen_manual()
-{
-  echo "Generate manual..."
-  MAN=doc/man7/libquvi-scripts.7 ; POD=$MAN.pod ; VN=`./gen-ver.sh`
-  podchecker "$POD" || exit $?
-  pod2man -c "libquvi-scripts manual" -n libquvi-scripts \
-    -s 7 -r "$VN" "$POD" "$MAN"
-  return $?
-}
-
 cleanup()
 {
   echo "WARNING
@@ -72,4 +62,4 @@ done
 mkdir -p m4
 
 echo "Generate configuration files..."
-autoreconf -if && gen_manual && echo "You can now run 'configure'"
+autoreconf -if && echo "You can now run 'configure'"
