@@ -34,6 +34,7 @@ DIST_lua=\
  lua/website/liveleak.lua \
  lua/website/mgnetwork.lua \
  lua/website/metacafe.lua \
+ lua/website/myspass.lua \
  lua/website/publicsenat.lua \
  lua/website/sapo.lua \
  lua/website/senat.lua \
