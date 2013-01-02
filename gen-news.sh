@@ -27,7 +27,7 @@ d=`date +%F`
 b="$v ($d) / $a
 
 "
-t=`git tag | tail -n1`
+t=`git describe --abbrev=0`
 for a in `git log --format='%an' "$t"..HEAD | sort | uniq`; do
   c=`git log --format="  - %s [%h]" --author="$a" "$t"..HEAD | sort -h`
   b="$b$a:
