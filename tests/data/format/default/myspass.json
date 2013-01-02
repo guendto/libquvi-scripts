@@ -1,0 +1,17 @@
+{
+  "host": "myspass",
+  "page_title": "The Netshow 001 084 Abschied aus Köln",
+  "page_url": "http://www.myspass.de/myspass/shows/webshows/the-netshow/Abschied-aus-Koeln--/11186/",
+  "id": "11186",
+  "format_requested": "default",
+  "thumbnail_url": "http://www.myspass.de/myspass/media/images/videos/86/11186_640x360.jpg",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "24736684",
+      "content_type": "video/mp4",
+      "file_suffix": "mp4",
+      "url": ""
+    }
+  ]
+}
