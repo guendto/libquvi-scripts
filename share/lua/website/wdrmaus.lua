@@ -99,69 +99,75 @@ end
 
 function WdrMaus.parseElefantenseite(self)
   self.id = self.page_url:match('\/([%w_]-)$')
-      or error('no match: media id')
+                or error('no match: media ID')
 
   local rooturl = self.page_url:match('(%w+://.+/%w+)/.*')
+                      or error('no match: root url')
+
   local qo = {fetch_type='config'}
   local configuration = quvi.fetch(rooturl .. '/data/configuration.php5', qo)
+
   local streamingServerPath =
           WdrMaus.getXMLvalue(configuration, 'streamingServerPath')
+
   local toc = quvi.fetch(rooturl .. '/data/tableOfContents.php5', qo)
+
   local metadataPath = WdrMaus.getMetadataPathFromToc(toc, self.id)
   local metadata = quvi.fetch(rooturl .. '/' .. metadataPath, qo);
 
   streamingServerPath = string.gsub(streamingServerPath, '/$', '')
-  self.url = { streamingServerPath
-               .. WdrMaus.getXMLvalue(metadata, 'file') }
+  self.url = { streamingServerPath .. WdrMaus.getXMLvalue(metadata, 'file') }
   self.title = WdrMaus.getXMLvalue(metadata, 'title')
+
   -- no idea why this url has a diffent host
   self.thumbnail_url = 'http://www.wdr.de/bilder/mediendb/elefant_online'
         .. WdrMaus.getXMLvalue(metadata, 'image')
-  self.format = 'default'
 
   return self
 end
 
 function WdrMaus.parseKaeptnblaubaerseite(self)
-  self.id = self.page_url:match('/([^/]-)$')
+  self.id = self.page_url:match('/([^/]-)$') or error('no match: media ID')
+
   local qo = {fetch_type='config'}
   local metadatasite = quvi.fetch(
       'http://www.wdrmaus.de/kaeptnblaubaerseite/baerchen/tv.php5', qo)
+
   local matcher = string.gsub(self.id, '-' , '.')
   metadata = metadatasite:match('.*(<img.-' .. matcher .. ')')
-  self.title = metadata:match('<p>%s-(.-)%s-<br')
-  local thumb_rel = metadata:match('<img src="(.-)"') or ''
-  thumb_rel = string.gsub(thumb_rel, '%.%.', '')
-  self.thumbnail_url =
-      'http://www.wdrmaus.de/kaeptnblaubaerseite'
-      .. thumb_rel
-  self.url = { self.page_url:match('.-(rtmp.-flv)') }
-  self.format = 'default'
+                or error('no match: metadata')
 
+  self.title = metadata:match('<p>%s-(.-)%s-<br') or error('no match: title')
+  local thumb_rel = metadata:match('<img src="(.-)"') or ''
+
+  thumb_rel = string.gsub(thumb_rel, '%.%.', '')
+  self.thumbnail_url = 'http://www.wdrmaus.de/kaeptnblaubaerseite' ..thumb_rel
+
+  self.url = { self.page_url:match('.-(rtmp.-flv)')
+                  or error('no match: media stream URL') }
   return self
 end
 
 function WdrMaus.parseSachgeschichten(self)
-  self.id = self.page_url:match('%d+$')
+  self.id = self.page_url:match('%d+$') or error('no match: media ID')
   local metadata = quvi.fetch(self.page_url)
-  self.title = metadata:match('h1_019DCE">(.-)<')
-  self.url = { metadata:match('(rtmp.-mp4)') }
-  self.format = 'default'
+  self.title = metadata:match('h1_019DCE">(.-)<') or error('no match: title')
+  self.url = { metadata:match('(rtmp.-mp4)')
+                or error('no match: media stream URL') }
   return self
 end
 
 function WdrMaus.getXMLvalue(str, value)
   ret = str:match('<' .. value .. '>(.-)</' .. value .. '>')
-      or error('Cannot match ' .. value)
-  ret = ret:match('<!%[CDATA%[(.+)]]>') or ret
-  return ret
+            or error('Cannot match ' .. value)
+  return ret:match('<!%[CDATA%[(.+)]]>') or ret
 end
 
 function WdrMaus.getMetadataPathFromToc(toc, id)
   -- the toc contains all paths for this root (f.i. elefantenkino)
-  local page = string.match(toc, '<id>.-(' .. id .. '.-</xmlPath>)')
+  local page = toc:match('<id>.-(' .. id .. '.-</xmlPath>)')
+                  or error('no match: metadata path')
   return WdrMaus.getXMLvalue(page, 'xmlPath')
 end
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:
-
