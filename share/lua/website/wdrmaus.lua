@@ -46,7 +46,6 @@
 --
 --  There are more sections but they seem to provide no videos.
 
-
 local WdrMaus = {} -- Utility functions unique to this script
 
 -- Identify the script.
@@ -75,18 +74,23 @@ end
 function parse(self)
   self.host_id = "wdrmaus"
 
+  local a = {
+      {pat='kaeptnblaubaerseite', func=WdrMaus.parseKaeptnblaubaerseite},
+      {pat='sachgeschichten',     func=WdrMaus.parseSachgeschichten},
+      {pat='elefantenseite',      func=WdrMaus.parseElefantenseite}
+  }
+
   local U = require 'quvi/url'
   local t = U.parse(self.page_url)
+  local s = {}
 
-  if t.path:match('elefantenseite') then
-    WdrMaus.parseElefantenseite(self)
-  elseif t.path:match('kaeptnblaubaerseite') then
-    WdrMaus.parseKaeptnblaubaerseite(self)
-  elseif t.path:match('sachgeschichten') then
-    WdrMaus.parseSachgeschichten(self)
+  for _,v in pairs(a) do
+      if t.path:match(v.pat) then return v.func(self) end
+      table.insert(s, v.pat)
   end
 
-  return self
+  error(string.format("limited support for the {%s} sections only",
+                        table.concat(s, ',')))
 end
 
 --
@@ -98,11 +102,13 @@ function WdrMaus.parseElefantenseite(self)
       or error('no match: media id')
 
   local rooturl = self.page_url:match('(%w+://.+/%w+)/.*')
-  local configuration = quvi.fetch(rooturl .. '/data/configuration.php5')
-  local streamingServerPath = WdrMaus.getXMLvalue(configuration, 'streamingServerPath')
-  local toc = quvi.fetch(rooturl .. '/data/tableOfContents.php5')
+  local qo = {fetch_type='config'}
+  local configuration = quvi.fetch(rooturl .. '/data/configuration.php5', qo)
+  local streamingServerPath =
+          WdrMaus.getXMLvalue(configuration, 'streamingServerPath')
+  local toc = quvi.fetch(rooturl .. '/data/tableOfContents.php5', qo)
   local metadataPath = WdrMaus.getMetadataPathFromToc(toc, self.id)
-  local metadata = quvi.fetch(rooturl .. '/' .. metadataPath);
+  local metadata = quvi.fetch(rooturl .. '/' .. metadataPath, qo);
 
   streamingServerPath = string.gsub(streamingServerPath, '/$', '')
   self.url = { streamingServerPath
@@ -118,8 +124,9 @@ end
 
 function WdrMaus.parseKaeptnblaubaerseite(self)
   self.id = self.page_url:match('/([^/]-)$')
+  local qo = {fetch_type='config'}
   local metadatasite = quvi.fetch(
-      'http://www.wdrmaus.de/kaeptnblaubaerseite/baerchen/tv.php5')
+      'http://www.wdrmaus.de/kaeptnblaubaerseite/baerchen/tv.php5', qo)
   local matcher = string.gsub(self.id, '-' , '.')
   metadata = metadatasite:match('.*(<img.-' .. matcher .. ')')
   self.title = metadata:match('<p>%s-(.-)%s-<br')
@@ -136,8 +143,7 @@ end
 
 function WdrMaus.parseSachgeschichten(self)
   self.id = self.page_url:match('%d+$')
-  local metadata = quvi.fetch(
-      self.page_url)
+  local metadata = quvi.fetch(self.page_url)
   self.title = metadata:match('h1_019DCE">(.-)<')
   self.url = { metadata:match('(rtmp.-mp4)') }
   self.format = 'default'
