@@ -51,6 +51,7 @@ DIST_lua=\
  lua/website/videa.lua \
  lua/website/videobash.lua \
  lua/website/vimeo.lua \
+ lua/website/wdrmaus.lua \
  lua/website/yfrog.lua \
  lua/website/youtube.lua
 
