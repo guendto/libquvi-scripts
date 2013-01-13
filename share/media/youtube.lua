@@ -25,40 +25,21 @@ local YouTube = {} -- Utility functions unique to this script
 -- Identify the script.
 function ident(qargs)
   local Y = require 'quvi/youtube'
-  local u = Y.normalize(qargs.input_url)
-  return {
-    domains = table.concat({'youtube.com'}, ','),
-    can_parse_url = YouTube.can_parse_url(u)
-  }
+  return Y.ident(qargs)
 end
 
 -- Parse media properties.
 function parse(qargs)
-  local Y = require 'quvi/youtube'
-  return YouTube.parse_properties(qargs, Y)
+  return YouTube.parse_properties(qargs)
 end
 
 --
 -- Utility functions
 --
 
-function YouTube.can_parse_url(url)
-  local U = require 'socket.url'
-  local t = U.parse(url)
-  if t and t.scheme and t.scheme:lower():match('^https?$')
-       and t.host   and t.host:lower():match('youtube%.com$')
-       and t.query  and t.query:lower():match('^v=[%w-_]+')
-       and t.path   and t.path:lower():match('^/watch')
-  then
-    return true
-  else
-    return false
-  end
-end
-
 -- Parses the video info from the server.
-function YouTube.parse_properties(qargs, Y)
-  local c, U = YouTube.get_data(qargs, Y)
+function YouTube.parse_properties(qargs)
+  local c, U = YouTube.get_data(qargs)
 
   qargs.duration_ms = (c['length_seconds'] or 0)*1000 -- to ms
   qargs.thumb_url = U.unescape(c['thumbnail_url'] or '')
@@ -70,7 +51,8 @@ function YouTube.parse_properties(qargs, Y)
 end
 
 -- Queries the video data from the server.
-function YouTube.get_data(qargs, Y)
+function YouTube.get_data(qargs)
+  local Y = require 'quvi/youtube'
   local u = Y.normalize(qargs.input_url)
 
   qargs.id = u:match('v=([%w-_]+)')
