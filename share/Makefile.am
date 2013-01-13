@@ -52,6 +52,13 @@ endif # WITH_FIXME
 
 # Subtitle property scripts.
 
+subtitleexportdir=$(pkgdatadir)/$(VERSION)/subtitle/export
+
+dist_subtitleexport_DATA=\
+  subtitle/export/subrip.lua
+
+# Subtitle property scripts.
+
 subtitledir=$(pkgdatadir)/$(VERSION)/subtitle
 
 dist_subtitle_DATA=\
