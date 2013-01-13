@@ -40,7 +40,7 @@ stamp_scripts()
   }
   [ -x "$top_distdir/gen-ver.sh" ] && {
     echo "Stamp lua scripts..."
-    D='common/ media/ playlist/ scan/ util/'
+    D='common/ media/ playlist/ scan/ subtitle/ subtitle/export/ util/'
     for d in $D; do
       find "$top_distdir/share/$d" -name '*.lua' \
         -exec echo "Stamp {}" \; \
