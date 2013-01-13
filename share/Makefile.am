@@ -50,6 +50,13 @@ if WITH_NSFW
 endif
 endif # WITH_FIXME
 
+# Subtitle property scripts.
+
+subtitledir=$(pkgdatadir)/$(VERSION)/subtitle
+
+dist_subtitle_DATA=\
+  subtitle/youtube.lua
+
 # Playlist property scripts.
 
 playlistdir=$(pkgdatadir)/$(VERSION)/playlist
