@@ -1,5 +1,5 @@
 -- libquvi-scripts
--- Copyright (C) 2010-2012  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -151,6 +151,18 @@ Returns:
 ]]--
 function M.slash_unescape(s)
   return (s:gsub('\\(.)', '%1'))
+end
+
+--[[
+Trim a string removing leading and trailing whitespace.
+Parameters:
+  s .. String to trim
+Returns:
+  The trimmed string.
+]]--
+function M.trim(s)
+  s = s:gsub('^%s+(.)', '%1')
+  return s:gsub('(.)%s+$', '%1')
 end
 
 return M
