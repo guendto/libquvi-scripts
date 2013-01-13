@@ -1,5 +1,5 @@
 -- libquvi-scripts
--- Copyright (C) 2010-2012  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -20,6 +20,21 @@
 
 local M = {}
 
+--
+-- subtitle
+--
+
+-- (s)ubtitle (t)ype
+M.st_tts = 0x1  -- text-to-speech
+M.st_cc  = 0x2  -- closed caption
+
+-- (s)ubtitle (i)nternal (f)ormat
+M.sif_tt = 0x1 -- timed text
+
+--
+-- quvi.fetch
+--
+
 -- (q)uvi.(f)etch (o)ption
 M.qfo_from_charset = 0x0 -- Convert (to UTF-8) from this charset
 M.qfo_user_agent   = 0x1 -- Set user-agent string value
@@ -32,8 +47,6 @@ M.qft_config   = 0x1
 M.qft_url      = 0x2 -- default
 
 --[[
-NOTES
-=====
 
 qfo_from_charset
 ----------------
@@ -58,7 +71,7 @@ description for details. If you must define >1 cookies, use the
 following format: "foo=1; bar=2;" .
 
 EXAMPLES
-========
+--------
 local C = require 'quvi/const'
 
 local p = quvi.fetch(URL, {[C.qfo_cookie] = 'foo=1'})
@@ -69,6 +82,7 @@ local t = {
   [C.qfo_type] = C.qft_config
 }
 local p = quvi.fetch(URL, t)
+
 ]]--
 
 return M
