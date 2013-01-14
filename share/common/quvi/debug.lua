@@ -25,16 +25,17 @@ function M.short() return debug.getinfo(2, 'S').short_src end
 function M.file()  return debug.getinfo(2, 'S').source end
 function M.func()  return debug.getinfo(2, 'n').name end
 
-function M.say(qargs, ...)
-  if not qargs.verbose then return end
-  io.stderr:write(string.format('%s\n', string.format(...)))
+function M.say(...)
+  local s = os.getenv("LIBQUVI_SCRIPTS_VERBOSE")
+  if s and #s >0 then
+    io.stderr:write(string.format('%s\n', string.format(...)))
+  end
 end
 
 --[[
 function M.foo()
-  qargs = {verbose=true}
-  M.say(qargs, '%s:%s: foo=%s', M.file(), M.line(), 1)
-  M.say(qargs, 'bar')
+  M.say('%s:%s: foo=%s', M.file(), M.line(), 1)
+  M.say('bar')
 end
 M.foo()
 ]]--
