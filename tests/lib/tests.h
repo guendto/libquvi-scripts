@@ -157,7 +157,7 @@ typedef struct qp_test_opts_s *qp_test_opts_t;
     g_assert_cmpstr(s, ==, e);\
   } while (0)
 
-/* Playist property string value length >0 */
+/* Playlist property string value length >0 */
 #define qp_chk_l(qpp)\
   do {\
     gchar *s = NULL;\
@@ -168,7 +168,7 @@ typedef struct qp_test_opts_s *qp_test_opts_t;
     g_assert_cmpint(strlen(s), >, 0);\
   } while (0)
 
-/* Media property value (double) >0 */
+/* Playlist property value (double) >0 */
 #define qp_chk_gt0(qpp)\
   do {\
     gdouble v = 0;\
@@ -191,6 +191,56 @@ struct qs_test_exact_s
 typedef struct qs_test_exact_s *qs_test_exact_t;
 
 void qs_test(const gchar*, qs_test_exact_t);
+
+/* Subtitle. */
+
+/* Subtitle type property value (double) length >0 */
+#define qsub_chk_type_gt0(qsp)\
+  do {\
+    gdouble v = 0;\
+    quvi_subtitle_type_get(qst, qsp, &v);\
+    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
+    g_test_message("%s=%g", #qsp, v);\
+    g_assert_cmpfloat(v, >, 0);\
+  } while (0)
+
+/* Subtitle lang property string value >0 */
+#define qsub_chk_lang_l(qsp)\
+  do {\
+    gchar *s = NULL;\
+    quvi_subtitle_lang_get(qsl, qsp, &s);\
+    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
+    g_assert(s != NULL);\
+    g_test_message("%s=%s", #qsp, s);\
+    g_assert_cmpint(strlen(s), >, 0);\
+  } while (0)
+
+struct qsub_test_opts_s
+{
+  struct
+  {
+    struct
+    {
+      gboolean format;
+      gboolean type;
+    } gt0;
+  } type;
+  struct
+  {
+    struct
+    {
+      gboolean translated;
+      gboolean original;
+      gboolean code;
+      gboolean url;
+      gboolean id;
+    } s_len_gt0;
+  } lang;
+};
+
+typedef struct qsub_test_opts_s *qsub_test_opts_t;
+
+void qsub_test(const gchar*, const gchar*, qsub_test_opts_t);
 
 /* Other. */
 
