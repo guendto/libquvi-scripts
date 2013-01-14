@@ -94,10 +94,11 @@ void qp_test(const gchar *func, const gchar *url,
 
       /* Must return >0 media URLs. */
 
-      for (c=0; quvi_playlist_media_next(qp) == QUVI_TRUE; ++c);
+      for (c=0; quvi_playlist_media_next(qp) == QUVI_TRUE; ++c)
+        {
+          qp_chk_l(QUVI_PLAYLIST_MEDIA_PROPERTY_URL);
+        }
       g_assert_cmpint(c, >, 0);
-
-      qp_chk_l(QUVI_PLAYLIST_MEDIA_PROPERTY_URL);
     }
 
   quvi_playlist_free(qp);
