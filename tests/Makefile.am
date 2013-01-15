@@ -17,6 +17,7 @@ testsuite_ldadd=\
   $(libquvi_LIBS) $(libcurl_LIBS) $(glib_LIBS)
 
 include $(top_srcdir)/tests/playlist/tests.mk
+include $(top_srcdir)/tests/subtitle/tests.mk
 include $(top_srcdir)/tests/media/tests.mk
 include $(top_srcdir)/tests/scan/tests.mk
 

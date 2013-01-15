@@ -1,5 +1,5 @@
 -- libquvi-scripts
--- Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -19,6 +19,42 @@
 --
 
 local M = {}
+
+--[[
+Return the `ident' data for the {media,subtitle} scripts.
+Parameters:
+  qargs .. quvi args
+Returns:
+  A table containing the values expected by the library.
+]]--
+function M.ident(qargs)
+  local u = M.normalize(qargs.input_url)
+  return {
+    domains = table.concat({'youtube.com'}, ','),
+    can_parse_url = M.can_parse_url(u)
+  }
+end
+
+--[[
+Check if script can parse the URL.
+Parameters:
+  url .. URL to check
+Returns:
+  A boolean value.
+]]--
+function M.can_parse_url(url)
+  local U = require 'socket.url'
+  local t = U.parse(url)
+  if t and t.scheme and t.scheme:lower():match('^https?$')
+       and t.host   and t.host:lower():match('youtube%.com$')
+       and t.query  and t.query:lower():match('^v=[%w-_]+')
+       and t.path   and t.path:lower():match('^/watch')
+  then
+    return true
+  else
+    return false
+  end
+end
 
 --[[
 "Normalize" URL to YouTube media URL. See the test URLs for examples.
