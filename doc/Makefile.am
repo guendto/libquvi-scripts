@@ -1,1 +1,4 @@
-SUBDIRS=	man7
+SUBDIRS=
+if WITH_MANUAL
+SUBDIRS+=man7
+endif
