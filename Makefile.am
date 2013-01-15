@@ -9,7 +9,10 @@ endif
 pkgconfigdir=	$(libdir)/pkgconfig
 pkgconfig_DATA=	libquvi-scripts-0.9.pc
 
-.PHONY: test stamp_scripts ChangeLog VERSION
+.PHONY: doc test stamp_scripts ChangeLog VERSION
+
+doc:
+	@make -C $(top_builddir)/doc/man7/ doc
 
 if WITH_TESTS
 SUBDIRS+=	tests

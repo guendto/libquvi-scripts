@@ -21,7 +21,6 @@ config.aux/missing
 configure
 doc/Makefile.in
 doc/man7/Makefile.in
-doc/man7/libquvi-scripts.7
 share/Makefile.in
 share/lua/Makefile.in
 tests/Makefile.in

@@ -23,6 +23,10 @@ AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_LN_S
 
+AC_PATH_PROG([A2X], [a2x], [no])
+AM_CONDITIONAL([HAVE_A2X], [test x"$A2X" != "xno"])
+AC_SUBST([A2X])
+
 # Check for the Lua modules.
 have_lua=no
 have_sct=no

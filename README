@@ -98,6 +98,11 @@ Requirements
 * GNU make is recommended
   http://www.gnu.org/software/make
 
+* asciidoc (a2x) for producing the manual pages
+  http://www.methods.co.nz/asciidoc/
+
+      See also "Documentation".
+
 When the configure script is run with the `--with-tests':
 
   * libquvi 0.9
@@ -120,14 +125,32 @@ The .pc file for libquvi-scripts is installed in $exec_prefix/lib/pkgconfig
 to provide information when compiling packages that depend on libquvi-scripts.
 
 
+Documentation
+=============
+
+To build the documentation suite, you need to have asciidoc. Because
+not all users are inclined to install this tool, the default build
+target does not build the documentation. See "make doc" below for
+more information.
+
+    Installation: The libquvi-scripts dist tarball contains prebuilt
+    manual pages, and are installed by default. See `--with(out)-manual'
+    above. See also "make doc" below.
+
+Make targets:
+
+  'make doc'  builds the manual pages for libquvi-scripts if a2x(1) was
+  found by configure.  The manual page files can be found at:
+    $top_srcdir/doc/man7/ -- input
+    $top_builddir/doc/man7/ -- output
+
+
 Tests
 =====
 
 The tests use the GLib framework for testing. All of these tests require
 the presence of the libquvi and a working internet connection. The tests
 reside in the tests/ directory.
-
-When building with GNU Autotools,
 
   'make check'  will run the test programs listed in the TEST_PROGS
   variable in the tests/Makefile.am . It will fail if any of the
@@ -216,4 +239,4 @@ Please see: http://quvi.sourceforge.net/contrib/
 License
 =======
 
-libquvi-scripts is Free Software, licensed under the LGPLv2.1+.
+libquvi-scripts is Free Software licensed under the GNU Affero GPLV3+
