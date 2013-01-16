@@ -21,6 +21,16 @@
 local M = {}
 
 --
+-- (q)uvi (o)bject (o)ption
+--
+M.qoo_croak_if_error     = 0x01
+-- fetch
+M.qoo_fetch_from_charset = 0x20
+-- http
+M.qoo_http_user_agent    = 0x40
+M.qoo_http_cookie        = 0x41
+
+--
 -- subtitle
 --
 
