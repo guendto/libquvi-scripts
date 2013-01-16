@@ -21,6 +21,29 @@
 local M = {}
 
 --
+-- (q)uvi (err)or codes
+--
+-- static
+M.qerr_ok                         = 0x00
+M.qerr_callback_aborted           = 0x01
+M.qerr_no_subtitle_export_scripts = 0x02
+M.qerr_no_subtitle_scripts        = 0x03
+M.qerr_no_playlist_scripts        = 0x04
+M.qerr_no_media_scripts           = 0x05
+M.qerr_no_scan_scripts            = 0x06
+M.qerr_no_util_scripts            = 0x07
+M.qerr_keyword_croak              = 0x08
+M.qerr_invalid_arg                = 0x09
+M.qerr_proxy_init                 = 0x0a
+M.qerr_curl_init                  = 0x0b
+M.qerr_lua_init                   = 0x0c
+-- dynamically created
+M.qerr_no_support                 = 0x40
+M.qerr_callback                   = 0x41
+-- an error occurred in a callback, e.g. a network error.
+M.qerr_script                     = 0x42
+
+--
 -- (q)uvi (o)bject (o)ption
 --
 M.qoo_croak_if_error     = 0x01
