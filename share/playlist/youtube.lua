@@ -1,5 +1,5 @@
 -- libquvi-scripts
--- Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -54,7 +54,7 @@ function parse(qargs)
 
   repeat -- Get the entire playlist.
     local u = YouTube.config_url(qargs, start_index, max_results)
-    local c = quvi.fetch(u, o)
+    local c = quvi.fetch(u, o).data
     local x = P.parse(c)
 
     YouTube.chk_error_resp(x)

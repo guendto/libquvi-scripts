@@ -1,5 +1,5 @@
 -- libquvi-scripts
--- Copyright (C) 2010-2012  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -87,7 +87,7 @@ function Dailymotion.fetch_page(qargs, U)
 
   local C = require 'quvi/const'
   local o = { [C.qfo_cookie] = 'family_filter=off' }
-  return quvi.fetch(qargs.input_url, o)
+  return quvi.fetch(qargs.input_url, o).data
 end
 
 -- Iterates the available streams.
