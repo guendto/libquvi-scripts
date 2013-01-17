@@ -64,11 +64,6 @@ M.st_cc  = 0x2  -- closed caption
 -- (s)ubtitle (i)nternal (f)ormat
 M.sif_tt = 0x1 -- timed text
 
--- (q)uvi.(f)etch (t)ype
-M.qft_playlist = 0x0
-M.qft_config   = 0x1
-M.qft_url      = 0x2 -- default
-
 --[[
 
 qfo_from_charset
