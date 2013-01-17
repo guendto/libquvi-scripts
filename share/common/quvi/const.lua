@@ -46,12 +46,12 @@ M.qerr_script                     = 0x42
 --
 -- (q)uvi (o)bject (o)ption
 --
-M.qoo_croak_if_error     = 0x01
+M.qoo_croak_if_error     = 0x01 -- Terminate if an error occurs
 -- fetch
-M.qoo_fetch_from_charset = 0x20
+M.qoo_fetch_from_charset = 0x20 -- Convert (to UTF-8) from this charset
 -- http
-M.qoo_http_user_agent    = 0x40
-M.qoo_http_cookie        = 0x41
+M.qoo_http_user_agent    = 0x40 -- Identify to HTTP servers as
+M.qoo_http_cookie        = 0x41 -- Set an arbitrary cookie
 
 --
 -- subtitle
@@ -69,9 +69,9 @@ M.sif_tt = 0x1 -- timed text
 --
 
 -- (q)uvi.(f)etch (o)ption
-M.qfo_from_charset = 0x0 -- Convert (to UTF-8) from this charset
-M.qfo_user_agent   = 0x1 -- Set user-agent string value
-M.qfo_cookie       = 0x2 -- Set an arbitrary cookie
+M.qfo_from_charset = 0x0
+M.qfo_user_agent   = 0x1
+M.qfo_cookie       = 0x2
 M.qfo_type         = 0x3 -- Fetch type (see qft_*)
 
 -- (q)uvi.(f)etch (t)ype
