@@ -1,5 +1,5 @@
 -- libquvi-scripts
--- Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -22,11 +22,11 @@ local ResolveExceptions = {} -- Utility functions unique to this script
 
 function resolve_redirections(qargs)
   -- Let libcURL resolve the URL redirections for us.
-  local resolved, dst = quvi.resolve(qargs.input_url)
-  if not resolved then return qargs.input_url end
+  local r = quvi.resolve(qargs.input_url)
+  if #r.resolved_url ==0 then return qargs.input_url end
 
   -- Apply any exception rules to the destination URL.
-  return ResolveExceptions.YouTube(qargs, dst)
+  return ResolveExceptions.YouTube(qargs, r.resolved_url)
 end
 
 --
