@@ -107,14 +107,14 @@ EXAMPLES
 --------
 local C = require 'quvi/const'
 
-local p = quvi.fetch(URL, {[C.qfo_cookie] = 'foo=1'})
-local p = quvi.fetch(URL, {[C.qfo_type] = C.qft_config})
+local r = quvi.fetch(URL, {[C.qfo_cookie] = 'foo=1'})
+local r = quvi.fetch(URL, {[C.qfo_type] = C.qft_config})
 
 local t = {
   [C.qfo_cookie] = 'foo=1; bar=2;',
   [C.qfo_type] = C.qft_config
 }
-local p = quvi.fetch(URL, t)
+local r = quvi.fetch(URL, t)
 
 ]]--
 
