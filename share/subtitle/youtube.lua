@@ -50,7 +50,7 @@ end
 -- Extract the TTS (text-to-speech, or transcript).
 function YouTube.tts_get(qargs, v, u, C)
   local u_fmt = "%s&tlang=%s&type=trackformat=1,&lang=en&kind=asr"
-  local p = quvi.fetch(u)
+  local p = quvi.fetch(u).data
 
   local tts_url = p:match('[\'"]TTS_URL[\'"]:%s+[\'"](.-)[\'"]')
   if not tts_url then return end
@@ -85,7 +85,7 @@ function YouTube.cc_get(qargs, v, C)
     "http://youtube.com/api/timedtext?hl=en&type=track&v=%s&name=%s&lang=%s"
 
   local u = 'http://video.google.com/timedtext?hl=en&type=list&v=' ..v
-  local x = quvi.fetch(u)
+  local x = quvi.fetch(u).data
   local L = require 'lxp.lom'
   local t = L.parse(x)
   local r = {}
