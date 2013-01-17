@@ -1,5 +1,5 @@
 -- libquvi-scripts
--- Copyright (C) 2010-2012  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -30,7 +30,7 @@ end
 
 -- Parse media properties.
 function parse(qargs)
-  local p = quvi.fetch(qargs.input_url)
+  local p = quvi.fetch(qargs.input_url).data
 
   qargs.thumb_url = p:match('"og:image" content="(.-)"') or ''
 

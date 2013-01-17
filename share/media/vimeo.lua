@@ -1,5 +1,5 @@
 -- libquvi-scripts
--- Copyright (C) 2010-2012  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -36,7 +36,7 @@ end
 function parse(qargs)
   Vimeo.normalize(qargs)
 
-  local p = quvi.fetch(qargs.input_url)
+  local p = quvi.fetch(qargs.input_url).data
   local U = require 'quvi/util'
 
   qargs.id = qargs.input_url:match('/(%d+)$') or error('no match: media ID')

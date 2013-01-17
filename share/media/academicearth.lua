@@ -1,5 +1,5 @@
 -- libquvi-scripts
--- Copyright (C) 2010-2012  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -61,7 +61,7 @@ function AcademicEarth.can_parse_url(qargs)
 end
 
 function AcademicEarth.to_media_url(qargs)
-  local p = quvi.fetch(qargs.input_url)
+  local p = quvi.fetch(qargs.input_url).data
   local s = p:match('id="idPlayer".-src="(.-youtube%.com/.-)"')
   if s then -- hosted at youtube?
     qargs.goto_url = s

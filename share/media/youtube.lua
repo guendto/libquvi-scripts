@@ -1,5 +1,5 @@
 -- libquvi-scripts
--- Copyright (C) 2010-2012  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -70,7 +70,7 @@ function YouTube.get_data(qargs)
   local U = require 'quvi/util'
 
   local o = { [C.qfo_type] = C.qft_config }
-  local c = U.decode(quvi.fetch(u, o))
+  local c = U.decode(quvi.fetch(u,o).data)
 
   if c['reason'] then
     local reason = U.unescape(c['reason'])

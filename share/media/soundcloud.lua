@@ -1,5 +1,5 @@
 -- libquvi-scripts
--- Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
 -- Copyright (C) 2011  Bastien Nocera <hadess@hadess.net>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
@@ -33,7 +33,7 @@ end
 function parse(qargs)
   Soundcloud.normalize(qargs)
 
-  local p = quvi.fetch(qargs.input_url)
+  local p = quvi.fetch(qargs.input_url).data
 
   qargs.thumb_url = p:match('.+content="(.-)"%s+property="og:image"') or ''
   qargs.title = p:match('.+content="(.-)"%s+property="og:title"') or ''
@@ -78,7 +78,7 @@ function Soundcloud.normalize(qargs) -- "Normalize" an embedded URL
   local u = string.format('http://soundcloud.com/oembed?url=%s&format=json',
                             U.unescape(url))
 
-  qargs.input_url = quvi.fetch(u):match('href=\\"(.-)\\"')
+  qargs.input_url = quvi.fetch(u).data:match('href=\\"(.-)\\"')
                       or error('no match: media URL')
 end
 
