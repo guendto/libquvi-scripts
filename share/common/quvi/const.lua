@@ -64,16 +64,6 @@ M.st_cc  = 0x2  -- closed caption
 -- (s)ubtitle (i)nternal (f)ormat
 M.sif_tt = 0x1 -- timed text
 
---
--- quvi.fetch
---
-
--- (q)uvi.(f)etch (o)ption
-M.qfo_from_charset = 0x0
-M.qfo_user_agent   = 0x1
-M.qfo_cookie       = 0x2
-M.qfo_type         = 0x3 -- Fetch type (see qft_*)
-
 -- (q)uvi.(f)etch (t)ype
 M.qft_playlist = 0x0
 M.qft_config   = 0x1
