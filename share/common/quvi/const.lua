@@ -83,15 +83,15 @@ to convert to UTF-8 using the 'from charset' value.
 
 qoo_http_cookie
 ---------------
-When set, the arbitrary cookie will be used with the quvi.fetch .
-The cookies are handled by libcurl, look up the CURLOPT_COOKIE
+When set, the arbitrary cookie will be used with the quvi.http.fetch
+function. The cookies are handled by libcurl, look up the CURLOPT_COOKIE
 description for details. If you must define >1 cookies, use the
 following format: "foo=1; bar=2;" .
 
 EXAMPLES
 --------
 local C = require 'quvi/const'
-local r = quvi.fetch(URL, { [C.qoo_http_cookie] = 'foo=1' })
+local r = quvi.http.fetch(URL, { [C.qoo_http_cookie] = 'foo=1' })
 ]]--
 
 return M

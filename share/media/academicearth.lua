@@ -61,7 +61,7 @@ function AcademicEarth.can_parse_url(qargs)
 end
 
 function AcademicEarth.to_media_url(qargs)
-  local p = quvi.fetch(qargs.input_url).data
+  local p = quvi.http.fetch(qargs.input_url).data
   local s = p:match('id="idPlayer".-src="(.-youtube%.com/.-)"')
   if s then -- hosted at youtube?
     qargs.goto_url = s

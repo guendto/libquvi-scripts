@@ -33,7 +33,7 @@ end
 function parse(qargs)
   Soundcloud.normalize(qargs)
 
-  local p = quvi.fetch(qargs.input_url).data
+  local p = quvi.http.fetch(qargs.input_url).data
 
   qargs.thumb_url = p:match('.+content="(.-)"%s+property="og:image"') or ''
   qargs.title = p:match('.+content="(.-)"%s+property="og:title"') or ''
@@ -78,7 +78,7 @@ function Soundcloud.normalize(qargs) -- "Normalize" an embedded URL
   local u = string.format('http://soundcloud.com/oembed?url=%s&format=json',
                             U.unescape(url))
 
-  qargs.input_url = quvi.fetch(u).data:match('href=\\"(.-)\\"')
+  qargs.input_url = quvi.http.fetch(u).data:match('href=\\"(.-)\\"')
                       or error('no match: media URL')
 end
 

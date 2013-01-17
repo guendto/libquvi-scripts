@@ -30,7 +30,7 @@ end
 
 -- Parse media properties.
 function parse(qargs)
-  local p = quvi.fetch(qargs.input_url).data
+  local p = quvi.http.fetch(qargs.input_url).data
 
   qargs.thumb_url = p:match('"og:image" content="(.-)"') or ''
 

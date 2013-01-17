@@ -36,7 +36,7 @@ end
 function parse(qargs)
   Vimeo.normalize(qargs)
 
-  local p = quvi.fetch(qargs.input_url).data
+  local p = quvi.http.fetch(qargs.input_url).data
   local U = require 'quvi/util'
 
   qargs.id = qargs.input_url:match('/(%d+)$') or error('no match: media ID')

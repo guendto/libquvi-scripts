@@ -58,7 +58,7 @@ function SubRip.from_tt(qargs)
   local U = require 'quvi/util'
   local L = require 'lxp.lom'
 
-  local x = quvi.fetch(qargs.input_url).data
+  local x = quvi.http.fetch(qargs.input_url).data
   local t = L.parse(x)
   local r = {}
 

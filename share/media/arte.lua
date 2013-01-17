@@ -74,7 +74,7 @@ function Arte.get_config(qargs, L, P)
   -- Return a list containing the config dictionaries, and the language
   -- code which will be used to select the default and the best streams.
 
-  local p = quvi.fetch(qargs.input_url).data
+  local p = quvi.http.fetch(qargs.input_url).data
 
   local u = p:match('videorefFileUrl = "(.-)"')
               or error('no match: config URL')
@@ -83,7 +83,7 @@ function Arte.get_config(qargs, L, P)
 
   local C = require 'quvi/const'
   local o = { [C.qfo_type] = C.qft_config }
-  local c = quvi.fetch(u, o).data
+  local c = quvi.http.fetch(u, o).data
 
   local x = lxp.lom.parse(c)
   local v = L.find_first_tag(x, 'videos')
@@ -91,7 +91,7 @@ function Arte.get_config(qargs, L, P)
 
   for i=1, #v do -- For each language in the config.
     if v[i].tag == 'video' then
-      local d = quvi.fetch(v[i].attr['ref'], o).data
+      local d = quvi.http.fetch(v[i].attr['ref'], o).data
       local t = {
         lang_code = v[i].attr['lang'],
         lang_data = d

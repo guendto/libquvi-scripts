@@ -54,7 +54,7 @@ function parse(qargs)
 
   repeat -- Get the entire playlist.
     local u = YouTube.config_url(qargs, start_index, max_results)
-    local c = quvi.fetch(u, o).data
+    local c = quvi.http.fetch(u, o).data
     local x = P.parse(c)
 
     YouTube.chk_error_resp(x)
