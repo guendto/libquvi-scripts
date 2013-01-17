@@ -46,12 +46,12 @@ M.qerr_script                     = 0x42
 --
 -- (q)uvi (o)bject (o)ption
 --
-M.qoo_croak_if_error     = 0x01
+M.qoo_croak_if_error     = 0x01 -- Terminate if an error occurs
 -- fetch
-M.qoo_fetch_from_charset = 0x20
+M.qoo_fetch_from_charset = 0x20 -- Convert (to UTF-8) from this charset
 -- http
-M.qoo_http_user_agent    = 0x40
-M.qoo_http_cookie        = 0x41
+M.qoo_http_user_agent    = 0x40 -- Identify to HTTP servers as
+M.qoo_http_cookie        = 0x41 -- Set an arbitrary cookie
 
 --
 -- subtitle
@@ -64,25 +64,10 @@ M.st_cc  = 0x2  -- closed caption
 -- (s)ubtitle (i)nternal (f)ormat
 M.sif_tt = 0x1 -- timed text
 
---
--- quvi.fetch
---
-
--- (q)uvi.(f)etch (o)ption
-M.qfo_from_charset = 0x0 -- Convert (to UTF-8) from this charset
-M.qfo_user_agent   = 0x1 -- Set user-agent string value
-M.qfo_cookie       = 0x2 -- Set an arbitrary cookie
-M.qfo_type         = 0x3 -- Fetch type (see qft_*)
-
--- (q)uvi.(f)etch (t)ype
-M.qft_playlist = 0x0
-M.qft_config   = 0x1
-M.qft_url      = 0x2 -- default
-
 --[[
 
-qfo_from_charset
-----------------
+qoo_fetch_from_charset
+----------------------
 Instructs the library to convert from this charset to UTF-8. Using this
 option may be required with the websites that use a specific (non-UTF8)
 encoding.
@@ -96,8 +81,8 @@ the strings by the C runtime in the current locale into UTF-8.  IF this
 fails, and the 'from charset' option is set, the library will then try
 to convert to UTF-8 using the 'from charset' value.
 
-qfo_cookie
-----------
+qoo_http_cookie
+---------------
 When set, the arbitrary cookie will be used with the quvi.fetch .
 The cookies are handled by libcurl, look up the CURLOPT_COOKIE
 description for details. If you must define >1 cookies, use the
@@ -106,16 +91,7 @@ following format: "foo=1; bar=2;" .
 EXAMPLES
 --------
 local C = require 'quvi/const'
-
-local r = quvi.fetch(URL, {[C.qfo_cookie] = 'foo=1'})
-local r = quvi.fetch(URL, {[C.qfo_type] = C.qft_config})
-
-local t = {
-  [C.qfo_cookie] = 'foo=1; bar=2;',
-  [C.qfo_type] = C.qft_config
-}
-local r = quvi.fetch(URL, t)
-
+local r = quvi.fetch(URL, { [C.qoo_http_cookie] = 'foo=1' })
 ]]--
 
 return M
