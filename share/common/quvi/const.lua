@@ -66,8 +66,8 @@ M.sif_tt = 0x1 -- timed text
 
 --[[
 
-qfo_from_charset
-----------------
+qoo_fetch_from_charset
+----------------------
 Instructs the library to convert from this charset to UTF-8. Using this
 option may be required with the websites that use a specific (non-UTF8)
 encoding.
@@ -81,8 +81,8 @@ the strings by the C runtime in the current locale into UTF-8.  IF this
 fails, and the 'from charset' option is set, the library will then try
 to convert to UTF-8 using the 'from charset' value.
 
-qfo_cookie
-----------
+qoo_http_cookie
+---------------
 When set, the arbitrary cookie will be used with the quvi.fetch .
 The cookies are handled by libcurl, look up the CURLOPT_COOKIE
 description for details. If you must define >1 cookies, use the
@@ -91,16 +91,7 @@ following format: "foo=1; bar=2;" .
 EXAMPLES
 --------
 local C = require 'quvi/const'
-
-local r = quvi.fetch(URL, {[C.qfo_cookie] = 'foo=1'})
-local r = quvi.fetch(URL, {[C.qfo_type] = C.qft_config})
-
-local t = {
-  [C.qfo_cookie] = 'foo=1; bar=2;',
-  [C.qfo_type] = C.qft_config
-}
-local r = quvi.fetch(URL, t)
-
+local r = quvi.fetch(URL, { [C.qoo_http_cookie] = 'foo=1' })
 ]]--
 
 return M
