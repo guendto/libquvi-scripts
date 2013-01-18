@@ -61,7 +61,7 @@ function Gaskrank.can_parse_url(qargs)
 end
 
 function Gaskrank.iter_streams(p)
-  local u = p:match("(http://movies.-%.flv)")
+  local u = p:match("(http://movies.-)'")
               or error("no match: media stream URL")
   local S = require 'quvi/stream'
   return {S.stream_new(u)}
