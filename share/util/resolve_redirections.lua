@@ -22,7 +22,7 @@ local ResolveExceptions = {} -- Utility functions unique to this script
 
 function resolve_redirections(qargs)
   -- Let libcURL resolve the URL redirections for us.
-  local r = quvi.resolve(qargs.input_url)
+  local r = quvi.http.resolve(qargs.input_url)
   if #r.resolved_url ==0 then return qargs.input_url end
 
   -- Apply any exception rules to the destination URL.
