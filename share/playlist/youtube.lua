@@ -43,10 +43,6 @@ function parse(qargs)
   local start_index = 1
 
   qargs.media = {}
-
-  local C = require 'quvi/const'
-  local o = { [C.qfo_type] = C.qft_playlist }
-
   local r = {}
 
   -- TODO: Return playlist thumbnail URL
@@ -54,7 +50,7 @@ function parse(qargs)
 
   repeat -- Get the entire playlist.
     local u = YouTube.config_url(qargs, start_index, max_results)
-    local c = quvi.http.fetch(u, o).data
+    local c = quvi.http.fetch(u).data
     local x = P.parse(c)
 
     YouTube.chk_error_resp(x)

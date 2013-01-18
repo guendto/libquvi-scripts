@@ -81,10 +81,7 @@ function Arte.get_config(qargs, L, P)
 
   local l = u:match('%.tv/(%w+)/') or error('no match: lang code')
 
-  local C = require 'quvi/const'
-  local o = { [C.qfo_type] = C.qft_config }
-  local c = quvi.http.fetch(u, o).data
-
+  local c = quvi.http.fetch(u).data
   local x = lxp.lom.parse(c)
   local v = L.find_first_tag(x, 'videos')
   local r = {}

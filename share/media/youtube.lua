@@ -66,11 +66,8 @@ function YouTube.get_data(qargs)
                   .. '&el=detailpage&ps=default&eurl=&gl=US&hl=en'
   local u = string.format(s_fmt, s, qargs.id)
 
-  local C = require 'quvi/const'
   local U = require 'quvi/util'
-
-  local o = { [C.qfo_type] = C.qft_config }
-  local c = U.decode(quvi.http.fetch(u,o).data)
+  local c = U.decode(quvi.http.fetch(u).data)
 
   if c['reason'] then
     local reason = U.unescape(c['reason'])

@@ -36,9 +36,7 @@ function parse(qargs)
     qargs.id = qargs.id .."_".. s
   end
 
-  local C = require 'quvi/const'
-  local o = { [C.qfo_type] = C.qft_playlist }
-  local p = quvi.http.fetch(qargs.input_url, o).data
+  local p = quvi.http.fetch(qargs.input_url).data
 
   qargs.thumb_url = p:match('.+content="(.-)"%s+property="og:image"') or ''
   qargs.title = p:match('.+content="(.-)"%s+property="og:title"') or ''
