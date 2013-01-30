@@ -3,7 +3,6 @@
 commondir=$(pkgdatadir)/$(VERSION)/common/quvi/
 
 dist_common_DATA=\
-  common/quvi/bit.lua\
   common/quvi/const.lua\
   common/quvi/debug.lua\
   common/quvi/entity.lua\
@@ -94,3 +93,5 @@ dist_version_DATA=version
 install-data-hook:
 	cd $(DESTDIR)$(pkgdatadir) && rm -f $(VERSION_MM) && \
 		$(LN_S) $(VERSION) $(VERSION_MM)
+
+# vim: set ts=2 sw=2 tw=72 expandtab:
