@@ -63,7 +63,6 @@ DIST_lua+=\
  lua/website/fastjizz.lua \
  lua/website/jizzhut.lua \
  lua/website/keezmovies.lua \
- lua/website/pornhub.lua \
  lua/website/redtube.lua \
  lua/website/spankwire.lua \
  lua/website/tcmag.lua \
@@ -87,6 +86,7 @@ DIST_lua+=\
  lua/website/pluzz.lua
 if WITH_NSFW
 DIST_lua+=\
+ lua/website/pornhub.lua \
  lua/website/tube8.lua
 endif
 endif # WITH_FIXME
