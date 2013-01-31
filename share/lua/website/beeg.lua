@@ -1,6 +1,6 @@
 
 -- libquvi-scripts
--- Copyright (C) 2012  quvi project
+-- Copyright (C) 2012-2013  quvi project
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -48,7 +48,7 @@ function parse(self)
 
     local p = quvi.fetch(self.page_url)
 
-    self.title = p:match('<title>(.-)</title>')
+    self.title = p:match('<meta name="description" content="(.-)%.')
                   or error("no match: media title")
 
     self.url = {p:match("'file': '(http://.-)'")
