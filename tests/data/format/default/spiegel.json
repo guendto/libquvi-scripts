@@ -1,14 +1,14 @@
 {
   "host": "spiegel",
-  "page_title": "Lage im Nahen Osten spitzt sich zu",
-  "page_url": "http://www.spiegel.de/video/kein-waffenstillstand-zwischen-israel-und-palaestinensern-video-1235307.html",
-  "id": "1235307",
+  "page_title": "Auf der Spur des Bienentanzes",
+  "page_url": "http://www.spiegel.de/video/bienen-forschung-roboter-biene-soll-bienentanz-entschluesseln-video-1231965.html",
+  "id": "1231965",
   "format_requested": "default",
-  "duration": "102000",
+  "duration": "203000",
   "link": [
     {
       "id": "1",
-      "length_bytes": "4875897",
+      "length_bytes": "10245896",
       "content_type": "video/x-flv",
       "file_suffix": "flv",
       "url": ""
