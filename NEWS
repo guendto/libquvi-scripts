@@ -1,3 +1,21 @@
+v0.4.11  (2013-02-01) / Toni Gundogdu
+
+Guido Leisker:
+  - Add support for myspass.de [2b79f18]
+  - Add support for wdrmaus.de [86d1c64]
+Toni Gundogdu:
+  - beeg.lua: Update title pattern [be81501]
+  - FIX: 1tvru.lua: title and media URL patterns [763338c]
+  - FIX: gaskrank.lua: media stream URL pattern [8c067a5]
+  - FIX: gen-news.sh: Find the closest tagname [89d31bc]
+  - FIX: lego.lua: All patterns [787be3d]
+  - FIX: metacafe.lua: Key parsing [4735455]
+  - FIX: theonion.lua: thumbnail URL pattern [8d6ee06]
+  - gaskrank.lua: Parse thumbnail URL [1e15082]
+
+ 71 files changed, 398 insertions(+), 821 deletions(-)
+
+
 v0.4.10  (2012-11-22) / Toni Gundogdu
 
 Toni Gundogdu:
