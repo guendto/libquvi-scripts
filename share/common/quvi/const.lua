@@ -46,12 +46,34 @@ M.qerr_script                     = 0x42
 --
 -- (q)uvi (o)bject (o)ption
 --
-M.qoo_croak_if_error     = 0x01 -- Terminate if an error occurs
+M.qoo_croak_if_error      = 0x01 -- Terminate if an error occurs
 -- fetch
-M.qoo_fetch_from_charset = 0x20 -- Convert (to UTF-8) from this charset
+M.qoo_fetch_from_charset  = 0x20 -- Convert (to UTF-8) from this charset
 -- http
-M.qoo_http_user_agent    = 0x40 -- Identify to HTTP servers as
-M.qoo_http_cookie        = 0x41 -- Set an arbitrary cookie
+M.qoo_http_user_agent     = 0x40 -- Identify to HTTP servers as
+M.qoo_http_cookie         = 0x41 -- Set an arbitrary cookie
+-- crypto
+M.qoo_crypto_cipher_flags = 0x60 -- Cipher flags
+M.qoo_crypto_cipher_mode  = 0x61 -- Cipher mode
+M.qoo_crypto_cipher_key   = 0x62 -- Cipher key (hex-string)
+M.qoo_crypto_algorithm    = 0x63 -- Algorithm, e.g. 'aes' or 'sha1'
+
+--
+-- (q)uvi (o)bject (c)rypto (o)ption
+-- See gcrypt.h, and http://www.gnupg.org/documentation/manuals/gcrypt/
+--
+-- cipher modes
+M.qoco_cipher_mode_ecb    = 0x01
+M.qoco_cipher_mode_cfb    = 0x02
+M.qoco_cipher_mode_cbc    = 0x03
+M.qoco_cipher_mode_stream = 0x04
+M.qoco_cipher_mode_ofb    = 0x05
+M.qoco_cipher_mode_ctr    = 0x06
+-- cipher flags
+M.qoco_cipher_secure      = 0x01
+M.qoco_cipher_enable_sync = 0x02
+M.qoco_cipher_cbc_cts     = 0x04
+M.qoco_cipher_cbc_mac     = 0x08
 
 --
 -- subtitle

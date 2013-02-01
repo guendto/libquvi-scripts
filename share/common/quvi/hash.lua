@@ -1,5 +1,5 @@
 -- libquvi-scripts
--- Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -18,29 +18,31 @@
 -- <http://www.gnu.org/licenses/>.
 --
 
+--
+-- Shorthand functions for the common hash functions.
+--  NOTE: None of these functions unset the 'croak_if_error' flag
+--
+
 local M = {}
 
-function M.bit_or(x, y) -- http://is.gd/iVg4x
-  local p = 1
-  while p < x do p = p + p end
-  while p < y do p = p + p end
-  local z = 0
-  repeat
-    if p <= x or p <= y then
-      z = z + p
-      if p <= x then x = x - p end
-      if p <= y then y = y - p end
-    end
-    p = p * 0.5
-  until p < 1
-  return z
+function M._init(s)
+  local C = require 'quvi/const'
+  local H = require 'quvi/hex'
+  local s = H.to_hex(s)
+  return C,H,s
 end
 
--- 1-based indexing
-function M.bit(p) return 2 ^ (p - 1) end
+-- A shorthand for calling quvi.crypto.hash for a MD5 hash.
+function M.md5sum(s)
+  local C,H,s = M._init(s)
+  return quvi.crypto.hash(s, { [C.qoo_crypto_algorithm] = 'md5' }).digest
+end
 
--- e.g. "if has_bit (foo, bit (n)) then ..."
-function M.has_bit(x, p) return x % (p + p) >= p end
+-- A shorthand for calling quvi.crypto.hash for a MD5 hash.
+function M.sha1sum(s)
+  local C,H,s = M._init(s)
+  return quvi.crypto.hash(s, { [C.qoo_crypto_algorithm] = 'sha1' }).digest
+end
 
 return M
 
