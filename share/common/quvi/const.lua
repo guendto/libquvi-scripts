@@ -86,36 +86,6 @@ M.st_cc  = 0x2  -- closed caption
 -- (s)ubtitle (i)nternal (f)ormat
 M.sif_tt = 0x1 -- timed text
 
---[[
-
-qoo_fetch_from_charset
-----------------------
-Instructs the library to convert from this charset to UTF-8. Using this
-option may be required with the websites that use a specific (non-UTF8)
-encoding.
-
-The purpose of this option is to make sure that the data is encoded to
-unicode (UTF-8) before any of it is parsed and returned to the
-application using libquvi.
-
-By default, libquvi converts the data which is in the encoding used for
-the strings by the C runtime in the current locale into UTF-8.  IF this
-fails, and the 'from charset' option is set, the library will then try
-to convert to UTF-8 using the 'from charset' value.
-
-qoo_http_cookie
----------------
-When set, the arbitrary cookie will be used with the quvi.http.fetch
-function. The cookies are handled by libcurl, look up the CURLOPT_COOKIE
-description for details. If you must define >1 cookies, use the
-following format: "foo=1; bar=2;" .
-
-EXAMPLES
---------
-local C = require 'quvi/const'
-local r = quvi.http.fetch(URL, { [C.qoo_http_cookie] = 'foo=1' })
-]]--
-
 return M
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:
