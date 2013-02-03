@@ -30,7 +30,7 @@ typically, run "make uninstall" (as root if necessary) from the same
 directory you ran "make install" from.
 
   * If you are building libquvi-scripts from the git repository code, run
-the `autogen.sh' first. This generates the configuration files. See also
+the `bootstrap.sh' first. This generates the configuration files. See also
 the -h output for any additional info.
 
 
