@@ -19,8 +19,8 @@ dist_common_DATA=\
 utildir=$(pkgdatadir)/$(VERSION)/util
 
 dist_util_DATA=\
-  util/resolve_redirections.lua\
   util/convert_entities.lua\
+  util/resolve_redirections.lua\
   util/to_file_ext.lua
 
 # Media property scripts.
