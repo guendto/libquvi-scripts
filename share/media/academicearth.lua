@@ -19,13 +19,7 @@
 --
 
 --
--- NOTE
---
--- academicearth.org hosts media at blip.tv or youtube.com .
--- Set "goto_url" to point to the actual location of the media.
---
--- The library will then relay the new URL to a media script that
--- accepts it.
+-- NOTE: aearth hosts the media at youtube, return 'goto_url'
 --
 
 local AcademicEarth = {} -- Utility functions specific to this script
@@ -62,13 +56,8 @@ end
 
 function AcademicEarth.to_media_url(qargs)
   local p = quvi.http.fetch(qargs.input_url).data
-  local s = p:match('id="idPlayer".-src="(.-youtube%.com/.-)"')
-  if s then -- hosted at youtube?
-    qargs.goto_url = s
-  else -- hosted at blip?
-    qargs.goto_url = p:match('embed src="(.-)"')
+  qargs.goto_url = p:match('"(http://www%.youtube%.com/watch.-)"')
                       or error('no match: unrecognized media source')
-  end
   return qargs
 end
 
