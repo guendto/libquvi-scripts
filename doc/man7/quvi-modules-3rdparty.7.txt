@@ -1,0 +1,58 @@
+quvi-modules-3rdparty(7)
+========================
+
+NAME
+----
+quvi-modules-3rdparty - Overview of the loadable 3rd party modules
+
+DESCRIPTION
+-----------
+This is a brief list of the loadable '3rd party modules' that the the
+'libquvi-scripts(7)' use. For more information about these modules,
+refer to their corresponding reference documentation.
+
+3rd PARTY MODULES
+-----------------
+
+LuaBitOp::
+  Lua BitOp is a C extension module for Lua 5.1/5.2 which adds bitwise
+  operations on numbers.
+  +
+  http://bitop.luajit.org/
+
+LuaExpat::
+  LuaExpat is a SAX XML parser based on the Expat library.
+  +
+  http://matthewwild.co.uk/projects/luaexpat/
+
+LuaSocket::
+  LuaSocket is a Lua extension library that is composed by two parts: a
+  C core that provides support for the TCP and UDP transport layers, and
+  a set of Lua modules that add support for functionality commonly
+  needed by applications that deal with the Internet.
+  +
+  http://w3.impa.br/~diego/software/luasocket/
+
+Authors
+-------
+Toni Gundogdu <legatvs@gmail.com>::
+  Author.
+
+Reporting bugs
+--------------
+Report bugs to the quvi-devel mailing list
+<quvi-devel@lists.sourceforge.net> where the development and the
+maintenance is primarily done.  You do not have to be subscribed
+to the list to send a message there.
+
+LICENSE
+-------
+libquvi is Free Software licensed under the GNU Affero GPLv3+
+
+SEE ALSO
+--------
+'libquvi-scripts(7)', 'libquvi(3)', 'quvi-object(7)', 'quvi-modules(7)'
+
+LIBQUVI-SCRIPTS
+---------------
+Part of the 'libquvi-scripts(7)' suite
