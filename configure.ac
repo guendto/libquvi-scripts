@@ -27,32 +27,6 @@ AC_PATH_PROG([A2X], [a2x], [no])
 AM_CONDITIONAL([HAVE_A2X], [test x"$A2X" != "xno"])
 AC_SUBST([A2X])
 
-# Check for the Lua modules.
-have_lua=no
-have_sct=no
-have_lxp=no
-AC_PATH_PROG([LUA], [lua], [no])
-AS_IF([test x"$LUA" != "xno"], [
-  v=2.0.2
-  AC_MSG_CHECKING([for module LuaSocket $v or later])
-  o=`$LUA $srcdir/chk_mod.lua socket $v`
-  AS_IF([test "$?" -eq 0],
-    [have_sct=yes
-      AC_MSG_RESULT([yes])],
-    [AC_MSG_ERROR([module not found])])
-  v=1.2.0
-  AC_MSG_CHECKING([for module LuaExpat $v or later])
-  o=`$LUA $srcdir/chk_mod.lua lxp $v`
-  AS_IF([test "$?" -eq 0],
-    [have_lxp=yes
-      AC_MSG_RESULT([yes])],
-    [AC_MSG_ERROR([module not found])])
-  have_lua=yes
-], [AC_MSG_WARN([Could not find the the lua(1) command])
-    AC_MSG_WARN([Will NOT check for the *required* Lua modules])
-    AC_MSG_WARN([See README file for the prerequisites])
-])
-
 # --with-tests
 pkg_libquvi=libquvi-0.9
 AC_ARG_WITH([tests],
@@ -120,10 +94,6 @@ AC_MSG_NOTICE([
   prefix        ${prefix}
   compiler      ${CC}
   cflags        ${CFLAGS}
-Prerequisites
-  lua           ${have_lua}
-    luasocket   ${have_sct}
-    luaexpat    ${have_lxp}
 Testsuite options
   with
   - tests       ${with_tests}

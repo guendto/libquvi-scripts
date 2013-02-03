@@ -1,5 +1,5 @@
 ACLOCAL_AMFLAGS=-I m4
-EXTRA_DIST=	gen-ver.sh libquvi-scripts-0.9.pc.in VERSION chk_mod.lua
+EXTRA_DIST=	gen-ver.sh libquvi-scripts-0.9.pc.in VERSION
 
 SUBDIRS=	share
 if WITH_MANUAL
