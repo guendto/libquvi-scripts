@@ -1,5 +1,5 @@
-MAN7_TXT=libquvi-scripts.7.txt
-DOC_MAN7=libquvi-scripts.7
+MAN7_TXT=libquvi-scripts.7.txt quvi-modules.7.txt quvi-modules-3rdparty.7.txt
+DOC_MAN7=libquvi-scripts.7 quvi-modules.7 quvi-modules-3rdparty.7
 
 MAN_TXT=$(MAN7_TXT)
 
