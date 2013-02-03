@@ -39,7 +39,7 @@ function parse(qargs)
   -- Config data ('c') contains config data for each available language.
   -- Each language consists of >0 media streams, e.g. 'hd', 'sd'.
 
-  local c,lang_code = Arte.get_config(qargs, L, P)
+  local c,lang_code = Arte.get_config(qargs, L)
   qargs.streams,S = Arte.iter_streams(c, L, P, lang_code)
 
   -- Many of the optional properties depend on the language setting.
@@ -68,7 +68,7 @@ function Arte.can_parse_url(qargs)
   end
 end
 
-function Arte.get_config(qargs, L, P)
+function Arte.get_config(qargs, L)
 
   -- Collect all config data for all available (language) streams.
   -- Return a list containing the config dictionaries, and the language
