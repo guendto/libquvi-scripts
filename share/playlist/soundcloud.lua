@@ -51,7 +51,7 @@ function parse(qargs)
     local m,s = d:match('(%d+)%.(%d+)')
     local r = {
       duration_ms = ((tonumber(m or '0')*60) + tonumber(s or '0')) *1000,
-      url = "http://soundcloud" ..u,
+      url = "http://soundcloud.com" ..u,
       title = t
     }
     table.insert(qargs.media, r)
