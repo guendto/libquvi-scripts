@@ -25,7 +25,7 @@ Notes
   * Uses CRLF, with LF line terminators
 ]]--
 
-local SubRip = {format='subrip'} -- Utility functions unique to this script
+local SubRip = {format='srt'} -- Utility functions unique to this script
 
 -- Identify the script.
 function ident(qargs)

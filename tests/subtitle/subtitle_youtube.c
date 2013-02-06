@@ -63,7 +63,7 @@ static void _test_subrip(quvi_t q, quvi_subtitle_t qsub, const gchar *lang)
   quvi_subtitle_lang_get(qsl, QUVI_SUBTITLE_LANG_PROPERTY_ID, &s);
   g_test_message("lang_id=%s", s);
 
-  qse = quvi_subtitle_export_new(qsl, "subrip");
+  qse = quvi_subtitle_export_new(qsl, "srt");
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
   g_assert(qse != NULL);
 
