@@ -98,7 +98,7 @@ end
 --
 
 function WdrMaus.parseElefantenseite(self)
-  self.id = self.page_url:match('\/([%w_]-)$')
+  self.id = self.page_url:match('/([%w_]-)$')
                 or error('no match: media ID')
 
   local rooturl = self.page_url:match('(%w+://.+/%w+)/.*')
