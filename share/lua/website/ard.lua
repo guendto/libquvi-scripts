@@ -114,57 +114,55 @@ function Ard.choose_default(t)
 end
 
 function Ard.to_s(t)
-    s = t.container
+    return string.format("%s_%s_i%02d%s%s",
+              (t.quality) and t.quality or 'sd',
+              t.container, t.stream_id,
+              (t.encoding) and '_'..t.encoding or '',
+              (t.height) and '_'..t.height or '')
+end
 
-    if t.encoding then
-        s = s .. '_' .. t.encoding
+function Ard.quality_from(suffix)
+    local q = suffix:match('%.web(%w)%.') or suffix:match('%.(%w)%.')
+                or suffix:match('[=%.]Web%-(%w)') -- .webs. or Web-S or .s
+    if q then
+        q = q:lower()
+        local t = {s='ld', m='md', l='sd', xl='hd'}
+        for k,v in pairs(t) do
+            if q == k then return v end
+        end
     end
+    return q
+end
 
-    if t.height then
-        s = s .. '_' .. t.height
-    elseif t.webx then
-        s = s .. '_' .. t.webx
-    else
-        s = s .. '_' .. t.quality
-    end
+function Ard.height_from(suffix)
+    local h = suffix:match('_%d+x(%d+)[_%.]')
+    if h then return h..'p' end
+end
 
-    return s
+function Ard.container_from(suffix)
+    return suffix:match('^(...):') or suffix:match('%.(...)$')
+              or suffix:match('%.(...)$') or 'mp4'
 end
 
 function Ard.iter_formats(page)
     local r = {}
     local s = 'mediaCollection%.addMediaStream'
-                .. '%(0, (%d), "(.-)", "(.-)", "%w+"%);'
+                .. '%(0, (%d+), "(.-)", "(.-)", "%w+"%);'
 
-    for quality, prefix, suffix in  page:gmatch(s) do
+    for s_id, prefix, suffix in  page:gmatch(s) do
         local u = prefix .. suffix
-        -- remove querystring
-        u = u:match('^(.-)?') or u
-
-        -- .webs. or Web-S or .s.
-        local webx = suffix:match('%.web(%w)%.') or suffix:match('%.(%w)%.')
-                        or suffix:match('[=%.]Web%-(%w)')
-        if webx then webx = 'web' .. webx:lower() end
-
-        local height = suffix:match('_%d+x(%d+)[_%.]')
-        if height then height = 'p' .. height end
-
+        u = u:match('^(.-)?') or u  -- remove querystring
         local t = {
-             url = u,
-             container = suffix:match('^(...):') or suffix:match('%.(...)$')
-                         or suffix:match('%.(...)$') or 'mp4',
-             quality = tonumber(quality),
-             encoding = suffix:match('%.(h264)%.'),
-             height = height,
-             webx = webx
-           }
+            container = Ard.container_from(suffix),
+            encoding = suffix:match('%.(h264)%.'),
+            quality = Ard.quality_from(suffix),
+            height = Ard.height_from(suffix),
+            stream_id = s_id, -- internally (by service) used stream ID
+            url = u
+        }
         table.insert(r,t)
     end
-
-    if #r == 0 then
-        error('no media urls found')
-    end
-
+    if #r == 0 then error('no media urls found') end
     return r
 end
 
