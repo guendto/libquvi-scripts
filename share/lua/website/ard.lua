@@ -114,9 +114,9 @@ function Ard.choose_default(t)
 end
 
 function Ard.to_s(t)
-    return string.format("%s_%s%s%s",
+    return string.format("%s_%s_i%02d%s%s",
               (t.quality) and t.quality or 'sd',
-              t.container,
+              t.container, t.stream_id,
               (t.encoding) and '_'..t.encoding or '',
               (t.height) and '_'..t.height or '')
 end
@@ -147,9 +147,9 @@ end
 function Ard.iter_formats(page)
     local r = {}
     local s = 'mediaCollection%.addMediaStream'
-                .. '%(0, %d+, "(.-)", "(.-)", "%w+"%);'
+                .. '%(0, (%d+), "(.-)", "(.-)", "%w+"%);'
 
-    for prefix, suffix in  page:gmatch(s) do
+    for s_id, prefix, suffix in  page:gmatch(s) do
         local u = prefix .. suffix
         u = u:match('^(.-)?') or u  -- remove querystring
         local t = {
@@ -157,6 +157,7 @@ function Ard.iter_formats(page)
             encoding = suffix:match('%.(h264)%.'),
             quality = Ard.quality_from(suffix),
             height = Ard.height_from(suffix),
+            stream_id = s_id, -- internally (by service) used stream ID
             url = u
         }
         table.insert(r,t)
