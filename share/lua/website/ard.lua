@@ -121,12 +121,25 @@ function Ard.to_s(t)
               (t.height) and '_'..t.height or '')
 end
 
+function Ard.quality_from(suffix)
+    local q = suffix:match('%.web(%w)%.') or suffix:match('%.(%w)%.')
+                or suffix:match('[=%.]Web%-(%w)') -- .webs. or Web-S or .s
+    if q then
+        q = q:lower()
+        local t = {s='ld', m='md', l='sd', xl='hd'}
+        for k,v in pairs(t) do
+            if q == k then return v end
+        end
+    end
+    return q
+end
+
 function Ard.iter_formats(page)
     local r = {}
     local s = 'mediaCollection%.addMediaStream'
-                .. '%(0, (%d), "(.-)", "(.-)", "%w+"%);'
+                .. '%(0, %d+, "(.-)", "(.-)", "%w+"%);'
 
-    for quality, prefix, suffix in  page:gmatch(s) do
+    for prefix, suffix in  page:gmatch(s) do
         local u = prefix .. suffix
         -- remove querystring
         u = u:match('^(.-)?') or u
@@ -143,8 +156,8 @@ function Ard.iter_formats(page)
              url = u,
              container = suffix:match('^(...):') or suffix:match('%.(...)$')
                          or suffix:match('%.(...)$') or 'mp4',
-             quality = tonumber(quality),
              encoding = suffix:match('%.(h264)%.'),
+             quality = Ard.quality_from(suffix),
              height = height,
              webx = webx
            }
