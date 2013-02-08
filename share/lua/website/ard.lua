@@ -134,6 +134,11 @@ function Ard.quality_from(suffix)
     return q
 end
 
+function Ard.height_from(suffix)
+    local h = suffix:match('_%d+x(%d+)[_%.]')
+    if h then return h..'p' end
+end
+
 function Ard.iter_formats(page)
     local r = {}
     local s = 'mediaCollection%.addMediaStream'
@@ -149,16 +154,13 @@ function Ard.iter_formats(page)
                         or suffix:match('[=%.]Web%-(%w)')
         if webx then webx = 'web' .. webx:lower() end
 
-        local height = suffix:match('_%d+x(%d+)[_%.]')
-        if height then height = 'p' .. height end
-
         local t = {
              url = u,
              container = suffix:match('^(...):') or suffix:match('%.(...)$')
                          or suffix:match('%.(...)$') or 'mp4',
              encoding = suffix:match('%.(h264)%.'),
              quality = Ard.quality_from(suffix),
-             height = height,
+             height = Ard.height_from(suffix),
              webx = webx
            }
         table.insert(r,t)
