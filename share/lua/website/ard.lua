@@ -114,21 +114,11 @@ function Ard.choose_default(t)
 end
 
 function Ard.to_s(t)
-    s = t.container
-
-    if t.encoding then
-        s = s .. '_' .. t.encoding
-    end
-
-    if t.height then
-        s = s .. '_' .. t.height
-    elseif t.webx then
-        s = s .. '_' .. t.webx
-    else
-        s = s .. '_' .. t.quality
-    end
-
-    return s
+    return string.format("%s_%s%s%s",
+              (t.quality) and t.quality or 'sd',
+              t.container,
+              (t.encoding) and '_'..t.encoding or '',
+              (t.height) and '_'..t.height or '')
 end
 
 function Ard.iter_formats(page)
