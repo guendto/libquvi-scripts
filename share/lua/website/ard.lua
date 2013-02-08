@@ -53,8 +53,6 @@ function parse(self)
     local config = Ard.get_config(self)
     local Util  = require 'quvi/util'
 
-    Ard.test_availability(config)
-
     self.host_id = 'ard'
     self.title = config:match(
                      '<meta property="og:title" content="([^"]*)'
@@ -83,14 +81,13 @@ function parse(self)
 end
 
 function Ard.test_availability(page)
-    -- some films are only scrapable at certain times
+    -- some videos are only scrapable at certain times
     local fsk_pattern =
         'Der Clip ist deshalb nur von (%d%d?) bis (%d%d?) Uhr verfügbar'
-    local fsk = {}
-    fsk.from, fsk.to = page:match(fsk_pattern)
-    if fsk.from and fsk.to then
-        error('film only available from ' ..fsk.from.. ':00 to '
-              ..fsk.to.. ':00 CET (UTC+2)')
+    local from, to = page:match(fsk_pattern)
+    if from and to then
+        error('video only available from ' ..from.. ':00 to '
+              ..to.. ':00 CET')
     end
 end
 
@@ -140,14 +137,15 @@ function Ard.height_from(suffix)
 end
 
 function Ard.container_from(suffix)
-    return suffix:match('^(...):') or suffix:match('%.(...)$')
-              or suffix:match('%.(...)$') or 'mp4'
+    return suffix:match('^(...):') or suffix:match('%.(...)$') or 'mp4'
 end
 
 function Ard.iter_formats(page)
     local r = {}
     local s = 'mediaCollection%.addMediaStream'
                 .. '%(0, (%d+), "(.-)", "(.-)", "%w+"%);'
+
+    Ard.test_availability(page)
 
     for s_id, prefix, suffix in  page:gmatch(s) do
         local u = prefix .. suffix
