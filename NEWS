@@ -1,3 +1,16 @@
+v0.4.12  (2013-02-10) / Toni Gundogdu
+
+Thomas Weißschuh:
+  - Add ard.lua [c0add2d]
+Toni Gundogdu:
+  - FIX: tvlux.lua: Update patterns, parse thumb URL [85f1dea]
+  - FIX: wdrmaus.lua:101: invalid escape sequence [ef57874]
+  - Move fastjizz.lua under FIXME [e2d1f7f]
+  - Move mgnetwork.lua under FIXME [1912cd7]
+
+ 13 files changed, 242 insertions(+), 65 deletions(-)
+
+
 v0.4.11  (2013-02-01) / Toni Gundogdu
 
 Guido Leisker:
