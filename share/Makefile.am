@@ -33,7 +33,6 @@ DIST_lua=\
  lua/website/justintv.lua \
  lua/website/lego.lua \
  lua/website/liveleak.lua \
- lua/website/mgnetwork.lua \
  lua/website/metacafe.lua \
  lua/website/myspass.lua \
  lua/website/publicsenat.lua \
@@ -83,6 +82,7 @@ DIST_lua+=\
  lua/website/collegehumor.lua \
  lua/website/francetelevisions.lua \
  lua/website/globo.lua \
+ lua/website/mgnetwork.lua \
  lua/website/pluzz.lua
 if WITH_NSFW
 DIST_lua+=\
