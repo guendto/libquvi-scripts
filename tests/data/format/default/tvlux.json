@@ -1,15 +1,16 @@
 {
   "host": "tvlux",
-  "page_title": "22/06/2010 - FETE DE LA MUSIQUE MARCHE : BALADE MUSICALE",
-  "page_url": "http://www.tvlux.be/joomla/index.php/component/content/article/188/5469",
-  "id": "5469",
+  "page_title": "Le magret de canard colvert laqué au sirop (09-02-2013)",
+  "page_url": "http://www.tvlux.be/video/le-magret-de-canard-colvert-laque-au-sirop_12025.html",
+  "id": "12025",
   "format_requested": "default",
+  "thumbnail_url": "http://www.tvlux.be/videos/2013/thumbs/130209-Colvert-laque-au-sirop.jpg",
   "link": [
     {
       "id": "1",
-      "length_bytes": "20803010",
-      "content_type": "video/x-flv",
-      "file_suffix": "flv",
+      "length_bytes": "199208152",
+      "content_type": "video/mp4",
+      "file_suffix": "mp4",
       "url": ""
     }
   ]
