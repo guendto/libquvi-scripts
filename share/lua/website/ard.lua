@@ -21,6 +21,7 @@
 local Ard = {}
 
 function ident(self)
+    package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local U      = require 'quvi/util'
     local B      = require 'quvi/bit'
