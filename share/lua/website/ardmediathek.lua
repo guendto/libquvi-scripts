@@ -18,7 +18,7 @@
 -- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 -- 02110-1301  USA
 
-local Ard = {}
+local ArdMediathek = {}
 
 function ident(self)
     package.path = self.script_dir .. '/?.lua'
@@ -35,12 +35,12 @@ function ident(self)
 end
 
 function query_formats(self)
-    local config = Ard.get_config(self)
-    local formats = Ard.iter_formats(config)
+    local config = ArdMediathek.get_config(self)
+    local formats = ArdMediathek.iter_formats(config)
 
     local t = {}
     for _,v in pairs(formats) do
-        table.insert(t, Ard.to_s(v))
+        table.insert(t, ArdMediathek.to_s(v))
     end
 
     table.sort(t)
@@ -51,7 +51,7 @@ end
 
 function parse(self)
 
-    local config = Ard.get_config(self)
+    local config = ArdMediathek.get_config(self)
     local Util  = require 'quvi/util'
 
     self.host_id = 'ard'
@@ -67,12 +67,12 @@ function parse(self)
                              '<meta property="og:image" content="([^"]*)'
                          ) or ''
 
-    local formats = Ard.iter_formats(config)
+    local formats = ArdMediathek.iter_formats(config)
     local format  = Util.choose_format(self,
                                        formats,
-                                       Ard.choose_best,
-                                       Ard.choose_default,
-                                       Ard.to_s)
+                                       ArdMediathek.choose_best,
+                                       ArdMediathek.choose_default,
+                                       ArdMediathek.to_s)
                     or error('unable to choose format')
 
     if not format.url then error('no match: media url') end
@@ -81,7 +81,7 @@ function parse(self)
     return self
 end
 
-function Ard.test_availability(page)
+function ArdMediathek.test_availability(page)
     -- some videos are only scrapable at certain times
     local fsk_pattern =
         'Der Clip ist deshalb nur von (%d%d?) bis (%d%d?) Uhr verfügbar'
@@ -92,7 +92,7 @@ function Ard.test_availability(page)
     end
 end
 
-function Ard.get_config(self)
+function ArdMediathek.get_config(self)
     local c = quvi.fetch(self.page_url)
     self.id = self.page_url:match('documentId=(%d*)')
               or error('no match: media id')
@@ -103,15 +103,15 @@ function Ard.get_config(self)
     return c
 end
 
-function Ard.choose_best(t)
+function ArdMediathek.choose_best(t)
     return t[#t] -- return the last from the array
 end
 
-function Ard.choose_default(t)
+function ArdMediathek.choose_default(t)
     return t[1] -- return the first from the array
 end
 
-function Ard.to_s(t)
+function ArdMediathek.to_s(t)
     return string.format("%s_%s_i%02d%s%s",
               (t.quality) and t.quality or 'sd',
               t.container, t.stream_id,
@@ -119,7 +119,7 @@ function Ard.to_s(t)
               (t.height) and '_'..t.height or '')
 end
 
-function Ard.quality_from(suffix)
+function ArdMediathek.quality_from(suffix)
     local q = suffix:match('%.web(%w)%.') or suffix:match('%.(%w)%.')
                 or suffix:match('[=%.]Web%-(%w)') -- .webs. or Web-S or .s
     if q then
@@ -132,30 +132,30 @@ function Ard.quality_from(suffix)
     return q
 end
 
-function Ard.height_from(suffix)
+function ArdMediathek.height_from(suffix)
     local h = suffix:match('_%d+x(%d+)[_%.]')
     if h then return h..'p' end
 end
 
-function Ard.container_from(suffix)
+function ArdMediathek.container_from(suffix)
     return suffix:match('^(...):') or suffix:match('%.(...)$') or 'mp4'
 end
 
-function Ard.iter_formats(page)
+function ArdMediathek.iter_formats(page)
     local r = {}
     local s = 'mediaCollection%.addMediaStream'
                 .. '%(0, (%d+), "(.-)", "(.-)", "%w+"%);'
 
-    Ard.test_availability(page)
+    ArdMediathek.test_availability(page)
 
     for s_id, prefix, suffix in  page:gmatch(s) do
         local u = prefix .. suffix
         u = u:match('^(.-)?') or u  -- remove querystring
         local t = {
-            container = Ard.container_from(suffix),
+            container = ArdMediathek.container_from(suffix),
             encoding = suffix:match('%.(h264)%.'),
-            quality = Ard.quality_from(suffix),
-            height = Ard.height_from(suffix),
+            quality = ArdMediathek.quality_from(suffix),
+            height = ArdMediathek.height_from(suffix),
             stream_id = s_id, -- internally (by service) used stream ID
             url = u
         }
