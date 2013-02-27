@@ -50,7 +50,8 @@ M.qoo_croak_if_error      = 0x01 -- Terminate if an error occurs
 -- fetch
 M.qoo_fetch_from_charset  = 0x20 -- Convert (to UTF-8) from this charset
 -- http
-M.qoo_http_user_agent     = 0x40 -- Identify to HTTP servers as
+M.qoo_http_cookie_mode    = 0x40 -- HTTP cookie function
+M.qoo_http_user_agent     = 0x41 -- Identify to HTTP servers as
 -- crypto
 M.qoo_crypto_cipher_flags = 0x60 -- Cipher flags
 M.qoo_crypto_cipher_mode  = 0x61 -- Cipher mode
@@ -73,6 +74,14 @@ M.qoco_cipher_secure      = 0x01
 M.qoco_cipher_enable_sync = 0x02
 M.qoco_cipher_cbc_cts     = 0x04
 M.qoco_cipher_cbc_mac     = 0x08
+
+--
+-- (q)uvi (o)bject (h)ttp (c)ookie (o)ption
+--
+M.qohco_mode_session  = 0x01
+M.qohco_mode_file     = 0x02
+M.qohco_mode_list     = 0x03
+M.qohco_mode_jar      = 0x04
 
 --
 -- subtitle
