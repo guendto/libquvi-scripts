@@ -21,10 +21,15 @@ The modules are usually installed at::
 MODULES
 -------
 
+quvi/http/cookie::
+  A set of functions that wrap most of the quvi.http.cookie function
+  features. See 'quvi-object(7)'.
+
 quvi/const::
-  Constants. Technically, (due to Lua language specification) these
-  are not immutable values. These constants are used widely for
-  interacting with libquvi.
+  Constants. Technically, (due to Lua language specification) these are
+  not immutable values. The 'constants' are used to interact with
+  libquvi, e.g. specifying function operation modes and checking for
+  returned libquvi return codes.
 
 quvi/debug::
   An message output facility intended to be used for debugging purposes.
