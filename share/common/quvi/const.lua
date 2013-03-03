@@ -51,7 +51,6 @@ M.qoo_croak_if_error      = 0x01 -- Terminate if an error occurs
 M.qoo_fetch_from_charset  = 0x20 -- Convert (to UTF-8) from this charset
 -- http
 M.qoo_http_cookie_mode    = 0x40 -- HTTP cookie function
-M.qoo_http_user_agent     = 0x41 -- Identify to HTTP servers as
 -- crypto
 M.qoo_crypto_cipher_flags = 0x60 -- Cipher flags
 M.qoo_crypto_cipher_mode  = 0x61 -- Cipher mode
