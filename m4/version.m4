@@ -1,1 +1,1 @@
-m4_define([_LIBQUVI_SCRIPTS_VERSION], [0.4.12])
+m4_define([_LIBQUVI_SCRIPTS_VERSION], [0.4.13])
