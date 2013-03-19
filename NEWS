@@ -1,3 +1,12 @@
+v0.4.14  (2013-03-19) / Toni Gundogdu
+
+Martin Herkt:
+  - Add website script for wimp.com [3639d67]
+  - website utils: add base64 decoder [0eff56e]
+
+ 5 files changed, 118 insertions(+), 6 deletions(-)
+
+
 v0.4.13  (2013-03-03) / Toni Gundogdu
 
 Toni Gundogdu:
