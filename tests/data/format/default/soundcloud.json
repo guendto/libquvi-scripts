@@ -1,15 +1,15 @@
 {
   "host": "soundcloud",
-  "page_title": "Martin Solveig & Dragonette - Hello (Bassjackers remix)",
-  "page_url": "http://soundcloud.com/martinsolveig/martin-solveig-dragonette-hello-bassjackers-remix",
-  "id": "vQ1PRG0cEL11",
+  "page_title": "Kendrick Lamar - Bitch Don't Kill My Vibe (Remix) ft. Jay-Z",
+  "page_url": "http://soundcloud.com/topdawgent/bitch-dont-kill-my-vibe-remix",
+  "id": "7Mfg5JuNVqE5",
   "format_requested": "default",
-  "thumbnail_url": "http://i1.sndcdn.com/artworks-000002475001-zi22rj-t300x300.jpg?f18fb68",
-  "duration": "303971",
+  "thumbnail_url": "http://i1.sndcdn.com/artworks-000043256861-vc9det-t500x500.jpg?ca77017",
+  "duration": "278150",
   "link": [
     {
       "id": "1",
-      "length_bytes": "4861700",
+      "length_bytes": "4450010",
       "content_type": "audio/mpeg",
       "file_suffix": "mp3",
       "url": ""
