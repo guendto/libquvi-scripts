@@ -30,6 +30,9 @@ AC_PATH_PROG([A2X], [a2x], [no])
 AM_CONDITIONAL([HAVE_A2X], [test x"$A2X" != "xno"])
 AC_SUBST([A2X])
 
+# Check for headers.
+AC_CHECK_HEADERS([string.h])
+
 # Check for functions.
 AC_CHECK_FUNCS([memset])
 
