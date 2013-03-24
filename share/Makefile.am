@@ -9,6 +9,7 @@ dist_common_DATA=\
   common/quvi/hash.lua\
   common/quvi/hex.lua\
   common/quvi/html.lua\
+  common/quvi/http/cookie.lua\
   common/quvi/lxph.lua\
   common/quvi/stream.lua\
   common/quvi/util.lua\
