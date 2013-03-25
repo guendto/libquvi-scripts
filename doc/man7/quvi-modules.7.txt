@@ -9,7 +9,7 @@ DESCRIPTION
 -----------
 'quvi-modules' are a selection of importable modules implemented in Lua.
 These modules are intended to be loaded ('require') from the
-'libquvi-scripts(7)'.
+linkman:libquvi-scripts[7].
 
 Many of the modules are documented within the code. Refer to the
 individual modules for their detailed description of different
@@ -23,7 +23,7 @@ MODULES
 
 quvi/http/cookie::
   A set of functions that wrap most of the quvi.http.cookie function
-  features. See 'quvi-object(7)'.
+  features. See linkman:quvi-object[7].
 
 quvi/const::
   Constants. Technically, (due to Lua language specification) these are
@@ -39,18 +39,19 @@ quvi/debug::
 
 quvi/entity::
   HTML entity conversion module. Converts the 'standard HTML entities'
-  (to ASCII), and any numeric HTML entities to UTF-8 (using
-  the 'quvi/html' module).
+  (to ASCII), and any numeric HTML entities to UTF-8 (using the
+  'quvi/html' module).
 
 quvi/hash::
   Wrapper functions for some of the common hash (message digest)
-  functions provided by the 'quvi-object(7)'. Note that these functions
-  convert the given data into hexadecimal form before passing it to the
-  hash functions.
+  functions provided by the linkman:quvi-object[7]. Note that these
+  functions convert the given data into hexadecimal form before passing
+  it to the hash functions.
 
 quvi/hex::
-  Functions for converting values from and to hexadecimal form. These are
-  typically used together with the 'quvi-object(7)' crypto functions.
+  Functions for converting values from and to hexadecimal form. These
+  are typically used together with the linkman:quvi-object[7] crypto
+  functions.
 
 quvi/html::
   Converts numeric HTML entities to UTF-8. See also 'quvi/entity', which
@@ -58,7 +59,7 @@ quvi/html::
 
 quvi/lxph::
   LuaExpat wrapper/utility functions for parsing XML, see also
-  'quvi-modules-3rdparty(7)'.
+  linkman:quvi-modules-3rdparty[7].
 
 quvi/stream::
   Media stream related functions.
@@ -69,27 +70,9 @@ quvi/util::
 quvi/youtube::
   Functions common to YouTube.
 
-Authors
--------
-Toni Gundogdu <legatvs@gmail.com>::
-  Author.
-
-Reporting bugs
---------------
-Report bugs to the quvi-devel mailing list
-<quvi-devel@lists.sourceforge.net> where the development and the
-maintenance is primarily done.  You do not have to be subscribed
-to the list to send a message there.
-
-LICENSE
--------
-libquvi is Free Software licensed under the GNU Affero GPLv3+
-
 SEE ALSO
 --------
-'libquvi-scripts(7)', 'libquvi(3)', 'quvi-object(7)',
-'quvi-modules-3rdparty(7)'
+linkman:libquvi-scripts[7], linkman:libquvi[3], linkman:quvi-object[7],
+linkman:quvi-modules-3rdparty[7]
 
-LIBQUVI-SCRIPTS
----------------
-Part of the 'libquvi-scripts(7)' suite
+include::footer.txt[]
