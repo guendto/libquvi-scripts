@@ -8,8 +8,8 @@ quvi-modules-3rdparty - Overview of the loadable 3rd party modules
 DESCRIPTION
 -----------
 This is a brief list of the loadable '3rd party modules' that the the
-'libquvi-scripts(7)' use. For more information about these modules,
-refer to their corresponding reference documentation.
+linkman:libquvi-scripts[7] use. For more information about these
+modules, refer to their corresponding reference documentation.
 
 3rd PARTY MODULES
 -----------------
@@ -33,26 +33,9 @@ LuaSocket::
   +
   http://w3.impa.br/~diego/software/luasocket/
 
-Authors
--------
-Toni Gundogdu <legatvs@gmail.com>::
-  Author.
-
-Reporting bugs
---------------
-Report bugs to the quvi-devel mailing list
-<quvi-devel@lists.sourceforge.net> where the development and the
-maintenance is primarily done.  You do not have to be subscribed
-to the list to send a message there.
-
-LICENSE
--------
-libquvi is Free Software licensed under the GNU Affero GPLv3+
-
 SEE ALSO
 --------
-'libquvi-scripts(7)', 'libquvi(3)', 'quvi-object(7)', 'quvi-modules(7)'
+linkman:libquvi-scripts[7], linkman:libquvi[3], linkman:quvi-object[7],
+linkman:quvi-modules[7]
 
-LIBQUVI-SCRIPTS
----------------
-Part of the 'libquvi-scripts(7)' suite
+include::footer.txt[]
