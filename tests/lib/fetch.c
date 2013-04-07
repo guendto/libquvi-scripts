@@ -25,6 +25,8 @@
 #include <quvi.h>
 #include <curl/curl.h>
 
+#include "tests.h"
+
 struct temp_s
 {
   gsize size;
