@@ -1,0 +1,78 @@
+quvi-modules(7)
+===============
+
+NAME
+----
+quvi-modules - Overview of the loadable quvi modules
+
+DESCRIPTION
+-----------
+'quvi-modules' are a selection of importable modules implemented in Lua.
+These modules are intended to be loaded ('require') from the
+linkman:libquvi-scripts[7].
+
+Many of the modules are documented within the code. Refer to the
+individual modules for their detailed description of different
+available functions.
+
+The modules are usually installed at::
+  $prefix/share/libquvi-scripts/$major_ver.$minor_ver/common/quvi/
+
+MODULES
+-------
+
+quvi/http/cookie::
+  A set of functions that wrap most of the quvi.http.cookie function
+  features. See linkman:quvi-object[7].
+
+quvi/const::
+  Constants. Technically, (due to Lua language specification) these are
+  not immutable values. The 'constants' are used to interact with
+  libquvi, e.g. specifying function operation modes and checking for
+  returned libquvi return codes.
+
+quvi/debug::
+  An message output facility intended to be used for debugging purposes.
+  By 'default', all output from scripts using this facility remain
+  'disabled'. To enable the output, define the LIBQUVI_SCRIPTS_VERBOSE
+  environment variable.
+
+quvi/entity::
+  HTML entity conversion module. Converts the 'standard HTML entities'
+  (to ASCII), and any numeric HTML entities to UTF-8 (using the
+  'quvi/html' module).
+
+quvi/hash::
+  Wrapper functions for some of the common hash (message digest)
+  functions provided by the linkman:quvi-object[7]. Note that these
+  functions convert the given data into hexadecimal form before passing
+  it to the hash functions.
+
+quvi/hex::
+  Functions for converting values from and to hexadecimal form. These
+  are typically used together with the linkman:quvi-object[7] crypto
+  functions.
+
+quvi/html::
+  Converts numeric HTML entities to UTF-8. See also 'quvi/entity', which
+  uses this module.
+
+quvi/lxph::
+  LuaExpat wrapper/utility functions for parsing XML, see also
+  linkman:quvi-modules-3rdparty[7].
+
+quvi/stream::
+  Media stream related functions.
+
+quvi/util::
+  Misc. utility functions.
+
+quvi/youtube::
+  Functions common to YouTube.
+
+SEE ALSO
+--------
+linkman:libquvi-scripts[7], linkman:libquvi[3], linkman:quvi-object[7],
+linkman:quvi-modules-3rdparty[7]
+
+include::footer.txt[]

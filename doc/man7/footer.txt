@@ -1,0 +1,25 @@
+FURTHER RESOURCES
+-----------------
+The development code may be cloned from
+`git://repo.or.cz/libquvi-scripts.git`.  The gitweb is accessible at
+`http://repo.or.cz/w/libquvi-scripts.git`.
+
+Authors
+-------
+Toni Gundogdu <legatvs@gmail.com>::
+  Author.
+
+Reporting bugs
+--------------
+Report bugs to the quvi-devel mailing list
+<quvi-devel@lists.sourceforge.net> where the development and the
+maintenance is primarily done.  You do not have to be subscribed to the
+list to send a message there.
+
+LICENSE
+-------
+libquvi-scripts is Free Software licensed under the GNU Affero GPLv3+
+
+LIBQUVI-SCRIPTS
+---------------
+Part of the 'libquvi-scripts(7)' suite

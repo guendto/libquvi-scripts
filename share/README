@@ -1,0 +1,10 @@
+This directory contains the libquvi-scripts(7). If you are new to lua,
+<http://www.lua.org/pil/> is a good place to start.
+
+  subtitle/export/  - Export scripts for the subtitle data
+  common/quvi/      - Importable quvi modules, see also quvi-modules(7)
+  playlist/         - Playlist property scripts
+  subtitle/         - Subtitle property scripts
+  media/            - Media property scripts
+  scan/             - Scripts for scanning embedded media URLs
+  util/             - Utility scripts used by the library

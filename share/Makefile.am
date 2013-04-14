@@ -1,97 +1,100 @@
+# Common scripts.
 
-SUBDIRS=	lua
+commondir=$(pkgdatadir)/$(VERSION)/common/quvi/
 
-DIST_lua=\
- lua/README \
- lua/util/content_type.lua \
- lua/util/charset.lua \
- lua/util/trim.lua \
- lua/website/README \
- lua/website/quvi/bit.lua \
- lua/website/quvi/const.lua \
- lua/website/quvi/html.lua \
- lua/website/quvi/url.lua \
- lua/website/quvi/util.lua \
- lua/website/101greatgoals.lua \
- lua/website/1tvru.lua \
- lua/website/academicearth.lua \
- lua/website/ardmediathek.lua \
- lua/website/audioboo.lua \
- lua/website/bbc.lua \
- lua/website/break.lua \
- lua/website/canalplus.lua \
- lua/website/cbsnews.lua \
- lua/website/charlierose.lua \
- lua/website/clipfish.lua \
- lua/website/dailymotion.lua \
- lua/website/foxnews.lua \
- lua/website/funnyordie.lua \
- lua/website/gaskrank.lua \
- lua/website/golem.lua \
- lua/website/guardian.lua \
- lua/website/imdb.lua \
- lua/website/justintv.lua \
- lua/website/lego.lua \
- lua/website/liveleak.lua \
- lua/website/metacafe.lua \
- lua/website/myspass.lua \
- lua/website/publicsenat.lua \
- lua/website/sapo.lua \
- lua/website/senat.lua \
- lua/website/sevenload.lua \
- lua/website/soundcloud.lua \
- lua/website/spiegel.lua \
- lua/website/tagtele.lua \
- lua/website/tapuz.lua \
- lua/website/ted.lua \
- lua/website/tvlux.lua \
- lua/website/tvrain.lua \
- lua/website/tmunderground.lua \
- lua/website/theonion.lua \
- lua/website/videa.lua \
- lua/website/videobash.lua \
- lua/website/vimeo.lua \
- lua/website/wdrmaus.lua \
- lua/website/wimp.lua \
- lua/website/yfrog.lua \
- lua/website/youtube.lua
+dist_common_DATA=\
+  common/quvi/const.lua\
+  common/quvi/debug.lua\
+  common/quvi/entity.lua\
+  common/quvi/hash.lua\
+  common/quvi/hex.lua\
+  common/quvi/html.lua\
+  common/quvi/http/cookie.lua\
+  common/quvi/lxph.lua\
+  common/quvi/stream.lua\
+  common/quvi/util.lua\
+  common/quvi/youtube.lua
+
+# Utility scripts.
+
+utildir=$(pkgdatadir)/$(VERSION)/util
+
+dist_util_DATA=\
+  util/convert_entities.lua\
+  util/resolve_redirections.lua\
+  util/to_file_ext.lua
+
+# Media property scripts.
+
+mediadir=$(pkgdatadir)/$(VERSION)/media
+
+dist_media_DATA=\
+  media/academicearth.lua\
+  media/break.lua\
+  media/dailymotion.lua\
+  media/gaskrank.lua\
+  media/vimeo.lua\
+  media/youtube.lua
+#  media/soundcloud.lua -- On hold: still under LGPLv2.1+
+
+if WITH_GEOBLOCKED
+dist_media_DATA+=
+#  media/arte.lua -- On hold: still under LGPLv2.1+
+endif
 
 if WITH_NSFW
-DIST_lua+=\
- lua/website/beeg.lua \
- lua/website/deviantclip.lua \
- lua/website/empflix.lua \
- lua/website/jizzhut.lua \
- lua/website/keezmovies.lua \
- lua/website/redtube.lua \
- lua/website/spankwire.lua \
- lua/website/tcmag.lua \
- lua/website/tnaflix.lua \
- lua/website/totallynsfw.lua \
- lua/website/xhamster.lua \
- lua/website/xnxx.lua \
- lua/website/xvideos.lua \
- lua/website/youjizz.lua
 endif
 
 if WITH_FIXME
-DIST_lua+=\
- lua/website/arte.lua \
- lua/website/bikeradar.lua \
- lua/website/blip.lua \
- lua/website/bloomberg.lua \
- lua/website/collegehumor.lua \
- lua/website/francetelevisions.lua \
- lua/website/globo.lua \
- lua/website/mgnetwork.lua \
- lua/website/pluzz.lua
+if WITH_GEOBLOCKED
+endif
 if WITH_NSFW
-DIST_lua+=\
- lua/website/fastjizz.lua \
- lua/website/pornhub.lua \
- lua/website/tube8.lua
 endif
 endif # WITH_FIXME
 
-nobase_dist_pkgdata_DATA=	$(DIST_lua)
-EXTRA_DIST=	$(DIST_lua)
+# Subtitle property scripts.
+
+subtitleexportdir=$(pkgdatadir)/$(VERSION)/subtitle/export
+
+dist_subtitleexport_DATA=\
+  subtitle/export/subrip.lua
+
+# Subtitle property scripts.
+
+subtitledir=$(pkgdatadir)/$(VERSION)/subtitle
+
+dist_subtitle_DATA=\
+  subtitle/youtube.lua
+
+# Playlist property scripts.
+
+playlistdir=$(pkgdatadir)/$(VERSION)/playlist
+
+dist_playlist_DATA=\
+  playlist/youtube.lua
+#  playlist/soundcloud.lua -- On hold: media script still under LGPLv2.1+
+
+# Scan embedded media URL scripts.
+
+scandir=$(pkgdatadir)/$(VERSION)/scan
+
+dist_scan_DATA=\
+  scan/youtube.lua
+
+.PHONY: version
+
+version:
+	@if test -d "$(top_srcdir)/.git" -o -f "$(top_srcdir)/.git"; then \
+		"$(top_srcdir)/gen-ver.sh" "$(top_srcdir)" > $@; \
+	fi
+
+dist-hook: version
+
+versiondir=$(pkgdatadir)/$(VERSION)
+dist_version_DATA=version
+
+install-data-hook:
+	cd $(DESTDIR)$(pkgdatadir) && rm -f $(VERSION_MM) && \
+		$(LN_S) $(VERSION) $(VERSION_MM)
+
+# vim: set ts=2 sw=2 tw=72 expandtab:

@@ -1,0 +1,6 @@
+TEST_PROGS+=playlist_soundcloud
+playlist_soundcloud_SOURCES=playlist/playlist_soundcloud.c
+playlist_soundcloud_CPPFLAGS=$(testsuite_cppflags)
+playlist_soundcloud_LDFLAGS=$(testsuite_ldflags)
+playlist_soundcloud_LDADD=$(testsuite_ldadd)
+playlist_soundcloud_CFLAGS=$(AM_CFLAGS)

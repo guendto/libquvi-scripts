@@ -1,0 +1,84 @@
+libquvi-scripts(7)
+==================
+
+NAME
+----
+libquvi-scripts - Overview of the library scripts
+
+DESCRIPTION
+-----------
+libquvi-scripts contains the Lua scripts for libquvi that it uses to parse
+the different properties, such as the media properties.
+
+TYPES
+-----
+
+Common scripts
+~~~~~~~~~~~~~~
+
+The common scripts are modules that may be loaded from other scripts,
+e.g. the 'quvi-modules(7)'.
+
+These scripts are typically installed at::
+  $prefix/share/libquvi-scripts/$major_ver.$minor_ver/common/
+
+Media scripts
+~~~~~~~~~~~~~
+
+The media scripts are responsible for parsing the media properties,
+e.g. the media stream URLs. There is usually a media script for
+each supported website.
+
+These scripts are typically installed at::
+  $prefix/share/libquvi-scripts/$major_ver.$minor_ver/media/
+
+Playlist scripts
+~~~~~~~~~~~~~~~~
+
+The playlist scripts are responsible for parsing the playlist
+properties. There is usually a playlist script for each supported
+website.
+
+These scripts are typically installed at::
+  $prefix/share/libquvi-scripts/$major_ver.$minor_ver/playlist/
+
+Scan scripts
+~~~~~~~~~~~~
+
+The scan scripts are used to scan an URL for embedded media URLs.
+
+These scripts are typically installed at::
+  $prefix/share/libquvi-scripts/$major_ver.$minor_ver/scan/
+
+Subtitlte scripts
+~~~~~~~~~~~~~~~~~
+
+The subtitle scripts are responsible for retrieving subtitle data for
+the media as well as exporting the data to another format, e.g. SubRip.
+
+These scripts are typically installed at::
+  $prefix/share/libquvi-scripts/$major_ver.$minor_ver/subtitle/
+  $prefix/share/libquvi-scripts/$major_ver.$minor_ver/subtitle/export/
+
+Utility scripts
+~~~~~~~~~~~~~~~
+
+The utility scripts are used by libquvi to perform misc. tasks, such as
+parsing file extension from a content-type, or converting HTML entities
+to UTF-8 characters.
+
+These scripts are typically installed at::
+  $prefix/share/libquvi-scripts/$major_ver.$minor_ver/util/
+
+ENVIRONMENT
+-----------
+
+LIBQUVI_SCRIPTS_VERBOSE::
+  When defined, enables the output from any libquvi scripts using the
+  debug facility ('quvi/debug' module).
+
+SEE ALSO
+--------
+linkman:libquvi[3], linkman:quvi[1]
+
+include::footer.txt[]

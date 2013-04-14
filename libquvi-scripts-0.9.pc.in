@@ -1,0 +1,10 @@
+prefix=@prefix@
+datarootdir=@datarootdir@
+datadir=@datadir@
+scriptsdir=@datadir@/libquvi-scripts
+versionfile=${scriptsdir}/@VERSION_MM@/version
+
+Name: libquvi-scripts
+URL: http://quvi.sourceforge.net/
+Description: Scripts for libquvi
+Version: @VN_C@
