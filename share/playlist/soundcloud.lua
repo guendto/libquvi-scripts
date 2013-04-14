@@ -42,7 +42,7 @@ function parse(qargs)
   qargs.title = p:match('.+content="(.-)"%s+property="og:title"') or ''
 
   local m = 'class="info">.-href="(.-)"'
-         .. '.-class="set%-track%-title">(.-)<'
+         .. '.-class="set%-track%-title".->(.-)<'
          .. '.-class="time">(.-)<'
 
   qargs.media = {}
