@@ -1,5 +1,5 @@
 /* libquvi-scripts
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi-scripts <http://quvi.sourceforge.net>.
  *
@@ -23,13 +23,13 @@
 
 /* qerr.c */
 
-glong qerr(quvi_t);
+glong qerr(gpointer);
 
 /* env.c */
 
 gboolean chk_env(const gchar*, const gchar*);
 gboolean chk_skip(const gchar*);
-void chk_verbose(quvi_t);
+void chk_verbose(gpointer);
 gboolean chk_geoblocked();
 gboolean chk_complete();
 gboolean chk_fixme();
@@ -244,9 +244,25 @@ void qsub_test(const gchar*, const gchar*, qsub_test_opts_t);
 
 /* Other. */
 
+struct capture_s
+{
+  GMatchInfo *m;
+  GRegex *re;
+  GError *e;
+};
+
+typedef struct capture_s *capture_t;
+
+capture_t capture_new(const gchar*, const gchar*, const GRegexCompileFlags);
+gchar *capture_fetch(capture_t, const gint);
+gboolean capture_matches(capture_t);
+gboolean capture_next(capture_t);
+void capture_free(capture_t);
+
 gboolean match(const gchar*, const gchar*);
-gchar *capture(const gchar*, const gchar*);
 gchar *fetch(const gchar*);
+
+void slist_free_full(GSList*, const GFunc);
 
 #endif /* tests_h */
 
