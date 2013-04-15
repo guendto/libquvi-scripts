@@ -1,5 +1,5 @@
 /* libquvi-scripts
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi-scripts <http://quvi.sourceforge.net>.
  *
@@ -21,6 +21,7 @@
 #include "config.h"
 
 #include <glib.h>
+#include "tests.h"
 
 #define _W "%s: %s"
 
@@ -53,37 +54,69 @@ gboolean match(const gchar *s, const gchar *p)
   return (r);
 }
 
-gchar *capture(const gchar *s, const gchar *p)
+capture_t capture_new(const gchar *str, const gchar *patt,
+                      const GRegexCompileFlags flags)
 {
-  GMatchInfo *m;
-  GError *err;
-  GRegex *re;
-  gchar *r;
+  capture_t p = g_new0(struct capture_s, 1);
 
-  err = NULL;
-
-  re = g_regex_new(p, G_REGEX_MULTILINE, 0, &err);
-  if (err != NULL)
+  p->re = g_regex_new(patt, flags, 0, &p->e);
+  if (p->e != NULL)
     {
-      g_warning(_W, __func__, err->message);
-      g_error_free(err);
-      err = NULL;
+      g_warning(_W, __func__, p->e->message);
+      capture_free(p);
       return (NULL);
     }
 
-  m = NULL;
-  r = NULL;
+  g_regex_match_full(p->re, str, -1, 0, 0, &p->m, &p->e);
+  if (p->e != NULL)
+    {
+      g_warning(_W, __func__, p->e->message);
+      capture_free(p);
+      return (NULL);
+    }
+  return (p);
+}
 
-  if (g_regex_match(re, s, 0, &m) == TRUE)
-    r = g_match_info_fetch(m, 1);
+gboolean capture_matches(capture_t p)
+{
+  g_assert(p != NULL);
+  g_assert(p->m != NULL);
+  return (g_match_info_matches(p->m));
+}
 
-  g_match_info_free(m);
-  m = NULL;
+gchar *capture_fetch(capture_t p, const gint i)
+{
+  g_assert(p != NULL);
+  g_assert(p->m != NULL);
+  return (g_match_info_fetch(p->m, i));
+}
 
-  g_regex_unref(re);
-  re = NULL;
+gboolean capture_next(capture_t p)
+{
+  g_assert(p != NULL);
+  g_assert(p->m != NULL);
 
-  return (r);
+  g_match_info_next(p->m, &p->e);
+  if (p->e != NULL)
+    {
+      g_warning(_W, __func__, p->e->message);
+      return (FALSE);
+    }
+  return (TRUE);
+}
+
+void capture_free(capture_t p)
+{
+  if (p == NULL)
+    return;
+
+  g_match_info_free(p->m);
+  g_regex_unref(p->re);
+
+  if (p->e != NULL)
+    g_error_free(p->e);
+
+  g_free(p);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

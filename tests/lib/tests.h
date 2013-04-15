@@ -244,8 +244,22 @@ void qsub_test(const gchar*, const gchar*, qsub_test_opts_t);
 
 /* Other. */
 
+struct capture_s
+{
+  GMatchInfo *m;
+  GRegex *re;
+  GError *e;
+};
+
+typedef struct capture_s *capture_t;
+
+capture_t capture_new(const gchar*, const gchar*, const GRegexCompileFlags);
+gchar *capture_fetch(capture_t, const gint);
+gboolean capture_matches(capture_t);
+gboolean capture_next(capture_t);
+void capture_free(capture_t);
+
 gboolean match(const gchar*, const gchar*);
-gchar *capture(const gchar*, const gchar*);
 gchar *fetch(const gchar*);
 
 void slist_free_full(GSList*, const GFunc);
