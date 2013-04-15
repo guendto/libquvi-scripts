@@ -71,8 +71,8 @@ dist_subtitle_DATA=\
 playlistdir=$(pkgdatadir)/$(VERSION)/playlist
 
 dist_playlist_DATA=\
+  playlist/soundcloud.lua\
   playlist/youtube.lua
-#  playlist/soundcloud.lua -- On hold: media script still under LGPLv2.1+
 
 # Scan embedded media URL scripts.
 
