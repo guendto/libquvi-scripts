@@ -38,8 +38,8 @@ dist_media_DATA=\
 #  media/soundcloud.lua -- On hold: still under LGPLv2.1+
 
 if WITH_GEOBLOCKED
-dist_media_DATA+=
-#  media/arte.lua -- On hold: still under LGPLv2.1+
+dist_media_DATA+=\
+  media/arte.lua
 endif
 
 if WITH_NSFW
