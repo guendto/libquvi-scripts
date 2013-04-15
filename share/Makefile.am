@@ -33,9 +33,9 @@ dist_media_DATA=\
   media/break.lua\
   media/dailymotion.lua\
   media/gaskrank.lua\
+  media/soundcloud.lua\
   media/vimeo.lua\
   media/youtube.lua
-#  media/soundcloud.lua -- On hold: still under LGPLv2.1+
 
 if WITH_GEOBLOCKED
 dist_media_DATA+=\
