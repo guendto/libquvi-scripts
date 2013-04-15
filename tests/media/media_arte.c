@@ -1,5 +1,5 @@
 /* libquvi-scripts
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi-scripts <http://quvi.sourceforge.net>.
  *
@@ -32,43 +32,58 @@
 
 #include "tests.h"
 
-static const gchar FIRST[] = "\\<h2\\>\\<a href=\"(.*)\"";
+static const gchar PATTERN[] = "<h2><a href=\"(.*)\"";
 static const gchar WWW[] = "http://videos.arte.tv";
 
 static void test_media_arte()
 {
   struct qm_test_opts_s o;
-  gchar *c, *p, *url;
-
-  memset(&o, 0, sizeof(o));
+  gchar *p, *u, *r;
+  capture_t c;
+  GSList *l;
 
   if (chk_geoblocked() == FALSE)
     return;
 
-  /* Normally done in qm_test but due to the fetch-parse circumstances,
-   * do it here. */
+  memset(&o, 0, sizeof(o));
+
+  /* Normally done in qm_test, due to fetch-parse, do it here. */
+
   if (chk_skip(__func__) == TRUE)
     return;
 
-  c = fetch(WWW);
-  g_assert(c != NULL);
-
-  p = capture(c, FIRST);
+  p = fetch(WWW);
   g_assert(p != NULL);
 
-  g_free(c);
-  c = NULL;
+  l = NULL;
+  u = NULL;
 
-  url = g_strdup_printf("%s%s", WWW, p);
-  g_test_message("media URL=%s", url);
+  c = capture_new(p, PATTERN, 0);
+  g_assert(c != NULL);
 
+  while (capture_matches(c) == TRUE)
+    {
+      r = capture_fetch(c, 1);
+      l = g_slist_prepend(l, g_strdup_printf("%s%s", WWW, r));
+      capture_next(c);
+      g_free(r);
+    }
+  l = g_slist_reverse(l);
+  g_assert_cmpint(g_slist_length(l), >, 0);
+
+  /* Pick a random URL from the stack. */
+  {
+    const gint32 n = g_random_int_range(0, g_slist_length(l));
+    u = (gchar*) g_slist_nth_data(l, n);
+  }
+  g_assert(u != NULL);
+
+  g_test_message("media URL=%s", u);
+  qm_test(__func__, u, NULL, &o);
+
+  slist_free_full(l, (GFunc) g_free);
+  capture_free(c);
   g_free(p);
-  p = NULL;
-
-  qm_test(__func__, url, NULL, &o);
-
-  g_free(url);
-  url = NULL;
 }
 
 gint main(gint argc, gchar **argv)
