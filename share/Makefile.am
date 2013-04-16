@@ -30,6 +30,7 @@ mediadir=$(pkgdatadir)/$(VERSION)/media
 
 dist_media_DATA=\
   media/academicearth.lua\
+  media/audioboo.lua\
   media/break.lua\
   media/dailymotion.lua\
   media/gaskrank.lua\
