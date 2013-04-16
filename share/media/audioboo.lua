@@ -28,28 +28,23 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse (self)
-    self.host_id = "audioboo"
+-- Parse media properties.
+function parse(qargs)
+  local p = quvi.http.fetch(qargs.input_url).data
 
-    self.id = self.page_url:match('/boos/(%d+)%-')
-                or error('no match: media ID')
-
-    local p = quvi.fetch(self.page_url)
-
-    self.title =
+  qargs.title =
         p:match('.+content=[\'"](.-)[\'"]%s+property=[\'"]og:title[\'"]')
-          or error('no match: media title')
+          or ''
 
-    self.thumbnail_url =
+  qargs.thumb_url =
         p:match('.+content=[\'"](.-)[\'"]%s+property=[\'"]og:image[\'"]')
           or ''
 
-    self.url = {
-        p:match('.+content=[\'"](.-)[\'"]%s+property=[\'"]og:audio[\'"]')
-          or error('no match: media stream URL')
-    }
-    return self
+  qargs.id = qargs.input_url:match('/boos/(%d+)%-') or ''
+
+  qargs.streams = Audioboo.iter_streams(p)
+
+  return qargs
 end
 
 --
@@ -69,4 +64,11 @@ function Audioboo.can_parse_url(qargs)
   end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function Audioboo.iter_streams(p)
+  local u = p:match('.+content=[\'"](.-)[\'"]%s+property=[\'"]og:audio[\'"]')
+              or error('no match: media stream URL')
+  local S = require 'quvi/stream'
+  return {S.stream_new(u)}
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
