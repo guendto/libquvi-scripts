@@ -32,6 +32,7 @@ dist_media_DATA=\
   media/academicearth.lua\
   media/audioboo.lua\
   media/break.lua\
+  media/cbsnews.lua\
   media/dailymotion.lua\
   media/gaskrank.lua\
   media/soundcloud.lua\
