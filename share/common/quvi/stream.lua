@@ -40,7 +40,7 @@ function M.stream_new(url)
     },
     audio = {
       bitrate_kbit_s = '',
-      encoding = 0
+      encoding = ''
     },
     flags = {
       best = false
