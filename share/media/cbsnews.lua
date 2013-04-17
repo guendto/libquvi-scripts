@@ -21,16 +21,11 @@
 local CBSNews = {} -- Utility functions unique to this script
 
 -- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
-    local C      = require 'quvi/const'
-    local r      = {}
-    r.domain     = "cbsnews%.com"
-    r.formats    = "default|best"
-    r.categories = C.proto_http
-    local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, {r.domain}, {"/video/watch/"})
-    return r
+function ident(qargs)
+  return {
+    can_parse_url = CBSNews.can_parse_url(qargs),
+    domains = table.concat({'cbsnews.com'}, ',')
+  }
 end
 
 -- Query available formats.
@@ -73,6 +68,20 @@ end
 --
 -- Utility functions
 --
+
+function CBSNews.can_parse_url(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('^cbsnews%.com$')
+       and t.path   and t.path:lower():match('^/video/watch/')
+       and t.query  and t.query:lower():match('^id=[%w]+$')
+  then
+    return true
+  else
+    return false
+  end
+end
 
 function CBSNews.get_config(self)
     local p = quvi.fetch(self.page_url)
