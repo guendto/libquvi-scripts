@@ -28,23 +28,6 @@ function ident(qargs)
   }
 end
 
--- Query available formats.
-function query_formats(self)
-    local U       = require 'quvi/util'
-    local config  = CBSNews.get_config(self)
-    local formats = CBSNews.iter_formats(config)
-
-    local t = {}
-    for k,v in pairs(formats) do
-        table.insert(t, CBSNews.to_s(v))
-    end
-
-    table.sort(t)
-    self.formats = table.concat(t, "|")
-
-    return self
-end
-
 -- Parse media URL.
 function parse(self)
     self.host_id = "cbsnews"
