@@ -29,24 +29,21 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "senat"
+-- Parse media properties.
+function parse(qargs)
+  local C = require 'quvi/const'
+  local o = { [C.qoo_fetch_from_charset] = 'iso-8859-1' }
+  local p = quvi.http.fetch(qargs.input_url, o).data
 
-    self.id = self.page_url:match(".-/video(%d+)%.html")
-                or error("no match: media ID")
+  qargs.id = qargs.input_url:match('/video(%d+)%.html$') or ''
 
-    local p = quvi.fetch(self.page_url)
+  qargs.title = p:match('<title>(.-)</title>') or ''
 
-    self.title = p:match('<title>(.-)</title>')
-                  or error("no match: media title")
+  qargs.thumb_url = p:match('image=(.-)&') or ''
 
-    self.thumbnail_url = p:match('image=(.-)&') or ''
+  qargs.streams = Senat.iter_streams(p)
 
-    self.url = {p:match('name="flashvars" value=".-file=(.-flv)')
-                  or error("no match: media stream URL") }
-
-    return self
+  return qargs
 end
 
 --
@@ -67,4 +64,20 @@ function Senat.can_parse_url(qargs)
   end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function Senat.iter_streams(p)
+  local v = p:match('name="flashvars" value="(.-)"')
+              or error('no match: flash vars')
+
+  local u = v:match('file=(.-flv)')
+              or error('no match: media stream URL')
+
+  local S = require 'quvi/stream'
+  local t = S.stream_new(u)
+
+  t.video.height= v:match('height=(%d+)') or 0
+  t.video.width = v:match('width=(%d+)') or 0
+
+  return {t}
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
