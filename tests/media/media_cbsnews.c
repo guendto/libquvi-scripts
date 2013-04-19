@@ -1,7 +1,7 @@
 /* libquvi-scripts
  * Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
  *
- * This file is part of libquvi-scripts <http://quvi.sourceoforge.net/>.
+ * This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public
