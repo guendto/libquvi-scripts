@@ -35,6 +35,7 @@ dist_media_DATA=\
   media/cbsnews.lua\
   media/dailymotion.lua\
   media/gaskrank.lua\
+  media/publicsenat.lua\
   media/soundcloud.lua\
   media/vimeo.lua\
   media/youtube.lua
