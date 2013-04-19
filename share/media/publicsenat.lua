@@ -29,30 +29,19 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "publicsenat"
+-- Parse media properties.
+function parse(qargs)
+  local p = quvi.http.fetch(qargs.input_url).data
 
-    local p = quvi.fetch(self.page_url)
+  local t = p:match('id="imgEmissionSelect" value="(.-)"') or ''
+  qargs.thumb_url = (#t >0) and ('http://publicsenat.fr'..t) or ''
 
-    self.title = p:match('<title>(.-)%s+%|') or error("no match: media title")
+  qargs.id = qargs.input_url:match("/vod/.-/(%d+)$") or ''
+  qargs.title = p:match('<title>(.-)%s+%|') or ''
 
-    self.id = self.page_url:match(".-idE=(%d+)$")
-              or self.page_url:match(".-/(%d+)$")
-              or error("no match: media ID")
+  qargs.streams = PublicSenat.iter_streams(p)
 
-    local t = p:match('id="imgEmissionSelect" value="(.-)"') or ''
-    if #t >0 then
-      self.thumbnail_url = 'http://publicsenat.fr' .. t
-    end
-
-    local u = "http://videos.publicsenat.fr/vodiFrame.php?idE=" ..self.id
-    local c = quvi.fetch(u, {fetch_type='config'})
-
-    self.url = {c:match('id="flvEmissionSelect" value="(.-)"')
-                or error("no match: media stream URL")}
-
-    return self
+  return qargs
 end
 
 --
@@ -72,4 +61,11 @@ function PublicSenat.can_parse_url(qargs)
   end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function PublicSenat.iter_streams(p)
+  local u = p:match('id="flvEmissionSelect" value="(.-)"')
+              or error('no match: media stream URL')
+  local S = require 'quvi/stream'
+  return {S.stream_new(u)}
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
