@@ -6,6 +6,7 @@ include $(top_srcdir)/tests/media/cbsnews.mk
 include $(top_srcdir)/tests/media/dailymotion.mk
 include $(top_srcdir)/tests/media/gaskrank.mk
 include $(top_srcdir)/tests/media/publicsenat.mk
+include $(top_srcdir)/tests/media/senat.mk
 include $(top_srcdir)/tests/media/soundcloud.mk
 include $(top_srcdir)/tests/media/vimeo.mk
 include $(top_srcdir)/tests/media/youtube.mk
