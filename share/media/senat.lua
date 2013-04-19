@@ -1,4 +1,5 @@
 -- libquvi-scripts
+-- Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
 -- Copyright (C) 2012  Raphaël Droz <raphael.droz+floss@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
@@ -18,17 +19,14 @@
 -- <http://www.gnu.org/licenses/>.
 --
 
+local Senat = {} -- Utility functions unique to this script.
+
 -- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
-    local C      = require 'quvi/const'
-    local r      = {}
-    r.domain     = "videos%.senat%.fr"
-    r.formats    = "default"
-    r.categories = C.proto_http
-    local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, {r.domain}, {"/video%d+%.html"})
-    return r
+function ident(qargs)
+  return {
+    can_parse_url = Senat.can_parse_url(qargs),
+    domains = table.concat({'videos.senat.fr'}, ',')
+  }
 end
 
 -- Query available formats.
@@ -55,6 +53,24 @@ function parse(self)
                   or error("no match: media stream URL") }
 
     return self
+end
+
+--
+-- Utility functions.
+--
+
+function Senat.can_parse_url(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  local p = '^/%w+/videos/%d+/video%d+%.html$'
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('^videos%.senat%.fr$')
+       and t.path   and t.path:lower():match(p)
+  then
+    return true
+  else
+    return false
+  end
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
