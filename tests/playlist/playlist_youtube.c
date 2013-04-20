@@ -73,18 +73,14 @@ static void test_playlist_youtube()
 
       e.id = IDs[i];
 
-#ifdef _NOT_IMPLEMENTED_IN_PLAYLIST_YOUTUBE_LUA
-      /* Optional: string values */
+      /* Optional */
 
       o.s_len_gt0.thumbnail_url = TRUE;
       o.s_len_gt0.title = TRUE;
 
       o.s_len_gt0.media.title = TRUE;
-
-      /* Optional: numerical values */
-
       o.gt0.media.duration_ms = TRUE;
-#endif
+
       qp_test(__func__, URLs[i], &e, &o);
     }
 }
