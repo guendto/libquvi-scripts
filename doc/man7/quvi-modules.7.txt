@@ -64,6 +64,9 @@ quvi/lxph::
 quvi/stream::
   Media stream related functions.
 
+quvi/time::
+  Time related functions.
+
 quvi/util::
   Misc. utility functions.
 
