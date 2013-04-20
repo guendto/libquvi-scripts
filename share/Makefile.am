@@ -12,6 +12,7 @@ dist_common_DATA=\
   common/quvi/http/cookie.lua\
   common/quvi/lxph.lua\
   common/quvi/stream.lua\
+  common/quvi/time.lua\
   common/quvi/util.lua\
   common/quvi/youtube.lua
 
