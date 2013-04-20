@@ -55,6 +55,7 @@ function SubRip.from_tt(qargs)
 
   local f = '%d\r\n%02d:%02d:%06.3f --> %02d:%02d:%06.3f\r\n%s\r\n\r\n'
   local E = require 'quvi/entity'
+  local T = require 'quvi/time'
   local U = require 'quvi/util'
   local L = require 'lxp.lom'
 
@@ -78,8 +79,8 @@ function SubRip.from_tt(qargs)
 
       local text = U.trim( E.convert_html(t[i][1]) )
 
-      local start_tc = SubRip.to_timecode(start)
-      local end_tc = SubRip.to_timecode(end_sec)
+      local start_tc = T.to_timecode(start)
+      local end_tc = T.to_timecode(end_sec)
 
       local s = string.format(f, i, start_tc.hh, start_tc.mm, start_tc.ss,
                               end_tc.hh, end_tc.mm, end_tc.ss, text)
@@ -91,10 +92,6 @@ function SubRip.from_tt(qargs)
   end
   qargs.data = table.concat(r, '')
   return qargs
-end
-
-function SubRip.to_timecode(s)
-  return {hh=(s/3600)%60, mm=(s/60)%60, ss=s%60}
 end
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:

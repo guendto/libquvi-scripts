@@ -89,29 +89,6 @@ function M.tokenize(s, p)
 end
 
 --[[
-Convert a string to a timestamp.
-Parameters:
-  s .. String to convert
-Returns:
-  Converted string.
-]]--
-function M.to_timestamp(s) -- Based on <http://is.gd/ee9ZTD>
-  local p = "%a+, (%d+) (%a+) (%d+) (%d+):(%d+):(%d+)"
-
-  local d,m,y,hh,mm,ss = s:match(p)
-  if not d then error('no match: date') end
-
-  local MON = {Jan=1, Feb=2, Mar=3, Apr=4, May=5, Jun=6, Jul=7, Aug=8,
-               Sep=9, Oct=10, Nov=11, Dec=12}
-
-  local m = MON[m]
-  local offset = os.time() - os.time(os.date("!*t"))
-
-  return os.time({day=d,month=m,year=y,
-                  hour=hh,min=mm,sec=ss}) + offset
-end
-
---[[
 Decode a string.
 Parameters:
   s .. String to decode
