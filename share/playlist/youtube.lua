@@ -37,6 +37,7 @@ function parse(qargs)
   end
 
   local Y = require 'quvi/youtube'
+  local L = require 'quvi/lxph'
   local P = require 'lxp.lom'
 
   local max_results = 25
@@ -45,15 +46,16 @@ function parse(qargs)
   qargs.media = {}
   local r = {}
 
-  -- TODO: Return playlist thumbnail URL
-  -- TODO: Return playlist title
-
   repeat -- Get the entire playlist.
     local u = YouTube.config_url(qargs, start_index, max_results)
     local c = quvi.http.fetch(u).data
     local x = P.parse(c)
 
     YouTube.chk_error_resp(x)
+
+    YouTube.parse_thumb_url(qargs, L, x)
+    YouTube.parse_title(qargs, L, x)
+
     r = YouTube.parse_media_urls(x)
 
     for _,u in pairs(r) do
@@ -139,6 +141,25 @@ function YouTube.chk_error_resp(t)
       m = m .. string.format("%s=%s ", k,v)
     end
     error(m)
+  end
+end
+
+function YouTube.parse_title(qargs, L, x)
+  if not qargs.title then
+    qargs.title = L.find_first_tag(x, 'title')[1]
+  end
+end
+
+function YouTube.parse_thumb_url(qargs, L, x)
+  if qargs.thumb_url then return end
+  local g = L.find_first_tag(x, 'media:group')
+  for i=1, #g do
+    if g[i].tag == 'media:thumbnail' then
+      if g[i].attr['yt:name'] == 'hqdefault' then
+        qargs.thumb_url = g[i].attr['url']
+        break
+      end
+    end
   end
 end
 
