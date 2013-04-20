@@ -116,14 +116,14 @@ end
 
 function Arte.iter_streams(config, L, P, lang_code)
   local S = require 'quvi/stream'
-  local U = require 'quvi/util'
+  local T = require 'quvi/time'
   local r = {}
 
   for _,v in pairs(config) do -- For each language in the config.
     local c = P.parse(v.lang_data)
 
     local d = L.find_first_tag(c, 'dateExpiration')[1]
-    if Arte.has_expired(d, U) then
+    if Arte.has_expired(d, T) then
       error('media no longer available (expired)')
     end
 
@@ -158,8 +158,8 @@ function Arte.iter_streams(config, L, P, lang_code)
   return r,S
 end
 
-function Arte.has_expired(s, U)
-  return (U.to_timestamp(s) - os.time()) <0
+function Arte.has_expired(s, T)
+  return (T.to_timestamp(s) - os.time()) <0
 end
 
 function Arte.ch_best(S, t, lang_code)
