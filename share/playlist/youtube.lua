@@ -56,17 +56,10 @@ function parse(qargs)
     YouTube.parse_thumb_url(qargs, L, x)
     YouTube.parse_title(qargs, L, x)
 
-    r = YouTube.parse_media_urls(x)
+    local n = YouTube.parse_media_urls(qargs, L, x)
 
-    for _,u in pairs(r) do
-      local t = {
-        url = u
-      }
-      table.insert(qargs.media, t)
-    end
-
-    start_index = start_index + #r
-  until #r == 0
+    start_index = start_index + n
+  until n == 0
 
   return qargs
 end
@@ -95,23 +88,44 @@ function YouTube.config_url(qargs, start_index, max_results)
       qargs.id, start_index, max_results)
 end
 
-function YouTube.parse_media_urls(t)
-  -- TODO: Return media duration_ms
-  -- TODO: Return media title
-  local r = {}
-  if not t then return r end
-  for i=1, #t do
-    if t[i].tag == 'entry' then
-      for j=1, #t[i] do
-        if t[i][j].tag == 'link' then
-          if t[i][j].attr['rel'] == 'alternate' then
-            table.insert(r, t[i][j].attr['href'])
-          end
-        end
+function YouTube.entry_avail(x)
+  --[[
+  -- app:control may contain, for example:
+  --  yt:state name='restricted' reasonCode='private'
+  ]]--
+  for i=1, #x do
+    if x[i].tag == 'app:control' then return false end
+  end
+  return true
+end
+
+function YouTube.parse_entry(qargs, L, x, i, r)
+  for j=1, #x[i] do
+    if x[i][j].tag == 'link' then
+      if x[i][j].attr['rel'] == 'alternate' then
+        local t = {
+          title = L.find_first_tag(x[i], 'title')[1],
+          duration_ms = YouTube.parse_duration(L, x[i]),
+          url = x[i][j].attr['href']
+        }
+        table.insert(qargs.media, t)
       end
     end
   end
-  return r
+end
+
+function YouTube.parse_media_urls(qargs, L, x)
+  if not x then return 0 end
+  local n = 0
+  for i=1, #x do
+    if x[i].tag == 'entry' then
+      if YouTube.entry_avail(x[i]) then
+        YouTube.parse_entry(qargs, L, x, i, r)
+      end
+      n = n+1
+    end
+  end
+  return n
 end
 
 function YouTube.chk_error_resp(t)
@@ -161,6 +175,12 @@ function YouTube.parse_thumb_url(qargs, L, x)
       end
     end
   end
+end
+
+function YouTube.parse_duration(L, x)
+  local g = L.find_first_tag(x, 'media:group')
+  local d = L.find_first_tag(g, 'yt:duration')
+  return tonumber(d.attr['seconds']) * 1000
 end
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:
