@@ -28,7 +28,6 @@ DIST_lua=\
  lua/website/foxnews.lua \
  lua/website/funnyordie.lua \
  lua/website/gaskrank.lua \
- lua/website/golem.lua \
  lua/website/guardian.lua \
  lua/website/imdb.lua \
  lua/website/justintv.lua \
@@ -83,6 +82,7 @@ DIST_lua+=\
  lua/website/collegehumor.lua \
  lua/website/francetelevisions.lua \
  lua/website/globo.lua \
+ lua/website/golem.lua \
  lua/website/mgnetwork.lua \
  lua/website/pluzz.lua
 if WITH_NSFW
