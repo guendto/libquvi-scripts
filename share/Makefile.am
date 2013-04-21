@@ -35,6 +35,7 @@ dist_media_DATA=\
   media/break.lua\
   media/cbsnews.lua\
   media/dailymotion.lua\
+  media/funnyordie.lua\
   media/gaskrank.lua\
   media/publicsenat.lua\
   media/senat.lua\
