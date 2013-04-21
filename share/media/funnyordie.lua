@@ -29,28 +29,17 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "funnyordie"
-    local page   = quvi.fetch(self.page_url)
+-- Parse media properties.
+function parse(qargs)
+  local p = quvi.http.fetch(qargs.input_url).data
 
-    self.title = page:match('"og:title" content="(.-)">')
-                    or error ("no match: media title")
+  qargs.thumb_url = p:match('"og:image" content="(.-)"') or ''
+  qargs.title = p:match('"og:title" content="(.-)">') or ''
+  qargs.id = p:match('key:%s+"(.-)"') or ''
 
-    self.id = page:match('key:%s+"(.-)"')
-                or error ("no match: media ID")
+  qargs.streams = FunnyOrDie.iter_streams(p)
 
-    self.thumbnail_url = page:match('"og:image" content="(.-)"') or ''
-
-    local formats = FunnyOrDie.iter_formats(page)
-    local U       = require 'quvi/util'
-    local format  = U.choose_format(self, formats,
-                                     FunnyOrDie.choose_best,
-                                     FunnyOrDie.choose_default,
-                                     FunnyOrDie.to_s)
-                        or error("unable to choose format")
-    self.url      = {format.url or error('no match: media stream URL')}
-    return self
+  return qargs
 end
 
 --
@@ -70,30 +59,41 @@ function FunnyOrDie.can_parse_url(qargs)
   end
 end
 
-function FunnyOrDie.iter_formats(page)
-    local t = {}
-    for u in page:gmatch('source src="(.-)"') do
-        table.insert(t,u)
-    end
-    table.remove(t,1) -- Remove the first: the URL for segmented videos
-    local r = {}
-    for _,u in pairs(t) do
-        local q,c = u:match('/(%w+)%.(%w+)$')
-        table.insert(r, {url=u, quality=q, container=c})
-    end
-    return r
+function FunnyOrDie.iter_streams(p)
+  local t = {}
+  for u in p:gmatch('source src="(.-)"') do table.insert(t,u) end
+  -- There should be at least two stream URLs at this point.
+  -- first: the (playlist) URL for the segmented videos (unusable to us)
+  --   ...: the media stream URLs
+  if #t <2 then error('no match: media stream URL') end
+  table.remove(t,1) -- Remove the first stream URL.
+
+  local S = require 'quvi/stream'
+  local r = {}
+
+  -- nostd is a dictionary used by this script only. libquvi ignores it.
+  for _,u in pairs(t) do
+    local q,c = u:match('/(%w+)%.(%w+)$')
+    local s = S.stream_new(u)
+    s.nostd = {quality=q}
+    s.container = c
+    s.id = FunnyOrDie.to_id(s)
+    table.insert(r,s)
+  end
+
+  if #r >1 then
+    FunnyOrDie.ch_best(r)
+  end
+
+  return r
 end
 
-function FunnyOrDie.choose_best(formats)
-    return FunnyOrDie.choose_default(formats)
+function FunnyOrDie.ch_best(t)
+  t[1].flags.best = true
 end
 
-function FunnyOrDie.choose_default(formats)
-    return formats[1]
+function FunnyOrDie.to_id(t)
+  return string.format("%s_%s", t.container, t.nostd.quality)
 end
 
-function FunnyOrDie.to_s(t)
-    return string.format("%s_%s", t.container, t.quality)
-end
-
--- vim: set ts=4 sw=4 tw=72 expandtab:
+-- vim: set ts=2 sw=2 tw=72 expandtab:
