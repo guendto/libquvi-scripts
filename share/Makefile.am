@@ -34,6 +34,7 @@ dist_media_DATA=\
   media/audioboo.lua\
   media/break.lua\
   media/cbsnews.lua\
+  media/charlierose.lua\
   media/dailymotion.lua\
   media/funnyordie.lua\
   media/gaskrank.lua\
