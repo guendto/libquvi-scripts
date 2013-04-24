@@ -29,22 +29,19 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "charlierose"
+-- Parse media properties.
+function parse(qargs)
+  local p = quvi.http.fetch(qargs.input_url).data
 
-    local p = quvi.fetch(self.page_url)
+  qargs.title = p:match("<title>Charlie Rose%s+-%s+(.-)</title>") or ''
 
-    self.title = p:match("<title>Charlie Rose%s+-%s+(.-)</title>")
-                  or error("no match: media title")
+  qargs.thumb_url = p:match('rel="image_src" href="(.-)"') or ''
 
-    self.id = p:match('view%/content%/(.-)"')
-                or error("no match: media ID")
+  qargs.id = p:match('view%/content%/(.-)"') or ''
 
-    self.url = {p:match('url":"(.-)"')
-                or error("no match: media URL")}
+  qargs.streams = CharlieRose.iter_streams(p)
 
-    return self
+  return qargs
 end
 
 --
@@ -64,4 +61,19 @@ function CharlieRose.can_parse_url(qargs)
   end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function CharlieRose.iter_streams(p)
+  local u = p:match('url":"(.-)"') or error("no match: media stream URL")
+
+  local h = p:match('name="video_height" content="(%d+)"') or 0
+  local w = p:match('name="video_width" content="(%d+)"') or 0
+
+  local S = require 'quvi/stream'
+  local s = S.stream_new(u)
+
+  s.video.height = h
+  s.video.width = w
+
+  return {s}
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
