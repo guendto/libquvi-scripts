@@ -3,6 +3,7 @@ include $(top_srcdir)/tests/media/arte.mk
 include $(top_srcdir)/tests/media/audioboo.mk
 include $(top_srcdir)/tests/media/break.mk
 include $(top_srcdir)/tests/media/cbsnews.mk
+include $(top_srcdir)/tests/media/charlierose.mk
 include $(top_srcdir)/tests/media/dailymotion.mk
 include $(top_srcdir)/tests/media/funnyordie.mk
 include $(top_srcdir)/tests/media/gaskrank.mk
