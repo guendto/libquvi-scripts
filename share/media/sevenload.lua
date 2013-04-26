@@ -28,23 +28,22 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "sevenload"
+-- Parse media properties.
+function parse(qargs)
+  local p = quvi.http.fetch(qargs.input_url).data
 
-    local p = quvi.fetch(self.page_url):gsub('&quot;','"')
+  local E = require 'quvi/entity'
+  p = E.convert_html(p)
 
-    self.thumbnail_url = p:match('"og:image" content="(.-)"') or ''
+  qargs.thumb_url = p:match('"og:image" content="(.-)"') or ''
 
-    self.title = p:match('"og:title" content="(.-)"')
-                  or error('no match: media title')
+  qargs.title = p:match('"og:title" content="(.-)"') or ''
 
-    self.id = p:match('videoid":"(.-)"') or error("no match: media id")
+  qargs.id = p:match('videoid":"(.-)"') or ''
 
-    self.url = {p:match('src.+"(http://.+%.mp4)"')
-                or error("no match: media stream URL")}
+  qargs.streams = SevenLoad.iter_streams(p)
 
-    return self
+  return qargs
 end
 
 --
@@ -64,4 +63,41 @@ function SevenLoad.can_parse_url(qargs)
   end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function SevenLoad.stream_new(S, t)
+  local u = t['src'] or error('no match: media stream URL')
+  local s = S.stream_new(u)
+  -- 'nostd' is a temporary dictionary and will be ignored by libquvi.
+  s.nostd = {
+    quality = u:match('%-(%w+)%.%w+$') or ''
+  }
+  s.video.encoding = t['video_codec'] or ''
+  s.audio.encoding = t['audio_codec'] or ''
+  s.container = u:match('%.(%w+)$') or ''
+  s.id = SevenLoad.to_id(s)
+  return s
+end
+
+function SevenLoad.iter_streams(p)
+  local S = require 'quvi/stream'
+  local J = require 'json'
+
+  local d = p:match('data%-html5="(.-)">') or error('no match: data-html5')
+  local j = J.decode(d)
+  local r = {}
+
+  for k,v in pairs(j) do
+    if k == 'sources' then
+      for _,s in pairs(v) do
+        table.insert(r, SevenLoad.stream_new(S,s))
+      end
+    end
+  end
+
+  return r
+end
+
+function SevenLoad.to_id(t)
+  return string.format('%s_%s', t.nostd.quality, t.container)
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
