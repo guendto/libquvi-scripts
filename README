@@ -80,23 +80,21 @@ relevant to the installation:
 Requirements
 ------------
 
-* LuaSocket 2.0.2
-  http://w3.impa.br/~diego/software/luasocket/
-
-  e.g.
-    $ aptitude install liblua5.1-socket2
+* Lua BitOp 1.0.1
+  http://bitop.luajit.org/
+    $ aptitude install liblua5.1-bitop0
 
 * LuaExpat 1.2.0
   http://matthewwild.co.uk/projects/luaexpat/
-
-  e.g.
     $ aptitude install liblua5.1-expat
 
-* Lua bitop 1.0.1
-  http://bitop.luajit.org/
+* LuaJSON 1.1.1
+  http://www.eharning.us/wiki/luajson/
+    $ aptitude install liblua5.1-json
 
-  e.g.
-    $ aptitude install liblua5.1-bitop0
+* LuaSocket 2.0.2
+  http://w3.impa.br/~diego/software/luasocket/
+    $ aptitude install liblua5.1-socket2
 
 * pkg-config for tracking the compilation flags needed for libraries
   http://www.freedesktop.org/software/pkgconfig/
