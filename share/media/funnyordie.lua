@@ -93,7 +93,7 @@ function FunnyOrDie.ch_best(t)
 end
 
 function FunnyOrDie.to_id(t)
-  return string.format("%s_%s", t.container, t.nostd.quality)
+  return string.format("%s_%s", t.nostd.quality, t.container)
 end
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:
