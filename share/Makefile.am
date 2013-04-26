@@ -40,6 +40,7 @@ dist_media_DATA=\
   media/gaskrank.lua\
   media/publicsenat.lua\
   media/senat.lua\
+  media/sevenload.lua\
   media/soundcloud.lua\
   media/vimeo.lua\
   media/youtube.lua
