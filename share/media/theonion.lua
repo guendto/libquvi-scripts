@@ -28,26 +28,24 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "theonion"
+-- Parse the media properties.
+function parse(qargs)
 
-    self.id = self.page_url:match(',(%d+)/') or error('no match: media ID')
+  -- Make mandatory: the ID is required for the json URL.
+  qargs.id = qargs.input_url:match(',(%d+)/') or error('no match: media ID')
 
-    local u = string.format('http://theonion.com/videos/embed/%s.json',
-                              self.id)
+  local u = string.format('http://theonion.com/videos/embed/%s.json',qargs.id)
+  local d = quvi.http.fetch(u).data
+  local J = require 'json'
+  local j = J.decode(d)
 
-    local c = quvi.fetch(u, {fetch_type='config'})
+  qargs.thumb_url = j['thumbnail'][1] or ''
 
-    self.title = c:match('"title":%s+"(.-)"')
-                  or error('no match: media title')
+  qargs.title = j['title'] or ''
 
-    self.thumbnail_url = c:match('"thumbnail": %["(.-)"%]') or ''
+  qargs.streams = TheOnion.iter_streams(j)
 
-    self.url = {c:match('"video_url":%s+"(.-)"')
-                  or error('no match: media stream URL')}
-
-    return self
+  return qargs
 end
 
 --
@@ -67,4 +65,10 @@ function TheOnion.can_parse_url(qargs)
   end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function TheOnion.iter_streams(j)
+  local u = j['video_url'] or error('no match: media stream URL')
+  local S = require 'quvi/stream'
+  return {S.stream_new(u)}
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
