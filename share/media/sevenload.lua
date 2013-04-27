@@ -83,14 +83,12 @@ function SevenLoad.iter_streams(p)
 
   local d = p:match('data%-html5="(.-)">') or error('no match: data-html5')
   local j = J.decode(d)
+
+  local s = j['sources'] or error('"sources" not found')
   local r = {}
 
-  for k,v in pairs(j) do
-    if k == 'sources' then
-      for _,s in pairs(v) do
-        table.insert(r, SevenLoad.stream_new(S,s))
-      end
-    end
+  for _,v in pairs(s) do
+    table.insert(r, SevenLoad.stream_new(S,v))
   end
 
   return r
