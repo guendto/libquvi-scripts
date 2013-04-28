@@ -18,17 +18,14 @@
 -- <http://www.gnu.org/licenses/>.
 --
 
--- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
-    local C      = require 'quvi/const'
-    local r      = {}
-    r.domain     = "videos%.sapo%.pt"
-    r.formats    = "default"
-    r.categories = C.proto_http
-    local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, {r.domain})
-    return r
+local SAPO = {} -- Utility functions unique to to this script.
+
+-- Identify the media script.
+function ident(qargs)
+  return {
+    can_parse_url = SAPO.can_parse_url(qargs),
+    domains = table.concat({'videos.sapo.pt'}, ',')
+  }
 end
 
 -- Query available formats.
@@ -55,6 +52,23 @@ function parse (self)
                 or error("no match: media URL")}
 
     return self
+end
+
+--
+-- Utility functions
+--
+
+function SAPO.can_parse_url(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('^videos%.sapo%.pt$')
+       and t.path   and t.path:lower():match('^/%w+$')
+  then
+    return true
+  else
+    return false
+  end
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
