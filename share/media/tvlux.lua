@@ -28,25 +28,21 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "tvlux"
+-- Parse the media properties.
+function parse(qargs)
+  local C = require 'quvi/const'
+  local o = { [C.qoo_fetch_from_charset] = 'iso-8859-1' }
+  local p = quvi.http.fetch(qargs.input_url, o).data
 
-    self.id = self.page_url:match('/video/.-(%d+)%.html')
-                    or error("no match: media ID")
+  qargs.id = qargs.input_url:match('/video/.-(%d+)%.html$') or ''
 
-    local p = quvi.fetch(self.page_url)
+  qargs.title = p:match('<title>(.-)%s+%-%s+TV') or ''
 
-    self.thumbnail_url = p:match('"og:image" content="(.-)"') or ''
+  qargs.thumb_url = p:match('"og:image" content="(.-)"') or ''
 
-    self.title = p:match('"title" content="(.-)%s+%-%s+TV')
-                    or error("no match: media title")
+  qargs.streams = TVLux.iter_streams(p)
 
-    local path = p:match("'file':%s+'(.-)'")
-                    or error('no match: media stream URL')
-
-    self.url = {string.format("http://www.tvlux.be%s", path)}
-    return self
+  return qargs
 end
 
 --
@@ -66,4 +62,22 @@ function TVLux.can_parse_url(qargs)
   end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function TVLux.iter_streams(p)
+  local d = p:match('setup%((.-)%)') or error('no match: setup')
+
+  local J = require 'json'
+  local j = J.decode(d)
+
+  local u = {'http://www.tvlux.be'}
+  table.insert(u, j['file'] or error('no match: media stream URL path'))
+
+  local S = require 'quvi/stream'
+  local s = S.stream_new(table.concat(u,''))
+
+  s.video.height = tonumber(j['height'] or 0)
+  s.video.width = tonumber(j['width'] or 0)
+
+  return {s}
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
