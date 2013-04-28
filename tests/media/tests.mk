@@ -8,6 +8,7 @@ include $(top_srcdir)/tests/media/dailymotion.mk
 include $(top_srcdir)/tests/media/funnyordie.mk
 include $(top_srcdir)/tests/media/gaskrank.mk
 include $(top_srcdir)/tests/media/publicsenat.mk
+include $(top_srcdir)/tests/media/sapo.mk
 include $(top_srcdir)/tests/media/senat.mk
 include $(top_srcdir)/tests/media/sevenload.mk
 include $(top_srcdir)/tests/media/soundcloud.mk
