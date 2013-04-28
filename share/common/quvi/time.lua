@@ -71,6 +71,68 @@ function M.to_timecode(s)
   return {hh=(s/3600)%60, mm=(s/60)%60, ss=s%60}
 end
 
+--[[
+Convert a timecode string to a timecode dictionary.
+Parameters:
+  s .. Timecode string in format "%02d:%02d:%02d"
+Returns:
+  A dictionarary (see `to_timecode' above).
+]]--
+function M.from_timecode_str(s)
+  local hh,mm,ss = s:match('(%d+)%:(%d+)%:(%d+)')
+  return {
+    hh = tonumber(hh or 0)*3600,
+    mm = tonumber(mm or 0)*60,
+    ss = tonumber(ss or 0)
+  }
+end
+
+--[[
+Convert a timecode string to seconds.
+Parameters:
+  s .. Timecode string in format "%02d:%02d:%02d"
+Returns:
+  Number of seconds.
+]]--
+function M.timecode_str_to_s(s)
+  local tc = M.from_timecode_str(s)
+  return tc.hh + tc.mm + tc.ss
+end
+
+-- Uncomment to test.
+--[[
+package.path = package.path .. ';../?.lua'
+
+local t = {
+  {tc='00:03:25', s=205},
+  {tc='12:03:25', s=43405},
+  {tc='25:03:25', s=90205}
+}
+
+local n = 0
+for k,v in pairs(t) do
+  local s = M.timecode_str_to_s(v.tc)
+  if s ~= v.s then
+    local r = {
+      string.format('\n   input: %s (#%d)', v.tc, n),
+      string.format('expected: %d, got %d', v.s, s)
+    }
+    print(table.concat(r,'\n'))
+    n = n+1
+  end
+  local tc = M.to_timecode_str(s)
+  if tc ~= v.tc then
+    local r = {
+      string.format('\n   input: %s (#%d)', s, n),
+      string.format('expected: %d, got %d', v.tc, tc)
+    }
+    print(table.concat(r,'\n'))
+    n = n+1
+  end
+end
+print((n == 0) and 'All tests OK' or ('\nerrors: '..n))
+]]--
+
 return M
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:
