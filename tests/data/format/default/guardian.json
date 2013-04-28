@@ -1,15 +1,15 @@
 {
   "host": "guardian",
-  "page_title": "The Legend of Zelda: Skyward Sword gameplay trailer",
-  "page_url": "http://www.guardian.co.uk/technology/video/2011/dec/02/legend-zelda-skyward-sword-trailer",
-  "id": "1305616202001",
+  "page_title": "Bayern Munich break Bundesliga points record - video",
+  "page_url": "http://www.guardian.co.uk/football/video/2013/apr/28/bayern-munich-break-bundesliga-points-record-video",
+  "id": "407965320",
   "format_requested": "default",
-  "thumbnail_url": "http://cdn.theguardian.tv/brightcove/thumb/2011/12/2/111202Zelda_5538971.jpg",
-  "duration": "224000",
+  "thumbnail_url": "http://cdn.theguardian.tv/mainwebsite/thumb/2013/4/28/130428Bayern_7536534.jpg",
+  "duration": "69000",
   "link": [
     {
       "id": "1",
-      "length_bytes": "32444627",
+      "length_bytes": "9289937",
       "content_type": "video/mp4",
       "file_suffix": "mp4",
       "url": ""

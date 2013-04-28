@@ -1,0 +1,18 @@
+{
+  "host": "guardian",
+  "page_title": "The Legend of Zelda: Skyward Sword gameplay trailer - video",
+  "page_url": "http://www.guardian.co.uk/technology/video/2011/dec/02/legend-zelda-skyward-sword-trailer",
+  "id": "382720146",
+  "format_requested": "default",
+  "thumbnail_url": "http://cdn.theguardian.tv/brightcove/thumb/2011/12/2/111202Zelda_5538971.jpg",
+  "duration": "224000",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "32444627",
+      "content_type": "video/mp4",
+      "file_suffix": "mp4",
+      "url": ""
+    }
+  ]
+}
