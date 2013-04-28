@@ -55,7 +55,7 @@ function M.to_timecode_str(s, hours_only)
   if hours_only and s >= 86400 then -- 24h
     return string.format('%d hours', (s/3600)%60)
   else
-    string.format('%02d:%02d:%02d', (s/3600)%60, (s/60)%60, s%60)
+    return string.format('%02d:%02d:%02d', (s/3600)%60, (s/60)%60, s%60)
   end
 end
 
