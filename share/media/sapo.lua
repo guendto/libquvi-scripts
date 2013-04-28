@@ -28,24 +28,30 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse (self)
-    self.host_id = "sapo"
+-- Parse the media properties.
+function parse(qargs)
 
-    self.id = self.page_url:match('http://.*sapo.pt/([^?"/]+)')
-                or error("no match: media ID")
+  -- The thumbnail URL, or the duration, are not in the oembed data.
+  local p = quvi.http.fetch(qargs.input_url).data
 
-    local p = quvi.fetch(self.page_url)
+  qargs.thumb_url = p:match('"og:image" content="(.-)"') or ''
 
-    self.thumbnail_url = p:match('"og:image" content="(.-)"') or ''
+  local d = p:match('(%d+%:%d+%:%d+)') or ''
+  local T = require 'quvi/time'
+  qargs.duration_ms = T.timecode_str_to_s(d) * 1000
 
-    self.title = p:match('"og:title" content="(.-)%s+%-%s+SAPO')
-                  or error("no match: media title")
+  local t = {'http://videos.sapo.pt/oembed?url=', qargs.input_url}
+  local d = quvi.http.fetch(table.concat(t,'')).data
 
-    self.url = {p:match('videoVerifyMrec%("(.-)"')
-                or error("no match: media URL")}
+  local J = require 'json'
+  local j = J.decode(d)
 
-    return self
+  qargs.id = qargs.input_url:match('/(%w+)$') or ''
+  qargs.title = j['title'] or ''
+
+  qargs.streams = SAPO.iter_streams(j)
+
+  return qargs
 end
 
 --
@@ -65,4 +71,17 @@ function SAPO.can_parse_url(qargs)
   end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function SAPO.iter_streams(j)
+  local m = j['html'] or error('no match: html')
+  local u = m:match('file=(.-)&') or error('no match: media stream URL')
+
+  local S = require 'quvi/stream'
+  local s = S.stream_new(u)
+
+  s.video.height = tonumber(j['height'] or 0)
+  s.video.width = tonumber(j['width'] or 0)
+
+  return {s}
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
