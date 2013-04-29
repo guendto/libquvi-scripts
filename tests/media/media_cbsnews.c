@@ -63,6 +63,7 @@ static void test_media_cbsnews()
 
       o.s_len_gt0.stream.container = TRUE;
 
+      o.gt0.stream.video.bitrate_kbit_s = TRUE;
       o.gt0.stream.video.height = TRUE;
       o.gt0.stream.video.width = TRUE;
 
