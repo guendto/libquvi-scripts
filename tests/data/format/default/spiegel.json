@@ -1,9 +1,10 @@
 {
   "host": "spiegel",
-  "page_title": "Auf der Spur des Bienentanzes",
+  "page_title": "Insektenroboter \"Robo-Bee\": Auf der Spur des Bienentanzes",
   "page_url": "http://www.spiegel.de/video/bienen-forschung-roboter-biene-soll-bienentanz-entschluesseln-video-1231965.html",
   "id": "1231965",
   "format_requested": "default",
+  "thumbnail_url": "http://cdn2.spiegel.de/images/image-420265-videothumb-ffop.jpg",
   "duration": "203000",
   "link": [
     {
