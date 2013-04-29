@@ -46,6 +46,8 @@ static void test_media_soundcloud()
   e.title = TITLE;
   e.id = ID;
 
+  o.gt0.duration_ms = TRUE;
+
   qm_test(__func__, URL, &e, &o);
 }
 
