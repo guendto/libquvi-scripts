@@ -66,6 +66,8 @@ function parse(self)
     self.title = p:match('"spVideoTitle">(.-)<')
                     or error('no match: media title')
 
+    self.thumbnail_url = p:match('"og:image" content="(.-)"') or ''
+
     Spiegel.get_media_id(self)
 
     local config  = Spiegel.get_config(self)
