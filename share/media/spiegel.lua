@@ -25,17 +25,12 @@
 
 local Spiegel = {} -- Utility functions unique to this script
 
--- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
-    local C      = require 'quvi/const'
-    local r      = {}
-    r.domain     = "spiegel%.de"
-    r.formats    = "default|best"
-    r.categories = C.proto_http
-    local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, {r.domain}, {"/video/"})
-    return r
+-- Identify the media script.
+function ident(qargs)
+  return {
+    can_parse_url = Spiegel.can_parse_url(qargs),
+    domains = table.concat({'spiegel.de'}, ',')
+  }
 end
 
 -- Query available formats.
@@ -87,6 +82,19 @@ end
 --
 -- Utility functions
 --
+
+function Spiegel.can_parse_url(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('spiegel%.de$')
+       and t.path   and t.path:lower():match('^/video/.-%d+%.html$')
+  then
+    return true
+  else
+    return false
+  end
+end
 
 function Spiegel.get_media_id(self)
     self.id = self.page_url:match("/video/.-video%-(.-)%.")
