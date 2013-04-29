@@ -43,6 +43,7 @@ dist_media_DATA=\
   media/senat.lua\
   media/sevenload.lua\
   media/soundcloud.lua\
+  media/spiegel.lua\
   media/theonion.lua\
   media/tvlux.lua\
   media/vimeo.lua\
