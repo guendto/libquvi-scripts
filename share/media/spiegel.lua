@@ -51,32 +51,31 @@ function query_formats(self)
     return self
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "spiegel"
+-- Parse the media properties.
+function parse(qargs)
+  local C = require 'quvi/const'
+  local o = { [C.qoo_fetch_from_charset] = 'iso-8859-1' }
+  local p = quvi.http.fetch(qargs.input_url, o).data
 
-    local p = quvi.fetch(self.page_url)
+  qargs.thumb_url = p:match('"og:image" content="(.-)"') or ''
 
-    self.title = p:match('"spVideoTitle">(.-)<')
-                    or error('no match: media title')
+  qargs.title = p:match('"spVideoTitle">(.-)<') or ''
 
-    self.thumbnail_url = p:match('"og:image" content="(.-)"') or ''
+  -- Make mandatory: needed to fetch the config XML
+  qargs.id = qargs.input_url:match('/video/.-(%d+)%.html$')
+                or error('no match: media ID')
 
-    Spiegel.get_media_id(self)
+  local t = {'http://video.spiegel.de/flash/', qargs.id, '.xml'}
+  local c = quvi.http.fetch(table.concat(t,'')).data
 
-    local config  = Spiegel.get_config(self)
-    local formats = Spiegel.iter_formats(config)
+  local P = require 'lxp.lom'
+  local x = P.parse(c)
 
-    local U       = require 'quvi/util'
-    local format  = U.choose_format(self, formats,
-                                    Spiegel.choose_best,
-                                    Spiegel.choose_default,
-                                    Spiegel.to_s)
-                        or error("unable to choose format")
-    self.duration = (format.duration or 0) * 1000 -- to msec
-    self.url      = {format.url or error("no match: media url")}
+  qargs.streams = Spiegel.iter_streams(x)
 
-    return self
+  qargs.duration_ms = qargs.streams[1].nostd.duration_ms
+
+  return qargs
 end
 
 --
@@ -96,55 +95,58 @@ function Spiegel.can_parse_url(qargs)
   end
 end
 
-function Spiegel.get_media_id(self)
-    self.id = self.page_url:match("/video/.-video%-(.-)%.")
-                or error ("no match: media id")
-end
+function Spiegel.iter_streams(x)
+  local S = require 'quvi/stream'
+  local L = require 'quvi/lxph'
 
-function Spiegel.get_config(self)
-    local fmt_s      = "http://video.spiegel.de/flash/%s.xml"
-    local config_url = string.format(fmt_s, self.id)
-    return quvi.fetch(config_url, {fetch_type = 'config'})
-end
+  local r = {}
 
-function Spiegel.iter_formats(config)
-    local p = '<filename>(.-)<'
-           .. '.-<codec>(.-)<'
-           .. '.-<totalbitrate>(%d+)'
-           .. '.-<width>(%d+)'
-           .. '.-<height>(%d+)'
-           .. '.-<duration>(%d+)'
-    local t = {}
-    for fn,c,b,w,h,d in config:gmatch(p) do
-        local cn = fn:match('%.(%w+)$') or error('no match: container')
-        local u = 'http://video.spiegel.de/flash/' .. fn
---        print(u,c,b,w,h,cn,d)
-        table.insert(t, {codec=string.lower(c), url=u,
-                         width=tonumber(w),     height=tonumber(h),
-                         bitrate=tonumber(b),   duration=tonumber(d),
-                         container=cn})
+  for i=1, #x do
+    if x[i].tag and x[i].tag:match('type%d+') then
+
+      local n = L.find_first_tag(x[i], 'filename')[1]
+      local u = 'http://video.spiegel.de/flash/'..n
+      local t = S.stream_new(u)
+
+      t.video = {
+        bitrate_kbit_s = tonumber(L.find_first_tag(x[i], 'totalbitrate')[1]),
+        height = tonumber(L.find_first_tag(x[i], 'height')[1]),
+        encoding = L.find_first_tag(x[i], 'codec')[1]:lower(),
+        width = tonumber(L.find_first_tag(x[i], 'width')[1])
+      }
+
+      -- Used by this script only. libquvi will ignore the 'nostd' values.
+      t.nostd = {
+        duration_ms = (tonumber(L.find_first_tag(x[i], 'duration')[1])*1000)
+      }
+
+      t.container = (n:match('%.(%w+)$') or ''):lower()
+      t.id = Spiegel.to_id(t)
+
+      table.insert(r,t)
     end
-    return t
+  end
+
+  if #r >1 then
+    Spiegel.ch_best(S, r)
+  end
+
+  return r
 end
 
-function Spiegel.choose_best(formats) -- Highest quality available
-    local r = {width=0, height=0, bitrate=0, url=nil}
-    local U = require 'quvi/util'
-    for _,v in pairs(formats) do
-        if U.is_higher_quality(v,r) then
-            r = v
-        end
+function Spiegel.ch_best(S, t)
+  local r = t[1]
+  r.flags.best = true
+  for _,v in pairs(t) do
+    if v.video.height > r.video.height then
+      r = S.swap_best(r, v)
     end
-    return r
+  end
 end
 
-function Spiegel.choose_default(formats)
-    return formats[1]
-end
-
-function Spiegel.to_s(t)
+function Spiegel.to_id(t)
     return string.format('%s_%s_%sk_%sp',
-        t.container, t.codec, t.bitrate, t.height)
+        t.container, t.video.encoding, t.video.bitrate_kbit_s, t.video.height)
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+-- vim: set ts=2 sw=2 tw=72 expandtab:
