@@ -131,15 +131,8 @@ function Spiegel.choose_best(formats) -- Highest quality available
     return r
 end
 
-function Spiegel.choose_default(formats) -- Lowest quality available
-    local r = {width=0xffff, height=0xffff, bitrate=0xffff, url=nil}
-    local U = require 'quvi/util'
-    for _,v in pairs(formats) do
-        if U.is_lower_quality(v,r) then
-            r = v
-        end
-    end
-    return r
+function Spiegel.choose_default(formats)
+    return formats[1]
 end
 
 function Spiegel.to_s(t)
