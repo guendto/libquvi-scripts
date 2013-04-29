@@ -33,24 +33,6 @@ function ident(qargs)
   }
 end
 
--- Query available formats.
-function query_formats(self)
-    Spiegel.get_media_id(self)
-
-    local config  = Spiegel.get_config(self)
-    local formats = Spiegel.iter_formats(config)
-
-    local t = {}
-    for _,v in pairs(formats) do
-        table.insert(t, Spiegel.to_s(v))
-    end
-
-    table.sort(t)
-    self.formats = table.concat(t, "¦")
-
-    return self
-end
-
 -- Parse the media properties.
 function parse(qargs)
   local C = require 'quvi/const'
