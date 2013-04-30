@@ -20,19 +20,12 @@
 
 local LiveLeak = {} -- Utility functions specific to this script
 
--- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
-    local C      = require 'quvi/const'
-    local r      = {}
-    r.domain     = "liveleak%.com"
-    r.formats    = "default"
-    r.categories = C.proto_http
-    local U      = require 'quvi/util'
-    LiveLeak.normalize(self)
-    r.handles    = U.handles(self.page_url,
-                    {r.domain}, {"view"}, {"i=[%w_]+"})
-    return r
+-- Identify the media script.
+function ident(qargs)
+  return {
+    can_parse_url = LiveLeak.can_parse_url(qargs),
+    domains = table.concat({'liveleak.com'}, ',')
+  }
 end
 
 -- Query available formats.
@@ -70,20 +63,18 @@ end
 -- Utility functions
 --
 
-function LiveLeak.normalize(self)
-    if not self.page_url then return self.page_url end
-
-    local U = require 'quvi/url'
-    local t = U.parse(self.page_url)
-
-    if not t.path then return self.page_url end
-
-    local i = t.path:match('/e/([_%w]+)')
-    if i then
-        t.query = 'i=' .. i
-        t.path = '/view'
-        self.page_url = U.build(t)
-    end
+function LiveLeak.can_parse_url(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('liveleak%.com$')
+       and t.path   and t.path:lower():match('^/view')
+       and t.query  and t.query:lower():match('i=[_%w]+')
+  then
+    return true
+  else
+    return false
+  end
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
