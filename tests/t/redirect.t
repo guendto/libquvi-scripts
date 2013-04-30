@@ -66,7 +66,7 @@ test_redirect_url(    # Test self.redirect_url in bikeradar.lua
                  );
 
 test_url_shortener(    # Test URL shortener support
-        "http://is.gd/EbVFoa",             # -> http://vimeo.com/1485507
+        "http://is.gd/WipJlL",             # -> http://vimeo.com/42605731
         "data/format/default/vimeo.json"
                   );
 
