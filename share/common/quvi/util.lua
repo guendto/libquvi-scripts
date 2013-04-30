@@ -142,6 +142,28 @@ function M.trim(s)
   return s:gsub('(.)%s+$', '%1')
 end
 
+--[[
+Tokenize a string.
+Parameters:
+  s   .. String to tokenize
+  sep .. Separator
+Returns:
+  Tokenized items in a table.
+]]--
+function M.tokenize(s,sep) -- Based on http://lua-users.org/wiki/SplitJoin
+  local sep, fields = sep or ':', {}
+  local pattern = string.format('([^%s]+)', sep)
+                    s:gsub(pattern, function(c) fields[#fields+1] = c
+                  end)
+  return fields
+end
+
+-- Uncomment to test
+--[[
+package.path = package.path .. ';../?.lua'
+for _,v in pairs(M.tokenize('a,b,c,d,e',',')) do print(v) end
+]]--
+
 return M
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:
