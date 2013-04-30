@@ -28,29 +28,35 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "liveleak"
+-- Parse media properties.
+function parse(qargs)
+  local p = quvi.http.fetch(qargs.input_url).data
 
-    LiveLeak.normalize(self)
-    local p = quvi.fetch(self.page_url)
+  qargs.title = p:match("<title>LiveLeak.com%s+%-%s+(.-)</") or ''
 
-    self.title = p:match("<title>LiveLeak.com%s+%-%s+(.-)</")
-                  or error("no match: media title")
+  qargs.id = qargs.input_url:match('view%?i=([%w_]+)') or ''
 
-    self.id = self.page_url:match('view%?i=([%w_]+)')
-                or error("no match: media ID")
+  local d = p:match("setup%((.-)%)%.")
 
-    local c_url = p:match('config: "(.-)"')
-                    or error("no match: config")
+  if not d then  -- Try the first iframe
+    qargs.goto_url = p:match('<iframe.-src="(.-)"') or ''
+    if #qargs.goto_url >0 then
+      return qargs
+    else
+      error('no match: setup')
+    end
+  end
+  -- Cleanup the JSON, otherwise 'json' module will croak.
+  d = d:gsub('%+encodeURIComponent%(document%.URL%)', '')
 
-    local U = require 'quvi/util'
-    local c = quvi.fetch(U.unescape(c_url), {fetch_type='config'})
+  local J = require 'json'
+  local j = J.decode(d)
 
-    self.url = {c:match("<file>(.-)</")
-                or error("no match: media URL")}
+  qargs.thumb_url = j['image'] or ''
 
-    return self
+  qargs.streams = LiveLeak.iter_streams(j)
+
+  return qargs
 end
 
 --
@@ -71,4 +77,10 @@ function LiveLeak.can_parse_url(qargs)
   end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function LiveLeak.iter_streams(j)
+  local u = j['file'] or error('no match: media stream URL')
+  local S = require 'quvi/stream'
+  return {S.stream_new(u)}
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
