@@ -43,10 +43,12 @@ test_redirect_url(    # Test self.redirect_url in academicearth.lua
        "data/resolve/redirect_url_academicearth.json"
                  );
 
+=for comment
 test_redirect_url(    # Test self.redirect_url in collegehumor.lua
   "http://www.dorkly.com/embed/17349/ridiculous-way-to-get-ammo-to-teammates-in-battlefield-bad-company-2",
   "data/resolve/redirect_url_dorkly.json"
                  );
+=cut
 
 test_redirect_url(    # Test self.redirect_url in ted.lua
       "http://www.ted.com/talks/paul_lewis_crowdsourcing_the_news.html",
