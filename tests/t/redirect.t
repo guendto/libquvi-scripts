@@ -60,6 +60,11 @@ test_redirect_url(    # Test (one of three) self.redirect_url in tcmag.lua
       "data/resolve/redirect_url_tcmag.json"
                  );
 
+test_redirect_url(    # Test self.redirect_url in bikeradar.lua
+      "http://www.bikeradar.com/videos/giant-defy-advanced-2-road-bike-of-the-year-2013-winner-Vy3za54p50D2U?side=choice"
+      "data/resolve/redirect_url_bikeradar.json"
+                 );
+
 test_url_shortener(    # Test URL shortener support
         "http://is.gd/EbVFoa",             # -> http://vimeo.com/1485507
         "data/format/default/vimeo.json"
