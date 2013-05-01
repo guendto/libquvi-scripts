@@ -20,17 +20,12 @@
 
 local Guardian = {} -- Utility functions unique to this script
 
--- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
-    local C      = require 'quvi/const'
-    local r      = {}
-    r.domain     = "guardian%.co%.uk"
-    r.formats    = "default"
-    r.categories = C.proto_http
-    local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, {r.domain}, {"/video/","/audio/"})
-    return r
+-- Identify the media script.
+function ident(qargs)
+  return {
+    can_parse_url = Guardian.can_parse_url(qargs),
+    domains = table.concat({'guardian.co.uk'}, ',')
+  }
 end
 
 -- Query available formats.
@@ -63,6 +58,24 @@ function parse(self)
                   or error('no match: media stream URL')}
 
     return self
+end
+
+--
+-- Utility functions
+--
+
+function Guardian.can_parse_url(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^https?$')
+       and t.host   and t.host:lower():match('guardian%.co%.uk$')
+       and t.path   and (t.path:lower():match('/video/')
+                         or t.path:lower():match('/audio/'))
+  then
+    return true
+  else
+    return false
+  end
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
