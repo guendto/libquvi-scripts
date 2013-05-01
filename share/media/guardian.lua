@@ -28,30 +28,24 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "guardian"
+-- Parse the media properties.
+function parse(qargs)
+  local p = quvi.http.fetch(qargs.input_url).data
 
-    local p = quvi.fetch(self.page_url)
+  qargs.duration_ms = tonumber(p:match('duration%:%s+"?(%d+)"?') or 0) * 1000
 
-    self.title = p:match('"og:title" content="(.-)"')
-                    or error('no match: media title')
+  qargs.title = p:match('"og:title" content="(.-)"') or ''
 
-    self.id = p:match('containerID%s+=%s+["\'](.-)["\']')
-                  or p:match('audioID%s+=%s+["\'](.-)["\']')
-                      or ''
+  qargs.id = (p:match('containerID%s+=%s+["\'](.-)["\']')
+              or p:match('audioID%s+=%s+["\'](.-)["\']')
+              or ''):match('(%d+)') or ''
 
-    self.id = self.id:match('(%d+)') or error('no match: media ID')
+  qargs.thumb_url = p:match('"thumbnail" content="(.-)"')
+                      or p:match('"og:image" content="(.-)"') or ''
 
-    self.duration = tonumber(p:match('duration%:%s+"?(%d+)"?') or 0) * 1000
+  qargs.streams = Guardian.iter_streams(p)
 
-    self.thumbnail_url = p:match('"thumbnail" content="(.-)"')
-                            or p:match('"og:image" content="(.-)"') or ''
-
-    self.url = {p:match('file:%s+"(.-)"')
-                  or error('no match: media stream URL')}
-
-    return self
+  return qargs
 end
 
 --
@@ -72,4 +66,11 @@ function Guardian.can_parse_url(qargs)
   end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function Guardian.iter_streams(p)
+  local u = p:match('file:%s+"(.-)"')
+              or error("no match: media stream URL")
+  local S = require 'quvi/stream'
+  return {S.stream_new(u)}
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
