@@ -38,6 +38,7 @@ dist_media_DATA=\
   media/dailymotion.lua\
   media/funnyordie.lua\
   media/gaskrank.lua\
+  media/guardian.lua\
   media/liveleak.lua\
   media/publicsenat.lua\
   media/sapo.lua\
