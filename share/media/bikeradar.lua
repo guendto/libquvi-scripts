@@ -29,16 +29,14 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id  = "bikeradar"
+-- Parse the media properties.
+function parse(qargs)
+  local p = quvi.http.fetch(qargs.input_url).data
 
-    local p = quvi.fetch(self.page_url)
+  qargs.goto_url = p:match('"embedURL" href="(.-)"')
+                    or error('no match: embedURL')
 
-    self.redirect_url = p:match('"embedURL" href="(.-)"')
-                            or error('no match: embedURL')
-
-    return self
+  return qargs
 end
 
 --
@@ -58,4 +56,4 @@ function BikeRadar.can_parse_url(qargs)
   end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+-- vim: set ts=2 sw=2 tw=72 expandtab:
