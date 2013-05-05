@@ -28,27 +28,33 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "clipfish"
+-- Parse the media properties.
+function parse(qargs)
 
-    self.id = self.page_url:match("/video/(.-)/")
+  -- Make mandatory: the ID is required to fetch the media info
+  qargs.id = qargs.input_url:match('/video/(%d+)/.-/$')
                 or error("no match: media ID")
 
-    local c_url = "http://www.clipfish.de/devxml/videoinfo/"
-                    .. self.id
+  local t = {'http://www.clipfish.de/devxml/videoinfo/', qargs.id}
+  local c = quvi.http.fetch(table.concat(t,'')).data
 
-    local c = quvi.fetch(c_url, {fetch_type = 'config'})
+  local L = require 'quvi/lxph'
+  local P = require 'lxp.lom'
 
-    self.title = c:match('<title><!%[CDATA%[(.-)%]')
-                  or error("no match: media title")
+  x = P.parse(c)
 
-    self.thumbnail_url = c:match('<imageurl>(.-)</') or ''
+  qargs.thumb_url = L.find_first_tag(x, 'imageurl')[1]
 
-    self.url = {c:match("<filename><!%[CDATA%[(.-)%]")
-                  or error("no match: media URL")}
+  qargs.title = L.find_first_tag(x, 'title')[1]
 
-    return self
+  local d = L.find_first_tag(x, 'duration')[1]
+  local T = require 'quvi/time'
+
+  qargs.duration_ms = T.timecode_str_to_s(d)*1000
+
+  qargs.streams = ClipFish.iter_streams(L, x)
+
+  return qargs
 end
 
 --
@@ -68,4 +74,10 @@ function ClipFish.can_parse_url(qargs)
   end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function ClipFish.iter_streams(L, x)
+  local u = L.find_first_tag(x, 'filename')[1]
+  local S = require 'quvi/stream'
+  return {S.stream_new(u)}
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
