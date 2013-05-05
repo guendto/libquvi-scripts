@@ -36,6 +36,7 @@ dist_media_DATA=\
   media/break.lua\
   media/cbsnews.lua\
   media/charlierose.lua\
+  media/clipfish.lua\
   media/dailymotion.lua\
   media/funnyordie.lua\
   media/gaskrank.lua\
