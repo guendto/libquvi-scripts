@@ -34,7 +34,7 @@ my $q = Test::Quvi->new;
 plan skip_all => "TEST_SKIP rule"
   if $q->test_skip("redirect");
 
-plan tests => 10;
+plan tests => 12;
 
 my $j = $q->get_json_obj;
 
@@ -63,6 +63,11 @@ test_redirect_url(    # Test (one of three) self.redirect_url in tcmag.lua
 test_redirect_url(    # Test self.redirect_url in bikeradar.lua
       "http://www.bikeradar.com/videos/giant-defy-advanced-2-road-bike-of-the-year-2013-winner-Vy3za54p50D2U?side=choice",
       "data/resolve/redirect_url_bikeradar.json"
+                 );
+
+test_redirect_url(    # Test self.redirect_url in 101greatgoals.lua
+      "http://www.101greatgoals.com/gvideos/golazo-eliaquim-mangalas-showboat-backheel-porto-v-nacional/",
+      "data/resolve/redirect_url_101greatgoals.json"
                  );
 
 test_url_shortener(    # Test URL shortener support
