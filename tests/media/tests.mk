@@ -1,4 +1,5 @@
 include $(top_srcdir)/tests/media/academicearth.mk
+include $(top_srcdir)/tests/media/ardmediathek.mk
 include $(top_srcdir)/tests/media/arte.mk
 include $(top_srcdir)/tests/media/audioboo.mk
 include $(top_srcdir)/tests/media/bikeradar.mk
