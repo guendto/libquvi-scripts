@@ -29,36 +29,22 @@ function ident(qargs)
   }
 end
 
-function parse(self)
+-- Parse the media properties.
+function parse(qargs)
 
-    local config = ArdMediathek.get_config(self)
-    local Util  = require 'quvi/util'
+  local p = quvi.http.fetch(qargs.input_url).data
 
-    self.host_id = 'ard'
-    self.title = config:match(
-                     '<meta property="og:title" content="([^"]*)'
-                 ):gsub(
-                    '%s*%- %w-$', '' -- remove name of station
-                 ):gsub(
-                    '%s*%(FSK.*', '' -- remove FSK nonsense
-                 )
-                 or error('no match: media title')
-    self.thumbnail_url = config:match(
-                             '<meta property="og:image" content="([^"]*)'
-                         ) or ''
+  ArdMediathek.chk_avail(p)
 
-    local formats = ArdMediathek.iter_formats(config)
-    local format  = Util.choose_format(self,
-                                       formats,
-                                       ArdMediathek.choose_best,
-                                       ArdMediathek.choose_default,
-                                       ArdMediathek.to_s)
-                    or error('unable to choose format')
+  qargs.thumb_url = p:match('property="og:image" content="(.-)"') or ''
 
-    if not format.url then error('no match: media url') end
-    self.url = { format.url }
+  qargs.id = qargs.input_url:match('documentId=(%d+)') or ''
 
-    return self
+  qargs.title = ArdMediathek.get_title(p)
+
+  qargs.streams = ArdMediathek.iter_streams(p)
+
+  return qargs
 end
 
 --
@@ -78,88 +64,103 @@ function ArdMediathek.can_parse_url(qargs)
   end
 end
 
-function ArdMediathek.test_availability(page)
-    -- some videos are only scrapable at certain times
-    local fsk_pattern =
-        'Der Clip ist deshalb nur von (%d%d?) bis (%d%d?) Uhr verfügbar'
-    local from, to = page:match(fsk_pattern)
-    if from and to then
-        error('video only available from ' ..from.. ':00 to '
-              ..to.. ':00 CET')
+function ArdMediathek.get_title(p)
+  return p:match('<meta property="og:title" content="([^"]*)')
+                 :gsub('%s*%- %w-$', '') -- remove name of station
+                 :gsub('%s*%(FSK.*', '') -- remove FSK nonsense
+                 or ''
+end
+
+function ArdMediathek.chk_avail(p)
+  if p:match('<title>ARD Mediathek %- Fehlerseite</title>') then
+    error('an invalid media URL -- the media is no longer available?')
+  end
+  -- Some videos are only scrapable at certain times
+  local s = 'Der Clip ist deshalb nur von (%d%d?) bis (%d%d?) Uhr verfügbar'
+  local from,to = p:match(s)
+  if from and to then
+    local t = {'media available from ', from, ':00 to ', to, ':00 CET only'}
+    error(table.concat(t,''))
+  end
+end
+
+function ArdMediathek.to_container(s)
+  return (s:match('^(...):') or s:match('%.(...)$') or ''):lower()
+end
+
+function ArdMediathek.to_encoding(s)
+  return (s:match('%.(%w+)%.%w+$') or ''):lower()
+end
+
+function ArdMediathek.to_resolution(s)
+  local w,h = s:match('_(%d+)x(%d+)[_%.]')
+  return tonumber(w or 0), tonumber(h or 0)
+end
+
+function ArdMediathek.to_quality(s)
+  local q = (s:match('%.web(%w)%.') or s:match('%.(%w)%.')
+              or s:match('[=%.]Web%-(%w)') -- ".webs", ".s" or "Web-S"
+                or ''):lower()
+  if #q then
+    for k,v in pairs({s='ld', m='md', l='sd', xl='hd'}) do
+      if q == k then
+        return v
+      end
     end
+  end
+  return q
 end
 
-function ArdMediathek.get_config(self)
-    local c = quvi.fetch(self.page_url)
-    self.id = self.page_url:match('documentId=(%d*)')
-              or error('no match: media id')
-    if c:match('<title>ARD Mediathek %- Fehlerseite</title>') then
-        error('invalid URL, maybe the media is no longer available')
+function ArdMediathek.iter_streams(p)
+  local S = require 'quvi/stream'
+  local s = 'mediaCollection%.addMediaStream'
+              .. '%(0, (%d+), "(.-)", "(.-)", "%w+"%);'
+  local r = {}
+  for id,pre,suf in p:gmatch(s) do
+    local u = table.concat({pre,suf},'')
+    u = u:match('^(.-)?') or u  -- remove the query string
+
+    local t = S.stream_new(u)
+
+    -- Available only for some videos.
+    t.video.width, t.video.height = ArdMediathek.to_resolution(u)
+
+    t.container = ArdMediathek.to_container(u)
+    t.quality = ArdMediathek.to_quality(u)
+
+    -- Ignored by libquvi.
+    t.nostd = { internal_id=id }
+
+    -- Without the 'quality' the stream ID would incomplete.
+    if #t.quality ==0 then
+      t.quality = ArdMediathek.to_encoding(u)
+    else
+      t.video.encoding = ArdMediathek.to_encoding(u)
     end
 
-    return c
+    t.id = ArdMediathek.to_id(t)
+
+    table.insert(r,t)
+  end
+
+  if #r >1 then
+    ArdMediathek.ch_best(S, r)
+  end
+
+  return r
 end
 
-function ArdMediathek.choose_best(t)
-    return t[#t] -- return the last from the array
+function ArdMediathek.ch_best(S, t)
+  local r = t[#t] -- Make the last the best quality.
+  r.flags.best = true
 end
 
-function ArdMediathek.choose_default(t)
-    return t[1] -- return the first from the array
+function ArdMediathek.to_id(t)
+  return string.format('%s_%s_i%02d%s%s',
+            (#t.quality >0) and t.quality or 'sd',
+            t.container, t.nostd.internal_id,
+            (#t.video.encoding >0) and ('_'..t.video.encoding) or '',
+            (t.video.height >0) and ('_'..t.video.height..'p') or '')
 end
 
-function ArdMediathek.to_s(t)
-    return string.format("%s_%s_i%02d%s%s",
-              (t.quality) and t.quality or 'sd',
-              t.container, t.stream_id,
-              (t.encoding) and '_'..t.encoding or '',
-              (t.height) and '_'..t.height or '')
-end
-
-function ArdMediathek.quality_from(suffix)
-    local q = suffix:match('%.web(%w)%.') or suffix:match('%.(%w)%.')
-                or suffix:match('[=%.]Web%-(%w)') -- .webs. or Web-S or .s
-    if q then
-        q = q:lower()
-        local t = {s='ld', m='md', l='sd', xl='hd'}
-        for k,v in pairs(t) do
-            if q == k then return v end
-        end
-    end
-    return q
-end
-
-function ArdMediathek.height_from(suffix)
-    local h = suffix:match('_%d+x(%d+)[_%.]')
-    if h then return h..'p' end
-end
-
-function ArdMediathek.container_from(suffix)
-    return suffix:match('^(...):') or suffix:match('%.(...)$') or 'mp4'
-end
-
-function ArdMediathek.iter_formats(page)
-    local r = {}
-    local s = 'mediaCollection%.addMediaStream'
-                .. '%(0, (%d+), "(.-)", "(.-)", "%w+"%);'
-
-    ArdMediathek.test_availability(page)
-
-    for s_id, prefix, suffix in  page:gmatch(s) do
-        local u = prefix .. suffix
-        u = u:match('^(.-)?') or u  -- remove querystring
-        local t = {
-            container = ArdMediathek.container_from(suffix),
-            encoding = suffix:match('%.(h264)%.'),
-            quality = ArdMediathek.quality_from(suffix),
-            height = ArdMediathek.height_from(suffix),
-            stream_id = s_id, -- internally (by service) used stream ID
-            url = u
-        }
-        table.insert(r,t)
-    end
-    if #r == 0 then error('no media urls found') end
-    return r
-end
-
--- vim: set ts=4 sw=4 sts=4 tw=72 expandtab:
+-- vim: set ts=2 sw=2 tw=72 expandtab:
