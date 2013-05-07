@@ -19,20 +19,14 @@
 -- <http://www.gnu.org/licenses/>.
 --
 
-local ArdMediathek = {}
+local ArdMediathek = {} -- Utility functions unique to to this script.
 
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
-    local C      = require 'quvi/const'
-    local U      = require 'quvi/util'
-    local B      = require 'quvi/bit'
-    local r      = {}
-    r.domain     = 'www%.ardmediathek%.de'
-    r.formats    = 'default|best'
-    r.categories = B.bit_or(C.proto_http, C.proto_rtmp)
-    r.handles    = U.handles(self.page_url, {r.domain},
-                               nil, {"documentId=%d+$"})
-    return r
+-- Identify the media script.
+function ident(qargs)
+  return {
+    can_parse_url = ArdMediathek.can_parse_url(qargs),
+    domains = table.concat({'ardmediathek.de'}, ',')
+  }
 end
 
 function query_formats(self)
@@ -80,6 +74,23 @@ function parse(self)
     self.url = { format.url }
 
     return self
+end
+
+--
+-- Utility functions
+--
+
+function ArdMediathek.can_parse_url(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('ardmediathek%.de$')
+       and t.query  and t.query:match('^documentId=%d+$')
+  then
+    return true
+  else
+    return false
+  end
 end
 
 function ArdMediathek.test_availability(page)
