@@ -29,21 +29,6 @@ function ident(qargs)
   }
 end
 
-function query_formats(self)
-    local config = ArdMediathek.get_config(self)
-    local formats = ArdMediathek.iter_formats(config)
-
-    local t = {}
-    for _,v in pairs(formats) do
-        table.insert(t, ArdMediathek.to_s(v))
-    end
-
-    table.sort(t)
-    self.formats = table.concat(t, "|")
-
-    return self
-end
-
 function parse(self)
 
     local config = ArdMediathek.get_config(self)
