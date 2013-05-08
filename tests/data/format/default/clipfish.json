@@ -1,14 +1,14 @@
 {
   "host": "clipfish",
-  "page_title": "Matratzendomino",
-  "page_url": "http://www.clipfish.de/video/3100131/matratzendomino/",
-  "id": "3100131",
+  "page_title": "Eftos: Nihil veritas",
+  "page_url": "http://www.clipfish.de/video/2837319/eftos-nihil-veritas/",
+  "id": "2837319",
   "format_requested": "default",
-  "thumbnail_url": "http://bilder.clipfish.de/media/ca/211f864e62eaaa02e73c18f64a92add5ca.jpg",
+  "thumbnail_url": "http://autoimg.clipfish.de/autoimg/850a88b6433c7c6f5df00d4f1c772c8c6d/512x288/eftos-nihil-veritas.jpg",
   "link": [
     {
       "id": "1",
-      "length_bytes": "6529708",
+      "length_bytes": "8606417",
       "content_type": "video/x-flv",
       "file_suffix": "flv",
       "url": ""
