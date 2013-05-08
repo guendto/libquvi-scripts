@@ -1,0 +1,6 @@
+TEST_PROGS+=media_101greatgoals
+media_101greatgoals_SOURCES=media/media_101greatgoals.c
+media_101greatgoals_CPPFLAGS=$(testsuite_cppflags)
+media_101greatgoals_LDFLAGS=$(testsuite_ldflags)
+media_101greatgoals_LDADD=$(testsuite_ldadd)
+media_101greatgoals_CFLAGS=$(AM_CFLAGS)
