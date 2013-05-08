@@ -22,17 +22,12 @@
 -- Hundred and One Great Goals (aggregator)
 local HaOgg = {} -- Utility functions specific to this script
 
--- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
-    local C      = require 'quvi/const'
-    local r      = {}
-    r.domain     = "101greatgoals%.com"
-    r.formats    = "default"
-    r.categories = C.proto_http
-    local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, {r.domain}, {"/gvideos/.+/$"})
-    return r
+-- Identify the media script.
+function ident(qargs)
+  return {
+    can_parse_url = HaOgg.can_parse_url(qargs),
+    domains = table.concat({'101greatgoals.com'}, ',')
+  }
 end
 
 -- Query available formats.
@@ -50,6 +45,19 @@ end
 --
 -- Utility functions
 --
+
+function HaOgg.can_parse_url(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('101greatgoals%.com$')
+       and t.path   and t.path:lower():match('^/gvideos/.+/$')
+  then
+    return true
+  else
+    return false
+  end
+end
 
 function HaOgg.chk_self_hosted(p)
     --
