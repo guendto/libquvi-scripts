@@ -30,10 +30,14 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "101greatgoals"
-    return HaOgg.chk_ext_content(self)
+-- Parse the media properties.
+function parse(qargs)
+  local p = quvi.http.fetch(qargs.input_url).data
+
+  qargs.goto_url = HaOgg.chk_self_hosted(p) or HaOgg.chk_embedded(p)
+                    or error('unable to determine media source')
+
+  return qargs
 end
 
 --
@@ -54,50 +58,41 @@ function HaOgg.can_parse_url(qargs)
 end
 
 function HaOgg.chk_self_hosted(p)
-    --
-    -- Previously referred to as the "self-hosted" media, although according
-    -- to the old notes, these were typically hosted by YouTube.
-    --    http://is.gd/EKKPy2
-    --
-    -- 2013-05-05: The contents of the URL no longer seems to contain the
-    --             "file" value, see chk_embedded for notes; keep this
-    --             function around for now
-    --
-    local d = p:match('%.setup%((.-)%)')
-    if d then
-        local s = d:match('"file":"(.-)"') or error('no match: file')
-        if #s ==0 then
-            error('empty media URL ("file")')
-        end
-        local U = require 'quvi/util'
-        return (U.slash_unescape(U.unescape(s)))
+  --
+  -- Previously referred to as the "self-hosted" media, although according
+  -- to the old notes, these were typically hosted by YouTube.
+  --    http://is.gd/EKKPy2
+  --
+  -- 2013-05-05: The contents of the URL no longer seems to contain the
+  --             "file" value, see chk_embedded for notes; keep this
+  --             function around for now
+  --
+  local d = p:match('%.setup%((.-)%)')
+  if d then
+    local s = d:match('"file":"(.-)"') or error('no match: file')
+    if #s ==0 then
+      error('empty media URL ("file")')
     end
+    local U = require 'quvi/util'
+    return (U.slash_unescape(U.unescape(s)))
+  end
 end
 
 function HaOgg.chk_embedded(p)
-    --
-    -- 2013-05-05: Most of the content appears to be embedded from elsewhere
-    --
-    -- Instead of trying to check for each, parse the likely embedded source
-    -- and pass it back to libquvi to find a media script that accepts the
-    -- parsed (embedded) media URL.
-    --
-    -- NOTE: This means that those media scripts must unwrangle the embedded
-    --       media URLs passed from this script
-    --
-    local s = p:match('class="post%-type%-gvideos">(.-)</')
-                  or p:match('id="jwplayer%-1">(.-)</>')
-                      or error('unable to determine embedded source')
-    return s:match('value="(.-)"') or s:match('src="(.-)"')
+  --
+  -- 2013-05-05: Most of the content appears to be embedded from elsewhere
+  --
+  -- Instead of trying to check for each, parse the likely embedded source
+  -- and pass it back to libquvi to find a media script that accepts the
+  -- parsed (embedded) media URL.
+  --
+  -- NOTE: This means that those media scripts must unwrangle the embedded
+  --       media URLs passed from this script
+  --
+  local s = p:match('class="post%-type%-gvideos">(.-)</')
+              or p:match('id="jwplayer%-1">(.-)</>')
+                or error('unable to determine embedded source')
+  return s:match('value="(.-)"') or s:match('src="(.-)"')
 end
 
-function HaOgg.chk_ext_content(self)
-    local p = quvi.fetch(self.page_url)
-
-    self.redirect_url = HaOgg.chk_self_hosted(p) or HaOgg.chk_embedded(p)
-                          or error('unable to determine media source')
-
-    return self
-end
-
--- vim: set ts=4 sw=4 tw=72 expandtab:
+-- vim: set ts=2 sw=2 tw=72 expandtab:
