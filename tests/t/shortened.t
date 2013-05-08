@@ -34,13 +34,13 @@ my $q = Test::Quvi->new;
 plan skip_all => "TEST_SKIP rule"
   if $q->test_skip("shortened");
 
-plan tests => 4;
+plan tests => 2;
 
 # All roads lead to (same) URL.
 my @u = (
 
   # Resolved without querying over the internet.
-  "http://dai.ly/cityofscars",
+#  "http://dai.ly/cityofscars",
 
   # Query over the internet to resolved this one.
   "http://goo.gl/18ol"
