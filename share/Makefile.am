@@ -31,6 +31,7 @@ mediadir=$(pkgdatadir)/$(VERSION)/media
 
 dist_media_DATA=\
   media/academicearth.lua\
+  media/ardmediathek.lua\
   media/audioboo.lua\
   media/bikeradar.lua\
   media/break.lua\
