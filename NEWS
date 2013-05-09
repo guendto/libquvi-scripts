@@ -1,3 +1,27 @@
+v0.4.15  (2013-05-09) / Toni Gundogdu
+
+Toni Gundogdu:
+  - FIX: website/101greatgoals.lua: embedded URL patterns [b9daced]
+  - FIX: website/academicearth.lua: Look for YouTube embed URL [cb19406]
+  - FIX: website/bikeradar.lua: Look for embedURL [4fe8db9]
+  - FIX: website/funnyordie.lua: media stream URL pattern [4d0fc7c]
+  - FIX: website/gaskrank.lua: media stream URL pattern [1fbb469]
+  - FIX: website/guardian.lua: all patterns [2e73b5b]
+  - FIX: website/sevenload.lua: all patterns [7ea5976]
+  - FIX: website/spiegel.lua: choose_default [c583258]
+  - FIX: website/ted.lua: Check for extern media [00f4301]
+  - FIX: xhamster.lua: title pattern [ef9a614]
+  - Remove website/yfrog.lua [e667492]
+  - website/arte.lua: Unmark as "FIXME" [494dcde]
+  - website/bikeradar.lua: Unmark as "FIXME" [aa496bf]
+  - website/clipfish.lua: r.categories: Add proto_rtmp [bb40acd]
+  - website/golem.lua: Mark as "FIXME" [8edbe5c]
+  - website/spiegel.lua: Parse thumbnail URL [a345ae6]
+  - website/spiegel.lua: Parse title from page instead [1763969]
+
+ 48 files changed, 365 insertions(+), 501 deletions(-)
+
+
 v0.4.14  (2013-03-19) / Toni Gundogdu
 
 Martin Herkt:
