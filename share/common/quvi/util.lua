@@ -77,18 +77,6 @@ function M.is_lower_quality(a, b)
 end
 
 --[[
-Tokenize a string.
-Parameters:
-  s .. String to tokenize
-  p .. Pattern (e.g. "[%w-_]+")
-Returns:
-  An array of tokens.
-]]--
-function M.tokenize(s, p)
-  return s:gmatch(p)
-end
-
---[[
 Decode a string.
 Parameters:
   s .. String to decode
@@ -97,7 +85,7 @@ Returns:
 ]]--
 function M.decode(s) -- http://www.lua.org/pil/20.3.html
   r = {}
-  for n,v in s:gmatch ("([^&=]+)=([^&=]+)") do
+  for n,v in s:gmatch("([^&=]+)=([^&=]+)") do
     n = M.unescape(n)
     r[n] = v
   end
