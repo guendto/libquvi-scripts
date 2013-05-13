@@ -23,7 +23,7 @@ include $(top_srcdir)/tests/scan/tests.mk
 
 test: all
 	@ok=1; for t in $(TEST_PROGS); do \
-		LIBQUVI_SCRIPTS_DIR=$(top_srcdir)/share/ \
+		LIBQUVI_EXCLUSIVE_SCRIPTS_DIR=1 LIBQUVI_SCRIPTS_DIR=$(top_srcdir)/share/ \
 			gtester $(TEST_OPTS) $(top_builddir)/tests/$$t -o $$t.xml \
 		|| { \
 			echo NOTE: Check $(abs_builddir)/$$t.xml for details; \
