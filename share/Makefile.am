@@ -50,6 +50,7 @@ dist_media_DATA=\
   media/sevenload.lua\
   media/soundcloud.lua\
   media/spiegel.lua\
+  media/ted.lua\
   media/theonion.lua\
   media/tvlux.lua\
   media/videa.lua\
