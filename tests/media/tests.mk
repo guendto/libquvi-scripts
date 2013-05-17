@@ -21,5 +21,6 @@ include $(top_srcdir)/tests/media/soundcloud.mk
 include $(top_srcdir)/tests/media/spiegel.mk
 include $(top_srcdir)/tests/media/theonion.mk
 include $(top_srcdir)/tests/media/tvlux.mk
+include $(top_srcdir)/tests/media/videa.mk
 include $(top_srcdir)/tests/media/vimeo.mk
 include $(top_srcdir)/tests/media/youtube.mk
