@@ -21,17 +21,12 @@
 
 local Ted = {} -- Utility functions unique to this script
 
--- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
-    local C      = require 'quvi/const'
-    local r      = {}
-    r.domain     = "ted%.com"
-    r.formats    = "default|best"
-    r.categories = C.proto_http
-    local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, {r.domain}, {"/talks/.+$"})
-    return r
+-- Identify the media script.
+function ident(qargs)
+  return {
+    can_parse_url = Ted.can_parse_url(qargs),
+    domains = table.concat({'ted.com'}, ',')
+  }
 end
 
 -- Query available formats.
@@ -61,6 +56,19 @@ end
 --
 -- Utility functions
 --
+
+function Ted.can_parse_url(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('^www.ted%.com$')
+       and t.path   and t.path:lower():match('^/talks/.+$')
+  then
+    return true
+  else
+    return false
+  end
+end
 
 function Ted.is_external(self, p)
     self.url = {p:match('(http://download.-)"') or ''}
