@@ -52,6 +52,7 @@ dist_media_DATA=\
   media/spiegel.lua\
   media/theonion.lua\
   media/tvlux.lua\
+  media/videa.lua\
   media/vimeo.lua\
   media/youtube.lua
 
