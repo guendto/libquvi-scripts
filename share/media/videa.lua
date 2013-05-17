@@ -30,25 +30,27 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "videa"
-    Videa.normalize(self)
+-- Parse the media properties.
+function parse(qargs)
+  Videa.normalize(qargs)
 
-    local p = quvi.fetch(self.page_url)
+  local p = quvi.http.fetch(qargs.input_url).data
+  local s = p:match('videok%((.-),player') or error('no match: videok')
 
-    self.id = p:match("v=(%w+)")
-                or error("no match: media id")
+  local J = require 'json'
+  local j = J.decode(s)
 
-    self.title = p:match('"og:title"%s+content="(.-)"')
-                    or error("no match: media title")
+  qargs.thumb_url = p:match('"og:image"%s+content="(.-)"') or ''
 
-    local s  = p:match("%?f=(.-)&") or error("no match: f param")
-    self.url = {'http://videa.hu/static/video/' .. s:gsub("%.%d+$","")}
+  qargs.duration_ms = tonumber(j['video']['duration'] or 0) * 1000
 
-    self.thumbnail_url = p:match('"og:image"%s+content="(.-)"') or ''
+  qargs.title = j['video']['title'] or ''
 
-    return self
+  qargs.id = j['vcode'] or ''
+
+  qargs.streams = Videa.iter_streams(j)
+
+  return qargs
 end
 
 --
@@ -68,11 +70,24 @@ function Videa.can_parse_url(qargs)
   end
 end
 
-function Videa.normalize(self) -- "Normalize" an embedded URL
-    local id = self.page_url:match('/flvplayer%.swf%?v=(.-)$')
-    if not id then return end
-
-    self.page_url = 'http://videa.hu/videok/' .. id
+function Videa.normalize(qargs) -- "Normalize" an embedded URL
+  local s = qargs.input_url:match('/flvplayer%.swf%?v=(.-)$')
+  if s then
+    qargs.input_url = table.concat({'http://videa.hu/videok/',s},'')
+  end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function Videa.iter_streams(j)
+  local w = j['swf_url']:match('=(.-)&') or error('no match: f parameter')
+  local t = {'http://videa.hu/static/video/', (w:gsub('%.%d+$',''))}
+
+  local S = require 'quvi/stream'
+  local s = S.stream_new(table.concat(t,''))
+
+  s.video.height = tonumber(j['video']['height'] or 0)
+  s.video.width = tonumber(j['video']['width'] or 0)
+
+  return {s}
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
