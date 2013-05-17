@@ -29,13 +29,6 @@ function ident(qargs)
   }
 end
 
--- Query available formats.
-function query_formats(self)
-    self.formats  = "default"
-    Ted.is_external(self, quvi.fetch(self.page_url))
-    return self
-end
-
 -- Parse video URL.
 function parse(self)
     self.host_id = "ted"
