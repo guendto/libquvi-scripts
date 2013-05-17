@@ -21,18 +21,13 @@
 
 local Videa = {} -- Utility functions unique to this script
 
--- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
-    local C      = require 'quvi/const'
-    local r      = {}
-    r.domain     = "videa%.hu"
-    r.formats    = "default"
-    r.categories = C.proto_http
-    local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url,
-                    {r.domain}, {"/videok/.+/.+-.+$", "/flvplayer.swf"})
-    return r
+-- Identify the media script.
+function ident(qargs)
+  Videa.normalize(qargs)
+  return {
+    can_parse_url = Videa.can_parse_url(qargs),
+    domains = table.concat({'videa.hu'}, ',')
+  }
 end
 
 -- Query available formats.
@@ -65,6 +60,19 @@ end
 --
 -- Utility functions
 --
+
+function Videa.can_parse_url(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('^videa%.hu$')
+       and t.path   and t.path:lower():match('^/videok/.+/.+%-%w+$')
+  then
+    return true
+  else
+    return false
+  end
+end
 
 function Videa.normalize(self) -- "Normalize" an embedded URL
     local id = self.page_url:match('/flvplayer%.swf%?v=(.-)$')
