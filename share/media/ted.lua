@@ -29,21 +29,15 @@ function ident(qargs)
   }
 end
 
--- Parse video URL.
-function parse(self)
-    self.host_id = "ted"
+-- Parse the media properties.
+function parse(qargs)
+  local p = quvi.http.fetch(qargs.input_url).data
 
-    local p = quvi.fetch(self.page_url)
+  if not Ted.chk_ext(qargs, p) then
+    qargs.title = p:match('<title>(.-)%s+|') or ''
+  end
 
-    if Ted.is_external(self, p) then return self end
-
-    self.id = p:match('ti:"(%d+)"') or error("no match: media ID")
-
-    self.title = p:match('<title>(.-)%s+|') or error("no match: media title")
-
-    self.thumbnail_url = p:match('"og:image" content="(.-)"') or ''
-
-    return self
+  return qargs
 end
 
 --
@@ -63,17 +57,94 @@ function Ted.can_parse_url(qargs)
   end
 end
 
-function Ted.is_external(self, p)
-    self.url = {p:match('(http://download.-)"') or ''}
-    if #self.url[1] ==0 then  -- Try the first iframe
-        self.redirect_url = p:match('<iframe src="(.-)"') or ''
-        if #self.redirect_url >0 then
-            return true
-        else
-          error('no match: media stream URL')
-        end
-    end
+function Ted.chk_ext(qargs, p)
+  Ted.iter_streams(qargs, p)
+  if #qargs.streams >0 then -- Self-hosted media.
     return false
+  else -- External media. Try the first iframe.
+    qargs.goto_url = p:match('<iframe src="(.-)"') or ''
+    if #qargs.goto_url >0 then
+      return true
+    else
+      error('no match: media stream URL')
+    end
+  end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function Ted.iter_streams(qargs, p)
+  qargs.streams = {}
+
+  local d = p:match('talkDetails%s+=%s+(.-)<') or ''
+  if #d ==0 then return end
+
+  local S = require 'quvi/stream'
+  local J = require 'json'
+  local j = J.decode(d)
+
+  Ted.rtmp_streams(qargs, S, J, j)
+  Ted.html_streams(qargs, S, j)
+
+  qargs.duration_ms = tonumber(j['duration'] or 0) * 1000
+  qargs.thumb_url = j['posterUrl'] or ''
+  qargs.id = j['id'] or ''
+
+  if #qargs.streams >1 then
+    Ted.ch_best(qargs, S)
+  end
+end
+
+function Ted.html_streams(qargs, S, j)
+  local h = j['htmlStreams']
+  for i=1, #h do
+    local u = h[i]['file']
+    local t = S.stream_new(u)
+    t.video.bitrate_kbit_s = tonumber(u:match('(%d+)k') or 0)
+    t.container = u:match('%d+k%.(%w+)') or ''
+    t.id = Ted.html_stream_id(h[i]['id'], t)
+    table.insert(qargs.streams, t)
+  end
+end
+
+function Ted.rtmp_streams(qargs, S, J, j)
+  local U = require 'quvi/util'
+  local l = J.decode(U.unescape(j['flashVars']['playlist']))
+
+  for _,v in pairs(l['talks']) do
+    local s = v['streamer'] or error('no match: streamer')
+
+    for _,vv in pairs(v['resource']) do
+      local u = table.concat({s,vv['file']:match('^%w+:(.-)$')},'/')
+      local t = S.stream_new(u)
+
+      t.video.bitrate_kbit_s = tonumber(vv['bitrate'] or 0)
+      t.video.height = tonumber(vv['height'] or 0)
+      t.video.width = tonumber(vv['width'] or 0)
+
+      t.container = vv['file']:match('^(%w+):') or ''
+      t.id = Ted.rtmp_stream_id(t)
+
+      table.insert(qargs.streams, t)
+    end
+  end
+end
+
+function Ted.html_stream_id(id, t)
+  return string.format('%s_%s_%sk', id, t.container, t.video.bitrate_kbit_s)
+end
+
+function Ted.rtmp_stream_id(t)
+  return string.format('%s_%dk_%dp',
+      t.container, t.video.bitrate_kbit_s, t.video.height)
+end
+
+function Ted.ch_best(qargs, S)
+  local r = qargs.streams[1] -- Make the first one the 'best' by default.
+  r.flags.best = true
+  for _,v in pairs(qargs.streams) do
+    if v.video.height > r.video.height then
+      r = S.swap_best(r,v)
+    end
+  end
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
