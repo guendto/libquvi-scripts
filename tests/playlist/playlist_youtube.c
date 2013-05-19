@@ -28,33 +28,26 @@
 
 static const gchar *URLs[] =
 {
-  "http://www.youtube.com/watch?v=p5o7gBKHwtk&list=PL954CCC04F8437E14&feature=plcp",
-  "http://www.youtube.com/watch?v=AAfpq6EPKck&feature=list_related&playnext=1&list=SP1C90BDF46E6EACFD",
-  "http://www.youtube.com/playlist?list=PLEE6E4AF38BC19EC2",
-  "http://www.youtube.com/playlist?list=PLAAF3A1D0CA1E304F",
-  "http://is.gd/B4BBAA",
-  "http://www.youtube.com/watch?v=XIKFORGW3Ig&list=PL2484FAEB06A4FB74&",
-  "http://www.youtube.com/playlist?list=PL5BF9E09ECEC8F88F",
-  "http://www.youtube.com/playlist?list=PLuzuQWCPP75rIQ7BhECPx4VftKyMwrQUN",
-  "http://www.youtube.com/watch?feature=player_embedded&list=PLyALKMPGOR5dJs6G6ZsJslZODdb1G35Eu&v=3N69hRav3WI",
+  /* with underscore. */
   "http://www.youtube.com/playlist?list=PLlbnzwCkgkTBBXWz595XaKs_kkXek0gQP",
+  /* with dash. */
   "http://www.youtube.com/playlist?list=PLn83-N7Bdu2aHMVgBPoJfr0gmvXLVBMlF",
+  /* with '&'. */
+  "http://www.youtube.com/playlist?list=PLEE6E4AF38BC19EC2&",
+  /* with "SP". */
+  "http://www.youtube.com/playlist?list=SP1C90BDF46E6EACFD",
+  /* shortened. */
+  "http://is.gd/B4BBAA",
   NULL
 };
 
 static const gchar *IDs[] =
 {
-  "PL954CCC04F8437E14",
-  "SP1C90BDF46E6EACFD",
-  "PLEE6E4AF38BC19EC2",
-  "PLAAF3A1D0CA1E304F",
-  "PL5BF9E09ECEC8F88F",
-  "PL2484FAEB06A4FB74",
-  "PL5BF9E09ECEC8F88F",
-  "PLuzuQWCPP75rIQ7BhECPx4VftKyMwrQUN",
-  "PLyALKMPGOR5dJs6G6ZsJslZODdb1G35Eu",
   "PLlbnzwCkgkTBBXWz595XaKs_kkXek0gQP",
   "PLn83-N7Bdu2aHMVgBPoJfr0gmvXLVBMlF",
+  "PLEE6E4AF38BC19EC2",
+  "SP1C90BDF46E6EACFD",
+  "PL5BF9E09ECEC8F88F",
   NULL
 };
 
