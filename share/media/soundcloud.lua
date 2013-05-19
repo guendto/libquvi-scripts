@@ -60,8 +60,10 @@ function Soundcloud.can_parse_url(qargs)
   if t and t.scheme and t.scheme:lower():match('^http?$')
        and t.host   and t.host:lower():match('soundcloud%.com$')
        and t.path   and (
-           t.path:lower():match('^/.+/.+$')
-           or t.path:lower():match('/player%.swf$')
+            -- Not a playlist URL.
+           not t.path:lower():match('^/.-/sets/[%w-_]+/$')
+            -- But has the following path properties.
+           and t.path:lower():match('^/.+/.+$')
        )
   then
     return true

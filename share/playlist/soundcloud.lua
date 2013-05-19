@@ -69,7 +69,7 @@ function Soundcloud.can_parse_url(qargs)
   local t = U.parse(qargs.input_url)
   if t and t.scheme and t.scheme:lower():match('^https?$')
        and t.host   and t.host:lower():match('soundcloud%.com$')
-       and t.path   and t.path:lower():match('/sets/[%w-_]+/')
+       and t.path   and t.path:lower():match('^/.-/sets/[%w-_]+/$')
   then
     return true
   else
