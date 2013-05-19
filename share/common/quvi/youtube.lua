@@ -48,7 +48,7 @@ function M.can_parse_url(url)
   if t and t.scheme and t.scheme:lower():match('^https?$')
        and t.host   and t.host:lower():match('youtube%.com$')
        and t.query  and t.query:lower():match('^v=[%w-_]+')
-       and t.path   and t.path:lower():match('^/watch')
+       and t.path   and t.path:lower():match('^/watch$')
   then
     return true
   else
