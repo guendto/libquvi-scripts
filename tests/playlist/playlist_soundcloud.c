@@ -27,10 +27,10 @@
 #include "tests.h"
 
 static const gchar URL[] =
-  "http://soundcloud.com/thelittleidiot/sets/destroyed/";
+  "http://soundcloud.com/volt-icarus2-otherupload/sets/bgm/";
 
 static const gchar ID[] =
-  "thelittleidiot_destroyed";
+  "volt-icarus2-otherupload_bgm";
 
 static void test_playlist_soundcloud()
 {
