@@ -73,7 +73,8 @@ function YouTube.can_parse_url(qargs)
   local t = U.parse(qargs.input_url)
   if t and t.scheme and t.scheme:lower():match('^https?$')
        and t.host   and t.host:lower():match('youtube%.com$')
-       and t.query  and t.query:lower():match('list=[%w_-]+')
+       and t.path   and t.path:lower():match('^/playlist$')
+       and t.query  and t.query:lower():match('^list=[%w_-]+')
   then
     return true
   else
