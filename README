@@ -82,19 +82,19 @@ Requirements
 
 * Lua BitOp 1.0.1
   http://bitop.luajit.org/
-    $ aptitude install liblua5.1-bitop0
+    $ sudo aptitude install liblua5.1-bitop0
 
 * LuaExpat 1.2.0
   http://matthewwild.co.uk/projects/luaexpat/
-    $ aptitude install liblua5.1-expat
+    $ sudo aptitude install liblua5.1-expat
 
 * LuaJSON 1.1.1
   http://www.eharning.us/wiki/luajson/
-    $ aptitude install liblua5.1-json
+    $ sudo aptitude install liblua5.1-json
 
 * LuaSocket 2.0.2
   http://w3.impa.br/~diego/software/luasocket/
-    $ aptitude install liblua5.1-socket2
+    $ sudo aptitude install liblua5.1-socket2
 
 * pkg-config for tracking the compilation flags needed for libraries
   http://www.freedesktop.org/software/pkgconfig/
