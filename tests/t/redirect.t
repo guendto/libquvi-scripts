@@ -66,7 +66,7 @@ test_redirect_url(    # Test self.redirect_url in bikeradar.lua
                  );
 
 test_redirect_url(    # Test self.redirect_url in 101greatgoals.lua
-      "http://www.101greatgoals.com/gvideos/golazo-eliaquim-mangalas-showboat-backheel-porto-v-nacional/",
+      "http://www.101greatgoals.com/gvideos/welsh-premier-goal-of-the-season-glenn-rule-airbus-uk-broughton-v-prestatyn-town/",
       "data/resolve/redirect_url_101greatgoals.json"
                  );
 
