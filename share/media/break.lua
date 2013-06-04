@@ -56,7 +56,7 @@ function Break.can_parse_url(qargs)
   local t = U.parse(qargs.input_url)
   if t and t.scheme and t.scheme:lower():match('^http$')
        and t.host   and t.host:lower():match('break%.com$')
-       and t.path   and t.path:lower():match('^/index/')
+       and t.path   and t.path:lower():match('^/video/.-%-%d+$')
   then
     return true
   else
