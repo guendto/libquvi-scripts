@@ -26,7 +26,7 @@ test: all
 		LIBQUVI_EXCLUSIVE_SCRIPTS_DIR=1 LIBQUVI_SCRIPTS_DIR=$(top_srcdir)/share/ \
 			gtester $(TEST_OPTS) $(top_builddir)/tests/$$t -o $$t.xml \
 		|| { \
-			echo NOTE: Check $(abs_builddir)/$$t.xml for details; \
+			echo NOTE: Check $(abs_builddir)/$$t.xml for details; ok=; \
 		} \
 	done; \
 	if test -z "$$ok"; then exit 1; fi
