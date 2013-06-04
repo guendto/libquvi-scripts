@@ -27,7 +27,6 @@ test: all
 			gtester $(TEST_OPTS) $(top_builddir)/tests/$$t -o $$t.xml \
 		|| { \
 			echo NOTE: Check $(abs_builddir)/$$t.xml for details; \
-			ok=; gtester-report $$t.xml >$$t.html; \
 		} \
 	done; \
 	if test -z "$$ok"; then exit 1; fi
