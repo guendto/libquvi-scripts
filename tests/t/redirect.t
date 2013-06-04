@@ -34,14 +34,9 @@ my $q = Test::Quvi->new;
 plan skip_all => "TEST_SKIP rule"
   if $q->test_skip("redirect");
 
-plan tests => 14;
+plan tests => 12;
 
 my $j = $q->get_json_obj;
-
-test_redirect_url(    # Test self.redirect_url in academicearth.lua
-       "http://www.academicearth.org/lectures/intro-roman-architecture",
-       "data/resolve/redirect_url_academicearth.json"
-                 );
 
 =for comment
 test_redirect_url(    # Test self.redirect_url in collegehumor.lua

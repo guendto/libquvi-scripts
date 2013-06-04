@@ -14,7 +14,6 @@ DIST_lua=\
  lua/website/quvi/util.lua \
  lua/website/101greatgoals.lua \
  lua/website/1tvru.lua \
- lua/website/academicearth.lua \
  lua/website/ardmediathek.lua \
  lua/website/arte.lua \
  lua/website/audioboo.lua \
