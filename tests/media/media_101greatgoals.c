@@ -27,13 +27,13 @@
 #include "tests.h"
 
 static const gchar URL[] =
-  "http://www.101greatgoals.com/gvideos/incredible-miss-diego-jardel-avai-misses-an-empty-goal-v-america-mg/";
+  "http://www.101greatgoals.com/gvideos/individual-highlights-neymar-brazil-v-england/";
 
 static const gchar TITLE[] =
-  "INCREDIBLE MISS: Diego Jardel (Avaí) misses the empty goal v América-MG";
+  "Neymar vs England (International Friendly) 2013 HD 720p By Guilherme";
 
 static const gchar ID[] =
-  "SPxNXXR7RBc";
+  "X5YJ9J1HJDE";
 
 static void test_media_101greatgoals()
 {
