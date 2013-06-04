@@ -1,6 +1,0 @@
-TEST_PROGS+=media_academicearth
-media_academicearth_SOURCES=media/media_academicearth.c
-media_academicearth_CPPFLAGS=$(testsuite_cppflags)
-media_academicearth_LDFLAGS=$(testsuite_ldflags)
-media_academicearth_LDADD=$(testsuite_ldadd)
-media_academicearth_CFLAGS=$(AM_CFLAGS)
