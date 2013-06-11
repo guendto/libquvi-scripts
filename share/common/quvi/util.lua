@@ -146,6 +146,17 @@ function M.tokenize(s,sep) -- Based on http://lua-users.org/wiki/SplitJoin
   return fields
 end
 
+--[[
+Escape Lua magic characters.
+Parameters:
+  s .. String to escape
+Returns
+  The escaped string.
+]]--
+function M.escape_magic(s)
+  return (s:gsub('([()%%.%+%-*?[%]^$])', '%%%1'))
+end
+
 -- Uncomment to test
 --[[
 package.path = package.path .. ';../?.lua'
