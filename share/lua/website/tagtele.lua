@@ -1,6 +1,6 @@
 
 -- libquvi-scripts
--- Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
 -- Copyright (C) 2010  Paul Kocialkowski <contact@paulk.fr>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
@@ -46,8 +46,9 @@ function parse(self)
 
     local p = quvi.fetch(self.page_url)
 
-    self.title = p:match("<title>TagTélé%s+-%s+(.-)</title>")
-                  or error("no match: media title")
+    self.title = p:match('meta name="title" content="(.-)"')
+                  or p:match('meta property="og:title" content="(.-)"')
+                    or error("no match: media title")
 
     self.id = self.page_url:match('/voir/(%d+)')
                 or error("no match: media ID")
