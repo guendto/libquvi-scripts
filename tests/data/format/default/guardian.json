@@ -1,18 +1,18 @@
 {
   "host": "guardian",
-  "page_title": "Bayern Munich break Bundesliga points record - video",
-  "page_url": "http://www.guardian.co.uk/football/video/2013/apr/28/bayern-munich-break-bundesliga-points-record-video",
-  "id": "407965320",
+  "page_title": "Google launches giant balloon powered internet in New Zealand - video",
+  "page_url": "http://www.guardian.co.uk/technology/video/2013/jun/15/google-balloon-internet-new-zealand-video",
+  "id": "410839497",
   "format_requested": "default",
-  "thumbnail_url": "http://cdn.theguardian.tv/mainwebsite/thumb/2013/4/28/130428Bayern_7536534.jpg",
-  "duration": "69000",
+  "thumbnail_url": "http://cdn.theguardian.tv/mainwebsite/thumb/2013/6/15/130615Google_7725680.jpg",
+  "duration": "51000",
   "link": [
     {
       "id": "1",
-      "length_bytes": "9289937",
+      "length_bytes": "7023332",
       "content_type": "video/mp4",
       "file_suffix": "mp4",
-      "url": ""
+      "url": "http://cdn.theguardian.tv/mainwebsite/2013/6/15/130615Google-16x9.mp4"
     }
   ]
 }
