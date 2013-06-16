@@ -53,6 +53,8 @@ function parse(self)
     self.id = self.page_url:match('/voir/(%d+)')
                 or error("no match: media ID")
 
+    self.thumbnail_url = p:match('og:image" content="(.-)"') or ''
+
     local pl_url = "http://www.tagtele.com/videos/playlist/"..self.id.."/"
     local pl = quvi.fetch(pl_url, {fetch_type='playlist'})
 
