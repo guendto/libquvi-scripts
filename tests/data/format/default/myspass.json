@@ -1,14 +1,14 @@
 {
   "host": "myspass",
-  "page_title": "The Netshow 001 084 Abschied aus Köln",
-  "page_url": "http://www.myspass.de/myspass/shows/webshows/the-netshow/Abschied-aus-Koeln--/11186/",
-  "id": "11186",
+  "page_title": "TV total 015 1912 TV total Sendung vom 10.06.2013",
+  "page_url": "http://www.myspass.de/myspass/shows/tvshows/tv-total/TV-total-Sendung-vom-10062013--/13340/",
+  "id": "13340",
   "format_requested": "default",
-  "thumbnail_url": "http://www.myspass.de/myspass/media/images/videos/86/11186_640x360.jpg",
+  "thumbnail_url": "http://www.myspass.de/myspass/media/images/videos/40/13340_640x360.jpg",
   "link": [
     {
       "id": "1",
-      "length_bytes": "24736684",
+      "length_bytes": "288878800",
       "content_type": "video/mp4",
       "file_suffix": "mp4",
       "url": ""
