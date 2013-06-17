@@ -41,7 +41,9 @@ function parse(qargs)
 
   qargs.thumb_url = p:match('"og:image" content="(.-)"') or ''
 
-  qargs.title = p:match('"spVideoTitle">(.-)<') or ''
+  qargs.title = p:match('"module%-title">(.-)</')
+                  or p:match('"og:title".-content="(.-)%s+%-%s+SP')
+                  or ''
 
   -- Make mandatory: needed to fetch the config XML
   qargs.id = qargs.input_url:match('/video/.-(%d+)%.html$')
