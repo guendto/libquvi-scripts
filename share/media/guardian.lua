@@ -30,7 +30,7 @@ end
 
 -- Parse the media properties.
 function parse(qargs)
-  local p = quvi.http.fetch(qargs.input_url).data
+  local p = Guardian.fetch(qargs)
 
   qargs.duration_ms = tonumber(p:match('duration%:%s+"?(%d+)"?') or 0) * 1000
 
@@ -64,6 +64,13 @@ function Guardian.can_parse_url(qargs)
   else
     return false
   end
+end
+
+function Guardian.fetch(qargs)
+  local p = quvi.http.fetch(qargs.input_url).data
+  local e = p:match('<div class="expired">.-<p>(.-)</p>.-</div>') or ''
+  if #e >0 then error(e) end
+  return p
 end
 
 function Guardian.iter_streams(p)
