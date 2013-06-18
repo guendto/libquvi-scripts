@@ -1,3 +1,18 @@
+v0.4.16  (2013-06-18) / Toni Gundogdu
+
+Toni Gundogdu:
+  - BACKPORTpt9: Remove website/academicearth.lua [0c8f7d9]
+  - FIX: BACKPORTpt9: website/break.lua: path pattern [a8fec0f]
+  - FIX: website/myspass.lua:63: bad argument #3 to format [3265307]
+  - FIX: website/spiegel.lua: title pattern [20e95ca]
+  - FIX: website/tagtele.lua: title pattern [a56f48e]
+  - liveleak.lua: Improve support for 3rd party embedded content [efde9c3]
+  - website/guardian.lua: Check for expired content [22ff394]
+  - website/tagtele.lua: Parse thumbnail URL [c7ca1aa]
+
+ 17 files changed, 126 insertions(+), 180 deletions(-)
+
+
 v0.4.15  (2013-05-09) / Toni Gundogdu
 
 Toni Gundogdu:
