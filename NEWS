@@ -1,3 +1,15 @@
+v0.9.20130619
+
+Toni Gundogdu:
+  - FIX: media/break.lua: Break.can_parse_url: path pattern [63d560a]
+  - FIX: media/spiegel.lua: title pattern (BACKPORTpt4) [5e836ec]
+  - media/guardian.lua: Check for expired content (BACKPORTpt4) [a24b7aa]
+  - quvi/util: Add escape_magic function [751bf6d]
+  - Remove media/academicearth.lua [d04e115]
+
+ 12 files changed, 31 insertions(+), 146 deletions(-)
+
+
 v0.9.20130520
 
 This is the first official release of the 0.9 of libquvi-scripts. The
