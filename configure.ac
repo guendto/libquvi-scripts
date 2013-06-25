@@ -112,3 +112,5 @@ Install options
   - geoblocked  ${with_geoblocked}
   - fixme       ${with_fixme}
   - nsfw        ${with_nsfw}])
+
+# vim: set ts=2 sw=2 tw=72 expandtab:
