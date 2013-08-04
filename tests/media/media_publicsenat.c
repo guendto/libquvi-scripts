@@ -36,7 +36,7 @@ static const gchar *URLs[] =
 static const gchar *TITLEs[] =
 {
   "Alain Vidalies",
-  "Le 22h",
+  "Invités Stéphane Rozès, Noël Pons et Jean-Paul Philippe",
   NULL
 };
 
