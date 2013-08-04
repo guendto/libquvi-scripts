@@ -34,7 +34,6 @@ dist_media_DATA=\
   media/ardmediathek.lua\
   media/audioboo.lua\
   media/bikeradar.lua\
-  media/break.lua\
   media/cbsnews.lua\
   media/charlierose.lua\
   media/clipfish.lua\
@@ -65,6 +64,8 @@ if WITH_NSFW
 endif
 
 if WITH_FIXME
+dist_media_DATA+=\
+  media/break.lua
 if WITH_GEOBLOCKED
 endif
 if WITH_NSFW

@@ -3,7 +3,9 @@ include $(top_srcdir)/tests/media/ardmediathek.mk
 include $(top_srcdir)/tests/media/arte.mk
 include $(top_srcdir)/tests/media/audioboo.mk
 include $(top_srcdir)/tests/media/bikeradar.mk
+if WITH_FIXME
 include $(top_srcdir)/tests/media/break.mk
+endif
 include $(top_srcdir)/tests/media/cbsnews.mk
 include $(top_srcdir)/tests/media/charlierose.mk
 include $(top_srcdir)/tests/media/clipfish.mk
