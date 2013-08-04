@@ -24,7 +24,7 @@ local Guardian = {} -- Utility functions unique to this script
 function ident(qargs)
   return {
     can_parse_url = Guardian.can_parse_url(qargs),
-    domains = table.concat({'guardian.co.uk'}, ',')
+    domains = table.concat({'theguardian.com'}, ',')
   }
 end
 
@@ -32,13 +32,13 @@ end
 function parse(qargs)
   local p = Guardian.fetch(qargs)
 
-  qargs.duration_ms = tonumber(p:match('duration%:%s+"?(%d+)"?') or 0) * 1000
+  qargs.duration_ms = Guardian.parse_duration(p)
 
-  qargs.title = p:match('"og:title" content="(.-)"') or ''
+  qargs.title = (p:match('"og:title" content="(.-)"') or '')
+                  :gsub('%s+%-%s+video','')
 
-  qargs.id = (p:match('containerID%s+=%s+["\'](.-)["\']')
-              or p:match('audioID%s+=%s+["\'](.-)["\']')
-              or ''):match('(%d+)') or ''
+  qargs.id = (p:match('prop8%s+=%s+["\'](.-)["\']') or '')
+              :match('(%d+)') or ''
 
   qargs.thumb_url = p:match('"thumbnail" content="(.-)"')
                       or p:match('"og:image" content="(.-)"') or ''
@@ -56,7 +56,7 @@ function Guardian.can_parse_url(qargs)
   local U = require 'socket.url'
   local t = U.parse(qargs.input_url)
   if t and t.scheme and t.scheme:lower():match('^https?$')
-       and t.host   and t.host:lower():match('guardian%.co%.uk$')
+       and t.host   and t.host:lower():match('theguardian%.com$')
        and t.path   and (t.path:lower():match('/video/')
                          or t.path:lower():match('/audio/'))
   then
@@ -74,10 +74,22 @@ function Guardian.fetch(qargs)
 end
 
 function Guardian.iter_streams(p)
-  local u = p:match('file:%s+"(.-)"')
-              or error("no match: media stream URL")
+  local u = p:match("%s+file.-:%s+'(.-)'")
+              or error('no match: media stream URL')
   local S = require 'quvi/stream'
-  return {S.stream_new(u)}
+  local s = S.stream_new(u)
+  s.video.height = tonumber(p:match('itemprop="height" content="(%d+)"') or 0)
+  s.video.width = tonumber(p:match('itemprop="width" content="(%d+)"') or 0)
+  return {s}
+end
+
+function Guardian.parse_duration(p)
+  local n = tonumber(p:match('duration%:%s+"?(%d+)"?') or 0) * 1000
+  if n ==0 then
+    local m,s = p:match('T(%d+)M(%d+)S')
+    n = (tonumber(m)*60 + tonumber(s)) * 1000
+  end
+  return n
 end
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:
