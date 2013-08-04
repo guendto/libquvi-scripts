@@ -21,10 +21,6 @@
 #ifndef tests_h
 #define tests_h
 
-/* qerr.c */
-
-glong qerr(gpointer);
-
 /* env.c */
 
 gboolean chk_env(const gchar*, const gchar*);
@@ -87,7 +83,7 @@ typedef struct qm_test_opts_s *qm_test_opts_t;
   do {\
     gchar *s = NULL;\
     quvi_media_get(qm, qmp, &s);\
-    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
+    g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);\
     g_assert(s != NULL);\
     g_test_message("%s=%s", #qmp, s);\
     g_assert_cmpstr(s, ==, e);\
@@ -98,7 +94,7 @@ typedef struct qm_test_opts_s *qm_test_opts_t;
   do {\
     gchar *s = NULL;\
     quvi_media_get(qm, qmp, &s);\
-    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
+    g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);\
     g_assert(s != NULL);\
     g_test_message("%s=%s", #qmp, s);\
     g_assert_cmpint(strlen(s), >, 0);\
@@ -109,7 +105,7 @@ typedef struct qm_test_opts_s *qm_test_opts_t;
   do {\
     gdouble v = 0;\
     quvi_media_get(qm, qmp, &v);\
-    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
+    g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);\
     g_test_message("%s=%g", #qmp, v);\
     g_assert_cmpfloat(v, >, 0);\
   } while (0)
@@ -151,7 +147,7 @@ typedef struct qp_test_opts_s *qp_test_opts_t;
   do {\
     gchar *s = NULL;\
     quvi_playlist_get(qp, qpp, &s);\
-    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
+    g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);\
     g_assert(s != NULL);\
     g_test_message("%s=%s", #qpp, s);\
     g_assert_cmpstr(s, ==, e);\
@@ -162,7 +158,7 @@ typedef struct qp_test_opts_s *qp_test_opts_t;
   do {\
     gchar *s = NULL;\
     quvi_playlist_get(qp, qpp, &s);\
-    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
+    g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);\
     g_assert(s != NULL);\
     g_test_message("%s=%s", #qpp, s);\
     g_assert_cmpint(strlen(s), >, 0);\
@@ -173,7 +169,7 @@ typedef struct qp_test_opts_s *qp_test_opts_t;
   do {\
     gdouble v = 0;\
     quvi_playlist_get(qp, qpp, &v);\
-    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
+    g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);\
     g_test_message("%s=%g", #qpp, v);\
     g_assert_cmpfloat(v, >, 0);\
   } while (0)
@@ -199,7 +195,7 @@ void qs_test(const gchar*, qs_test_exact_t);
   do {\
     gdouble v = 0;\
     quvi_subtitle_type_get(qst, qsp, &v);\
-    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
+    g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);\
     g_test_message("%s=%g", #qsp, v);\
     g_assert_cmpfloat(v, >, 0);\
   } while (0)
@@ -209,7 +205,7 @@ void qs_test(const gchar*, qs_test_exact_t);
   do {\
     gchar *s = NULL;\
     quvi_subtitle_lang_get(qsl, qsp, &s);\
-    g_assert_cmpint(qerr(q), ==, QUVI_OK);\
+    g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);\
     g_assert(s != NULL);\
     g_test_message("%s=%s", #qsp, s);\
     g_assert_cmpint(strlen(s), >, 0);\

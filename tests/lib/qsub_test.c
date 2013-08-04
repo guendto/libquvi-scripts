@@ -87,13 +87,13 @@ void qsub_test(const gchar *func, const gchar *url, qsub_test_opts_t o)
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
   qsub = quvi_subtitle_new(q, url);
   g_test_message("errmsg=%s", quvi_errmsg(q));
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert(qsub != NULL);
 
   /* Both levels are identical. */

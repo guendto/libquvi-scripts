@@ -1,7 +1,6 @@
 src=\
   env.c\
   fetch.c\
-  qerr.c\
   qm_test.c\
   qp_test.c\
   qs_test.c\

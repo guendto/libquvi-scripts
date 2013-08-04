@@ -57,14 +57,14 @@ static void _test_subrip(quvi_t q, quvi_subtitle_t qsub, const gchar *lang)
   gchar *s;
 
   qsl = quvi_subtitle_select(qsub, lang);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert(qsl != NULL);
 
   quvi_subtitle_lang_get(qsl, QUVI_SUBTITLE_LANG_PROPERTY_ID, &s);
   g_test_message("lang_id=%s", s);
 
   qse = quvi_subtitle_export_new(qsl, "srt");
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert(qse != NULL);
 
   g_test_message("subrip_data=%s", quvi_subtitle_export_data(qse));
@@ -83,13 +83,13 @@ static void test_subtitle_youtube_export()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
   qsub = quvi_subtitle_new(q, URL);
   g_test_message("errmsg=%s", quvi_errmsg(q));
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert(qsub != NULL);
 
   _test_subrip(q, qsub, "tts_en,croak");

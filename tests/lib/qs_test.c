@@ -1,5 +1,5 @@
 /* libquvi-scripts
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi-scripts <http://quvi.sourceforge.net>.
  *
@@ -38,7 +38,7 @@ void qs_test(const gchar *func, const qs_test_exact_t qste)
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -46,7 +46,7 @@ void qs_test(const gchar *func, const qs_test_exact_t qste)
 
   qs = quvi_scan_new(q, qste->url);
   g_test_message("errmsg=%s", quvi_errmsg(q));
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert(qs != NULL);
 
   for (c=0; (s = quvi_scan_next_media_url(qs)) != NULL; ++c)
