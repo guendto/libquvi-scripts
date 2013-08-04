@@ -35,8 +35,8 @@ static const gchar *URLs[] =
 
 static const gchar *TITLEs[] =
 {
-  "Audition de Felipe Contepomi, rugbyman professionnel, membre du "
-  "Comité des sportifs de l'Agence mondiale antidopage."
+  "M. Felipe CONTEPOMI, rugbyman professionnel, (Agence mondiale "
+  "antidopage, Comité des sportifs)."
   ,
   "Jean-Pierre CHEVÈNEMENT et Gérard LARCHER (co-Présidents du groupe "
   "de travail sénatorial sur le Sahel) sur le thème : Mali : Comment "
