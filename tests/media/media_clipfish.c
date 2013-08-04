@@ -28,21 +28,21 @@
 
 static const gchar *URLs[] =
 {
-  "http://www.clipfish.de/special/digges-ding-comedy/video/3929101/cro-einmal-um-die-welt-parodie-digges-ding/",
+  "http://www.clipfish.de/musikvideos/video/3990105/avicii-wake-me-up/",
   "http://www.clipfish.de/musikvideos/video/3897315/imagine-dragons-radioactive/",
   NULL
 };
 
 static const gchar *TITLEs[] =
 {
-  "CRO: Einmal um die Welt Parodie - Digges Ding",
+  "Wake Me Up",
   "Radioactive",
   NULL
 };
 
 static const gchar *IDs[] =
 {
-  "3929101",
+  "3990105",
   "3897315",
   NULL
 };
