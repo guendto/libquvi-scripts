@@ -1,3 +1,14 @@
+v0.4.17  (2013-08-04) / Toni Gundogdu
+
+Toni Gundogdu:
+  - FIX: website/dailymotion.lua: Parse video_url (PORTpt9) [ce1b525]
+  - FIX: website/guardian.lua: Multiple patterns (PORTpt9) [165792e]
+  - Mark website/break.lua as FIXME [dce1940]
+  - Mark website/charlierose.lua as FIXME [827dff0]
+
+ 13 files changed, 83 insertions(+), 66 deletions(-)
+
+
 v0.4.16  (2013-06-18) / Toni Gundogdu
 
 Toni Gundogdu:
