@@ -19,7 +19,6 @@ DIST_lua=\
  lua/website/audioboo.lua \
  lua/website/bbc.lua \
  lua/website/bikeradar.lua \
- lua/website/break.lua \
  lua/website/canalplus.lua \
  lua/website/cbsnews.lua \
  lua/website/charlierose.lua \
@@ -77,6 +76,7 @@ if WITH_FIXME
 DIST_lua+=\
  lua/website/blip.lua \
  lua/website/bloomberg.lua \
+ lua/website/break.lua \
  lua/website/collegehumor.lua \
  lua/website/francetelevisions.lua \
  lua/website/globo.lua \
