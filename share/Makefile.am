@@ -35,7 +35,6 @@ dist_media_DATA=\
   media/audioboo.lua\
   media/bikeradar.lua\
   media/cbsnews.lua\
-  media/charlierose.lua\
   media/clipfish.lua\
   media/dailymotion.lua\
   media/funnyordie.lua\
@@ -65,7 +64,8 @@ endif
 
 if WITH_FIXME
 dist_media_DATA+=\
-  media/break.lua
+  media/break.lua\
+  media/charlierose.lua
 if WITH_GEOBLOCKED
 endif
 if WITH_NSFW

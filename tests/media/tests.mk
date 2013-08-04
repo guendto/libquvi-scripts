@@ -7,7 +7,9 @@ if WITH_FIXME
 include $(top_srcdir)/tests/media/break.mk
 endif
 include $(top_srcdir)/tests/media/cbsnews.mk
+if WITH_FIXME
 include $(top_srcdir)/tests/media/charlierose.mk
+endif
 include $(top_srcdir)/tests/media/clipfish.mk
 include $(top_srcdir)/tests/media/dailymotion.mk
 include $(top_srcdir)/tests/media/funnyordie.mk
