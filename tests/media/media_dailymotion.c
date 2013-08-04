@@ -27,13 +27,13 @@
 #include "tests.h"
 
 static const gchar URL[] =
-  "http://www.dailymotion.com/video/xm8t99_king-kong-vs-godzilla_shortfilms";
+  "http://www.dailymotion.com/video/x11gbep_toddler-swims-solo-in-the-pool_fun";
 
 static const gchar TITLE[] =
-  "King Kong Vs. Godzilla";
+  "Toddler swims solo in the pool";
 
 static const gchar ID[] =
-  "xm8t99";
+  "x11gbep";
 
 static void test_media_dailymotion()
 {
