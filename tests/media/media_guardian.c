@@ -28,6 +28,7 @@
 
 static const gchar *URLs[] =
 {
+  "http://www.theguardian.com/film/video/2013/aug/01/alan-partridge-alpha-papa-video",
   "http://www.guardian.co.uk/football/blog/audio/2013/feb/18/football-weekly-blackburn-arsenal-wenger",
   "http://www.guardian.co.uk/technology/video/2013/may/01/google-glass-user-guide-released-video",
   "http://www.guardian.co.uk/science/audio/2013/apr/29/podcast-science-weekly-burning-question",
@@ -37,6 +38,7 @@ static const gchar *URLs[] =
 
 static const gchar *TITLEs[] =
 {
+  "Alan Partridge: Alpha Papa: watch an exclusive clip",
   "Football Weekly: Blackburn dump Arsenal out of the FA Cup",
   "Google Glass: video user guide released – video",
   "Science Weekly podcast: The Burning Question – can we quit fossil fuels?",
@@ -46,10 +48,11 @@ static const gchar *TITLEs[] =
 
 static const gchar *IDs[] =
 {
-  "404273586",
-  "408161914",
-  "407913554",
-  "408018322",
+  "1945044",
+  "1869215",
+  "1902069",
+  "1899845",
+  "1900820",
   NULL
 };
 
@@ -67,6 +70,10 @@ static void test_media_guardian()
       e.title = TITLEs[i];
       e.id = IDs[i];
 
+#ifdef _1 /* Skip: audio streams don't obviously have these */
+      o.gt0.stream.video.height = TRUE;
+      o.gt0.stream.video.width = TRUE;
+#endif
       o.gt0.duration_ms = TRUE;
 
       qm_test(__func__, URLs[i], &e, &o);
