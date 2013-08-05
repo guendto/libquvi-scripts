@@ -1,3 +1,15 @@
+v0.9.20130805
+
+Toni Gundogdu:
+  - configure.ac: Require a2x when building from git [1f118a6]
+  - FIX: media/guardian.lua: Multiple patterns [9e18bf6]
+  - FIX: tests: Use quvi_errcode instead of qerr [8113266]
+  - Mark media/break.lua as FIXME [85f885e]
+  - Mark media/charlierose.lua as FIXME [d85d71e]
+
+ 18 files changed, 80 insertions(+), 91 deletions(-)
+
+
 v0.9.20130619
 
 Toni Gundogdu:
