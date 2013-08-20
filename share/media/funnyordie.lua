@@ -61,12 +61,10 @@ end
 
 function FunnyOrDie.iter_streams(p)
   local t = {}
-  for u in p:gmatch('source src="(.-)"') do table.insert(t,u) end
-  -- There should be at least two stream URLs at this point.
-  -- first: the (playlist) URL for the segmented videos (unusable to us)
-  --   ...: the media stream URLs
-  if #t <2 then error('no match: media stream URL') end
-  table.remove(t,1) -- Remove the first stream URL.
+  for u in p:gmatch('type: "video/mp4", src: "(.-)"') do
+    table.insert(t, u)
+  end
+  if #t ==0 then error('no match: media stream URL') end
 
   local S = require 'quvi/stream'
   local r = {}
