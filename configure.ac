@@ -11,7 +11,8 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([config.aux])
 AC_CONFIG_MACRO_DIR([m4])
 
-AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar])
+AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip
+                  tar-ustar subdir-objects])
 AM_SILENT_RULES([yes])
 
 # GNU Automake 1.12 requires this macro. Earlier versions do not
