@@ -24,7 +24,7 @@ local Guardian = {} -- Utility functions unique to this script
 function ident(qargs)
   return {
     can_parse_url = Guardian.can_parse_url(qargs),
-    domains = table.concat({'theguardian.com'}, ',')
+    domains = table.concat({'theguardian.com', 'guardian.co.uk'}, ',')
   }
 end
 
@@ -56,7 +56,8 @@ function Guardian.can_parse_url(qargs)
   local U = require 'socket.url'
   local t = U.parse(qargs.input_url)
   if t and t.scheme and t.scheme:lower():match('^https?$')
-       and t.host   and t.host:lower():match('theguardian%.com$')
+       and t.host   and (t.host:lower():match('theguardian%.com$')
+                         or t.host:lower():match('guardian%.co%.uk$'))
        and t.path   and (t.path:lower():match('/video/')
                          or t.path:lower():match('/audio/'))
   then
