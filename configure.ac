@@ -6,6 +6,9 @@ AC_PREREQ([2.69])
 AC_INIT([libquvi-scripts], m4_esyscmd([./gen-ver.sh -c | tr -d '\n']),
         [http://quvi.sf.net/bugs/],[],[http://quvi.sf.net/])
 
+BUILD_OPTS="$@"
+AC_SUBST([BUILD_OPTS])
+
 AC_CONFIG_SRCDIR([tests/lib/env.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([config.aux])
