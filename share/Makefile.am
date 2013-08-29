@@ -101,20 +101,15 @@ scandir=$(pkgdatadir)/$(VERSION)/scan
 dist_scan_DATA=\
   scan/youtube.lua
 
-.PHONY: version
-
-version:
-	@if test -d "$(top_srcdir)/.git" -o -f "$(top_srcdir)/.git"; then \
-		"$(top_srcdir)/gen-ver.sh" "$(top_srcdir)" > $@; \
-	fi
-
-dist-hook: version
-
-versiondir=$(pkgdatadir)/$(VERSION)
-dist_version_DATA=version
-
 install-data-hook:
 	cd $(DESTDIR)$(pkgdatadir) && rm -f $(VERSION_MM) && \
-		$(LN_S) $(VERSION) $(VERSION_MM)
+		$(LN_S) $(VERSION) $(VERSION_MM) ; \
+	cd $(VERSION_MM) && echo "[libquvi-scripts]" >version && \
+		echo "configuration = $(BUILD_OPTS)" >>version && \
+		echo "version = v$(VERSION)" >>version
+
+uninstall-hook:
+	rm -rf "$(DESTDIR)$(pkgdatadir)/$(VERSION)" ; \
+	rm -f "$(DESTDIR)$(pkgdatadir)/$(VERSION_MM)"
 
 # vim: set ts=2 sw=2 tw=72 expandtab:
