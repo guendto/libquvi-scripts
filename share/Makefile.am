@@ -9,12 +9,16 @@ dist_common_DATA=\
   common/quvi/hash.lua\
   common/quvi/hex.lua\
   common/quvi/html.lua\
-  common/quvi/http/cookie.lua\
   common/quvi/lxph.lua\
   common/quvi/stream.lua\
   common/quvi/time.lua\
   common/quvi/util.lua\
   common/quvi/youtube.lua
+
+common_httpdir=$(pkgdatadir)/$(VERSION)/common/quvi/http/
+
+dist_common_http_DATA=\
+  common/quvi/http/cookie.lua
 
 # Utility scripts.
 
