@@ -1,3 +1,13 @@
+v0.4.18  (2013-09-03) / Toni Gundogdu
+
+Tobias Gruetzmacher:
+  - FIX: website/dailymotion.lua: sequence pattern (no match: sequence) [3d71c75]
+Toni Gundogdu:
+  - FIX: website/funnyordie.lua: Media stream URL pattern (PORTpt9) [84c83f7]
+
+ 2 files changed, 4 insertions(+), 5 deletions(-)
+
+
 v0.4.17  (2013-08-04) / Toni Gundogdu
 
 Toni Gundogdu:
