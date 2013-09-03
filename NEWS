@@ -1,3 +1,19 @@
+v0.9.20130903
+
+Bastien Nocera:
+  - media/guardian.lua: Also support "old" domain name [07c0d41]
+Kerrick Staley:
+  - Use subdir-objects Automake option [3df38e0]
+Toni Gundogdu:
+  - AC_PREREQ: Bump to 2.69 [6b349f7]
+  - Do not bundle 'version' file, have install create it [f086380]
+  - FIX: Install cookie.lua to common/quvi/http/ [8c3be23]
+  - FIX: media/dailymotion.lua: sequence pattern (PORTpt4) [bd31628]
+  - FIX: media/funnyordie.lua: Stream URL pattern [41a7516]
+
+ 6 files changed, 35 insertions(+), 28 deletions(-)
+
+
 v0.9.20130805
 
 Toni Gundogdu:
