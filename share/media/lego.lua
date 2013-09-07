@@ -19,18 +19,14 @@
 -- <http://www.gnu.org/licenses/>.
 --
 
--- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
-    local C      = require 'quvi/const'
-    local r      = {}
-    r.domain     = "city%.lego%.com"
-    r.formats    = "default"
-    r.categories = C.proto_http
-    local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, {r.domain}, {"/.+/movies/.+$"})
-      -- http://city.lego.com/en-gb/movies/mini-movies/gold-run/
-    return r
+local Lego = {} -- Utility functions unique to this script
+
+-- Identify the media script.
+function ident(qargs)
+  return {
+    can_parse_url = Lego.can_parse_url(qargs),
+    domains = table.concat({'city.lego.com'}, ',')
+  }
 end
 
 -- Query available formats.
@@ -60,4 +56,21 @@ function parse(self)
     -- TODO: return self.thumbnail_url
 
     return self
+end
+
+--
+-- Utility functions.
+--
+
+function Lego.can_parse_url(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('^city%.lego%.com$')
+       and t.path   and t.path:lower():match('/%w+%-%w+/movies/')
+  then
+    return true
+  else
+    return false
+  end
 end
