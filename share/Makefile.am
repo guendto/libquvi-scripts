@@ -44,6 +44,7 @@ dist_media_DATA=\
   media/funnyordie.lua\
   media/gaskrank.lua\
   media/guardian.lua\
+  media/lego.lua\
   media/liveleak.lua\
   media/publicsenat.lua\
   media/sapo.lua\
