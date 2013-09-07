@@ -29,27 +29,25 @@ function ident(qargs)
   }
 end
 
--- Parse video URL.
-function parse(self)
-    self.host_id = "lego"
+-- Parse media properties.
+function parse(qargs)
+  local p = quvi.http.fetch(qargs.input_url).data
 
-    local p = quvi.fetch(self.page_url)
+  local d = p:match('FirstVideoData = (.-);')
+              or error('no match: FirstVideoData')
 
-    local d = p:match('FirstVideoData = {(.-)};')
-                or error('no match: FirstVideoData')
+  local J = require 'json'
+  local j = J.decode(d)
 
-    self.title = d:match('"Name":"(.-)"')
-                  or error('no match: media title')
+  qargs.id = j['LikeObjectGuid'] or '' -- Lack of a better one.
 
-    self.id = d:match('"LikeObjectGuid":"(.-)"') -- Lack of a better.
-                  or error('no match: media ID')
+  qargs.title = j['Name'] or ''
 
-    self.url = {d:match('"VideoFlash":%{"Url":"(.-)"')
-                  or error('no match: media stream URL')}
+  Lego.parse_thumb_url(qargs, p)
 
-    -- TODO: return self.thumbnail_url
+  qargs.streams = Lego.iter_streams(j)
 
-    return self
+  return qargs
 end
 
 --
@@ -68,3 +66,17 @@ function Lego.can_parse_url(qargs)
     return false
   end
 end
+
+function Lego.iter_streams(j)
+  local v = j['VideoHtml5'] or error('no match: VideoHtml5')
+  local u = v['Url'] or error('no match: media stream URL')
+  local S = require 'quvi/stream'
+  return {S.stream_new(u)}
+end
+
+function Lego.parse_thumb_url(qargs, p)
+  local t = {'thumbNavigation.+', '<img src="(.-)" alt="',qargs.title, '"/>',}
+  qargs.thumb_url = p:match(table.concat(t,'') or '')
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
