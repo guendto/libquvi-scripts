@@ -64,27 +64,27 @@ Returns:
   Normalized URL
 ]]--
 function M.normalize(url)
-  if not url then return url end
-
+  -- Leave if url is undefined for some reason.
+  if not url then
+    return url
+  end
   local U = require 'socket.url'
-  local t = U.parse(url)
-
-  if not t.host then return url end
-
-  t.host = t.host:gsub('youtu%.be', 'youtube.com')
-  t.host = t.host:gsub('-nocookie', '')
-
-  if t.path then
-    local p = {'/embed/([-_%w]+)', '/%w/([-_%w]+)', '/([-_%w]+)'}
-    for _,v in pairs(p) do
-      local m = t.path:match(v)
-      if m and #m == 11 then
-        t.query = 'v=' .. m
-        t.path  = '/watch'
-      end
+  local u = U.parse(url)
+  -- Leave if parsing fails for some reason.
+  if not u.host or not u.path then
+    return url
+  end
+  -- Unroll youtu.be
+  u.host = u.host:gsub('youtu%.be', 'youtube.com')
+  -- Try to lookup the video/media ID.
+  for _,p in pairs({'/embed/([-_%w]+)', '/%w/([-_%w]+)', '/([-_%w]+)'}) do
+    local v_id = u.path:match(p)
+    if v_id and #v_id ==11 then -- Convert the URL into a YouTube media URL.
+      u.query = table.concat({'v=',v_id})
+      u.path = '/watch'
     end
   end
-  return U.build(t)
+  return U.build(u) -- Rebuild and return the media URL.
 end
 
 --[[
@@ -115,46 +115,54 @@ function M.append_if_unique(qargs, url)
   table.insert(qargs.media_url, url)
 end
 
--- Uncomment to test.
+--
+-- Tests
+--
+
 --[[
-package.path = package.path .. ';../?.lua'
-local a = {
-  {u='http://youtu.be/3WSQH__H1XE',             -- u=page url
-   e='http://youtube.com/watch?v=3WSQH__H1XE'}, -- e=expected url
-  {u='http://youtu.be/v/3WSQH__H1XE?hl=en',
-   e='http://youtube.com/watch?v=3WSQH__H1XE'},
-  {u='http://youtu.be/watch?v=3WSQH__H1XE',
-   e='http://youtube.com/watch?v=3WSQH__H1XE'},
-  {u='http://youtu.be/embed/3WSQH__H1XE',
-   e='http://youtube.com/watch?v=3WSQH__H1XE'},
-  {u='http://youtu.be/v/3WSQH__H1XE',
-   e='http://youtube.com/watch?v=3WSQH__H1XE'},
-  {u='http://youtu.be/e/3WSQH__H1XE',
-   e='http://youtube.com/watch?v=3WSQH__H1XE'},
-  {u='http://youtube.com/watch?v=3WSQH__H1XE',
-   e='http://youtube.com/watch?v=3WSQH__H1XE'},
-  {u='http://youtube.com/embed/3WSQH__H1XE',
-   e='http://youtube.com/watch?v=3WSQH__H1XE'},
-  {u='http://jp.youtube.com/watch?v=3WSQH__H1XE',
-   e='http://jp.youtube.com/watch?v=3WSQH__H1XE'},
-  {u='http://jp.youtube-nocookie.com/e/3WSQH__H1XE',
-   e='http://jp.youtube.com/watch?v=3WSQH__H1XE'},
-  {u='http://jp.youtube.com/embed/3WSQH__H1XE',
-   e='http://jp.youtube.com/watch?v=3WSQH__H1XE'},
-  {u='http://youtube.com/3WSQH__H1XE', -- invalid page url
-   e='http://youtube.com/watch?v=3WSQH__H1XE'}
-}
-local e = 0
-for i,v in pairs(a) do
-  local s = M.normalize(v.u)
-  if s ~= v.e then
-  print('\n   input: ' .. v.u .. " (#" .. i .. ")")
-  print('expected: '   .. v.e)
-  print('     got: '   .. s)
-  e = e + 1
+local function test_normalize()
+  local test_cases = {
+    {url = 'http://youtu.be/3WSQH__H1XE',
+     expect = 'http://youtube.com/watch?v=3WSQH__H1XE'},
+    {url = 'https://youtu.be/3WSQH__H1XE',
+     expect = 'https://youtube.com/watch?v=3WSQH__H1XE'},
+    {url='http://youtu.be/v/3WSQH__H1XE?hl=en',
+     expect='http://youtube.com/watch?v=3WSQH__H1XE'},
+    {url='http://youtu.be/watch?v=3WSQH__H1XE',
+     expect='http://youtube.com/watch?v=3WSQH__H1XE'},
+    {url='http://youtu.be/embed/3WSQH__H1XE',
+     expect='http://youtube.com/watch?v=3WSQH__H1XE'},
+    {url='http://youtu.be/v/3WSQH__H1XE',
+     expect='http://youtube.com/watch?v=3WSQH__H1XE'},
+    {url='http://youtu.be/e/3WSQH__H1XE',
+     expect='http://youtube.com/watch?v=3WSQH__H1XE'},
+    {url='http://youtube.com/watch?v=3WSQH__H1XE',
+     expect='http://youtube.com/watch?v=3WSQH__H1XE'},
+    {url='http://youtube.com/embed/3WSQH__H1XE',
+     expect='http://youtube.com/watch?v=3WSQH__H1XE'},
+    {url='http://jp.youtube.com/watch?v=3WSQH__H1XE',
+     expect='http://jp.youtube.com/watch?v=3WSQH__H1XE'},
+    {url='http://jp.youtube.com/embed/3WSQH__H1XE',
+     expect='http://jp.youtube.com/watch?v=3WSQH__H1XE'},
+    {url='https://jp.youtube.com/embed/3WSQH__H1XE',
+     expect='https://jp.youtube.com/watch?v=3WSQH__H1XE'},
+    {url='http://youtube.com/3WSQH__H1XE', -- invalid page url
+     expect='http://youtube.com/watch?v=3WSQH__H1XE'}
+  }
+  local i,e = 0,0
+  for _,v in pairs(test_cases) do
+    local r = M.normalize(v.url)
+    if r ~= v.expect then
+      print(string.format('input: %s (#%s)\nexpected: %s\ngot: %s',
+                          v.url, i, v.expect, r))
+      e = e+1
+    end
+    i = i+1
   end
+  print((e==0) and 'tests OK' or error('failed tests: '..e))
 end
-print((e == 0) and 'Tests OK' or ('\nerrors: ' .. e))
+
+test_normalize()
 ]]--
 
 return M
