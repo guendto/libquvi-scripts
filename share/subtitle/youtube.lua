@@ -32,8 +32,7 @@ function parse(qargs)
   local C = require 'quvi/const'
 
   local u = Y.normalize(qargs.input_url)
-  local v = u:match('v=([%w-_]+)')
-              or error('no match: media ID')
+  local v = u:match('v=([%w-_]+)') or error('no match: media ID')
 
   qargs.subtitles = {}
 
@@ -79,17 +78,33 @@ function YouTube.tts_get(qargs, v, u, C)
   table.insert(qargs.subtitles, {format=C.sif_tt, type=C.st_tts, lang=r})
 end
 
+-- Return a new timed-text track URL.
+function YouTube.tt_track_new(scheme, v, name, lang)
+  local t = {
+    scheme, '://youtube.com/api/timedtext?hl=en&type=track',
+    '&v=', v, '&name=', name, '&lang=', lang
+  }
+  return table.concat(t,'')
+end
+
+-- Return a new timed-text list URL.
+function YouTube.tt_list_new(scheme, v)
+  local t = {scheme, '://video.google.com/timedtext?hl=en&type=list&v=', v}
+  return table.concat(t,'')
+end
+
 -- Extract the CC (closed-captions) data.
 function YouTube.cc_get(qargs, v, C)
-  local u_fmt =
-    "http://youtube.com/api/timedtext?hl=en&type=track&v=%s&name=%s&lang=%s"
+  local U = require 'socket.url'
+  local u = U.parse(qargs.input_url)
 
-  local u = 'http://video.google.com/timedtext?hl=en&type=list&v=' ..v
-  local x = quvi.http.fetch(u).data
+  local l = YouTube.tt_list_new(u.scheme, v)
+  local x = quvi.http.fetch(l).data
+
   local L = require 'lxp.lom'
   local t = L.parse(x)
-  local r = {}
 
+  local r = {}
   for i=1, #t do
     if t[i].tag == 'track' then
       local lang = t[i].attr['lang_code']
@@ -97,15 +112,14 @@ function YouTube.cc_get(qargs, v, C)
         local name = t[i].attr['name'] or ''
         table.insert(r, {
           translated = t[i].attr['lang_translated'] or '',
+          url = YouTube.tt_track_new(u.scheme, v, name, lang),
           original = t[i].attr['lang_original'] or '',
-          url = string.format(u_fmt, v, name, lang),
-          id = 'cc_'..lang,
+          id = table.concat({'cc_', lang}, ''),
           code = lang
         })
       end
     end
   end
-
   table.insert(qargs.subtitles, {format=C.sif_tt, type=C.st_cc, lang=r})
 end
 
