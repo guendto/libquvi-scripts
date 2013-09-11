@@ -37,96 +37,111 @@ end
 -- Utility functions
 --
 
--- Parses the video info from the server.
-function YouTube.parse_properties(qargs)
-  local c, U = YouTube.get_data(qargs)
+-- Make a new get_view_info request.
+function YouTube.gvi_request_new(qargs, input_url)
+  local U = require 'socket.url'
+  local u = U.parse(input_url)
 
-  qargs.duration_ms = (c['length_seconds'] or 0)*1000 -- to ms
-  qargs.thumb_url = U.unescape(c['thumbnail_url'] or '')
-  qargs.title = U.unescape(c['title'] or '')
-  qargs.streams = YouTube.iter_streams(c, U)
-  YouTube.append_begin_param(qargs)
+  qargs.id = u.query:match('v=([%w-_]+)') or error('no match: media ID')
 
-  return qargs
+  local t = {
+    u.scheme, '://www.youtube.com/get_video_info?', 'video_id=', qargs.id,
+    '&el=detailpage', '&ps=default', '&gl=US', '&hl=en'
+  }
+
+  local T = require 'quvi/util'
+  local r = table.concat(t,'')
+
+  local c = T.decode(quvi.http.fetch(r).data)
+  local r = c['reason']
+
+  if r and #r then
+    error(string.format("%s (errorcode=%s)",
+                          U.unescape(r), c['errorcode']))
+  end
+  return c, U, T, u.scheme
 end
 
--- Queries the video data from the server.
-function YouTube.get_data(qargs)
+-- Parse the video info from the server.
+function YouTube.parse_properties(qargs)
   local Y = require 'quvi/youtube'
   local u = Y.normalize(qargs.input_url)
 
-  qargs.id = u:match('v=([%w-_]+)')
-              or error('no match: media ID')
+  local c,U,T,scheme = YouTube.gvi_request_new(qargs, u)
 
-  local U = require 'socket.url'
-  local u = U.parse(u)
-  local s = u.scheme or error('no match: scheme')
+  qargs.duration_ms = (c['length_seconds'] or 0)*1000 -- to ms
+  qargs.thumb_url = T.unescape(c['thumbnail_url'] or '')
 
-  local s_fmt = '%s://www.youtube.com/get_video_info?&video_id=%s'
-                  .. '&el=detailpage&ps=default&eurl=&gl=US&hl=en'
-  local u = string.format(s_fmt, s, qargs.id)
+  qargs.title = T.unescape(c['title'] or '')
+  qargs.streams = YouTube.iter_streams(c, U, T, scheme)
 
-  local U = require 'quvi/util'
-  local c = U.decode(quvi.http.fetch(u).data)
-
-  if c['reason'] then
-    local reason = U.unescape(c['reason'])
-    local code = c['errorcode']
-    error(string.format("%s (code=%s)", reason, code))
-  end
-
-  return c, U
+  YouTube.append_begin_param(qargs, U)
+  return qargs
 end
 
--- Appends the &begin parameter to the media stream URL.
-function YouTube.append_begin_param(qargs)
+-- Append the &begin parameter to the media stream URL.
+function YouTube.append_begin_param(qargs, U)
   local m,s = qargs.input_url:match('t=(%d?%d?m?)(%d%d)s')
   m = tonumber(((m or ''):gsub('%a',''))) or 0
   s = tonumber(((s or ''):gsub('%a',''))) or 0
   local ms = (m*60000) + (s*1000)
-  if ms >0 then
+  if ms >0 then -- Rebuild each stream URL with the 'begin' parameter.
     for i,v in ipairs(qargs.streams) do
-      local url = qargs.streams[i].url
-      qargs.streams[i].url = url .."&begin=".. ms
+      local u = U.parse(qargs.streams[i].url)
+      u.query = table.concat({u.query, '&begin=', ms}, '')
+      qargs.streams[i].url = U.build(u)
     end
     qargs.start_time_ms = ms
   end
 end
 
--- Iterates the available streams.
-function YouTube.iter_streams(config, U)
+-- Return a new media stream URL.
+function YouTube.stream_url_new(d, U, T, scheme)
+  local u = U.parse(T.unescape(d['url']))
+  --
+  -- The service returns only HTTP media stream URLs even if the media
+  -- properties were requested over HTTPS. Forcing HTTPS will only
+  -- result in HTTP/403. (2013-09-11)
+  --
+  --u.scheme = scheme -- Uncomment to use the input URL scheme
+  --
+  if d['sig'] then
+    local s = table.concat({'&signature=', T.unescape(d['sig'])}, '')
+    u.query = table.concat({u.query, s}, '')
+  end
+  return U.build(u) -- Rebuild the stream URL.
+end
 
-  -- Stream map. Holds many of the essential properties,
-  -- e.g. the media stream URL.
+-- Iterate the available streams.
+function YouTube.iter_streams(config, U, T, scheme)
 
-  local stream_map = U.unescape(config['url_encoded_fmt_stream_map']
-                      or error('no match: url_encoded_fmt_stream_map'))
+  -- stream_map: holds many of the essential properties.
+  local v = 'url_encoded_fmt_stream_map'
+  local stream_map = T.unescape(config[v]
+                      or error(string.format('no match: %s', v)))
                         .. ','
 
   local smr = {}
   for d in stream_map:gmatch('([^,]*),') do
-    local d = U.decode(d)
-    if d['url'] then
-      local ct = U.unescape(d['type'])
-      local v_enc,a_enc = ct:match('codecs="([%w.]+),%s+([%w.]+)"')
-      local itag = d['itag']
-      local cnt = (ct:match('/([%w-]+)')):gsub('x%-', '')
+    local d = T.decode(d)
+    if d['url'] then -- Found media stream URL.
+      local ct = T.unescape(d['type'])
+      local v_enc, a_enc = ct:match('codecs="([%w.]+),%s+([%w.]+)"')
       local t = {
-        url = U.unescape(d['url']) -- d['sig'] ? "&signature=val" : ""
-              .. (d['sig'] and ('&signature='..d['sig']) or ''),
+        container = (ct:match('/([%w-]+)')):gsub('x%-', ''),
+        url = YouTube.stream_url_new(d, U, T, scheme),
         quality = d['quality'],
-        container = cnt,
         v_enc = v_enc,
         a_enc = a_enc
       }
+      local itag = d['itag']
       smr[itag] = t
     end
   end
 
-  -- Format list. Combined with the above properties. This list is used
-  -- for collecting the video resolution.
+  -- fmt_list: stores the video resolutions.
+  local fmtl = T.unescape(config['fmt_list'] or error('no match: fmt_list'))
 
-  local fmtl = U.unescape(config['fmt_list'] or error('no match: fmt_list'))
   local S = require 'quvi/stream'
   local r = {}
 
@@ -136,26 +151,23 @@ function YouTube.iter_streams(config, U)
 
     t.video.encoding = smri.v_enc or ''
     t.audio.encoding = smri.a_enc or ''
+
     t.container = smri.container or ''
+
     t.video.height = tonumber(h)
     t.video.width = tonumber(w)
 
-    -- Do this after we have the video resolution, as the to_id
-    -- function uses the height property.
     t.id = YouTube.to_id(t, itag, smri)
-
     table.insert(r, t)
   end
 
-  if #r >1 then
-    YouTube.ch_best(S, r) -- Pick one stream as the 'best' quality.
+  if #r >1 then -- Pick one stream as the 'best' quality.
+    YouTube.ch_best(S, r)
   end
-
   return r
 end
 
--- Picks the stream with the highest video height property
--- as the best in quality.
+-- Choose the stream with the highest video height property as the best.
 function YouTube.ch_best(S, t)
   local r = t[1] -- Make the first one the 'best' by default.
   r.flags.best = true
