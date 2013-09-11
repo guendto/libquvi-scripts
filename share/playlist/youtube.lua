@@ -37,6 +37,7 @@ function parse(qargs)
   end
 
   local Y = require 'quvi/youtube'
+  local U = require 'socket.url'
   local L = require 'quvi/lxph'
   local P = require 'lxp.lom'
 
@@ -47,17 +48,16 @@ function parse(qargs)
   local r = {}
 
   repeat -- Get the entire playlist.
-    local u = YouTube.config_url(qargs, start_index, max_results)
+    local u = YouTube.config_url(qargs, U, start_index, max_results)
     local c = quvi.http.fetch(u).data
-    local x = P.parse(c)
 
+    local x = P.parse(c)
     YouTube.chk_error_resp(x)
 
     YouTube.parse_thumb_url(qargs, L, x)
     YouTube.parse_title(qargs, L, x)
 
     local n = YouTube.parse_media_urls(qargs, L, x)
-
     start_index = start_index + n
   until n == 0
 
@@ -82,11 +82,14 @@ function YouTube.can_parse_url(qargs)
   end
 end
 
-function YouTube.config_url(qargs, start_index, max_results)
-  return string.format( -- Refer to http://is.gd/0msY8X
-    'http://gdata.youtube.com/feeds/api/playlists/%s?v=2'
-    .. '&start-index=%s&max-results=%s&strict=true',
-      qargs.id, start_index, max_results)
+function YouTube.config_url(qargs, U, start_index, max_results)
+  local u = U.parse(qargs.input_url)
+  local t = { -- Refer to http://is.gd/0msY8X
+    u.scheme, '://gdata.youtube.com/feeds/api/playlists/',
+    qargs.id, '?v=2', '&start-index=', start_index,
+    '&max-results=', max_results, '&strict=true'
+  }
+  return table.concat(t,'')
 end
 
 function YouTube.entry_avail(x)
