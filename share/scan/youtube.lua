@@ -1,5 +1,5 @@
 -- libquvi-scripts
--- Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
 --
@@ -22,22 +22,25 @@
 function parse(qargs)
   qargs.media_url = {}
 
-  local hosts = {'youtu%.be', 'youtube%.com', 'youtube%-nocookie%.com'}
   local paths = {'/embed/([-_%w]+)', '/%w/([-_%w]+)', '/([-_%w]+)'}
+  local hosts = {'youtu%.be', 'youtube%.com'}
 
   local Y = require 'quvi/youtube'
+  local U = require 'socket.url'
+
+  local scheme = U.parse(qargs.input_url).scheme
 
   for _,h in pairs(hosts) do
     for _,p in pairs(paths) do
-      for v in qargs.content:gmatch(h..p) do
-        if #v == 11 then
-          local u = 'http://youtube.com/watch?v=' .. v
+      local r = table.concat({h,p}, '')
+      for v in qargs.content:gmatch(r) do
+        if #v ==11 then
+          local u = table.concat({scheme, '://youtube.com/watch?v=', v}, '')
           Y.append_if_unique(qargs, u)
         end
       end
     end
   end
-
   return qargs
 end
 
