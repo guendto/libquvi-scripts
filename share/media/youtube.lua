@@ -57,7 +57,7 @@ function YouTube.gvi_request_new(qargs, input_url)
 
   if r and #r then
     error(string.format("%s (errorcode=%s)",
-                          U.unescape(r), c['errorcode']))
+                          T.unescape(r), c['errorcode']))
   end
   return c, U, T, u.scheme
 end
