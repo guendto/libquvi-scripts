@@ -49,6 +49,7 @@ dist_media_DATA=\
   media/clipfish.lua\
   media/dailymotion.lua\
   media/funnyordie.lua\
+  media/ina.lua\
   media/gaskrank.lua\
   media/guardian.lua\
   media/lego.lua\
