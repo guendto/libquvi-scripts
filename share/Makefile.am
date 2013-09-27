@@ -1,3 +1,10 @@
+# README.
+
+rootdir=$(pkgdatadir)/$(VERSION)
+
+dist_root_DATA=\
+  README
+
 # Common scripts.
 
 commondir=$(pkgdatadir)/$(VERSION)/common/quvi/
