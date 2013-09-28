@@ -61,10 +61,15 @@ end
 
 function FunnyOrDie.iter_streams(p)
   local t = {}
-  for u in p:gmatch('type: "video/mp4", src: "(.-)"') do
-    table.insert(t, u)
+
+  -- 41a7516647: added the pattern in the next line, and removed...
+  for u in p:gmatch('type: "video/mp4", src: "(.-)"') do table.insert(t,u) end
+  for u in p:gmatch('source src="(.-)"') do table.insert(t,u) end -- ... This.
+  -- Keep both of them.
+
+  if #t ==0 then
+    error('no match: media stream URL')
   end
-  if #t ==0 then error('no match: media stream URL') end
 
   local S = require 'quvi/stream'
   local r = {}
@@ -72,11 +77,13 @@ function FunnyOrDie.iter_streams(p)
   -- nostd is a dictionary used by this script only. libquvi ignores it.
   for _,u in pairs(t) do
     local q,c = u:match('/(%w+)%.(%w+)$')
-    local s = S.stream_new(u)
-    s.nostd = {quality=q}
-    s.container = c
-    s.id = FunnyOrDie.to_id(s)
-    table.insert(r,s)
+    if q and c then
+      local s = S.stream_new(u)
+      s.nostd = {quality=q}
+      s.container = c
+      s.id = FunnyOrDie.to_id(s)
+      table.insert(r,s)
+    end
   end
 
   if #r >1 then
