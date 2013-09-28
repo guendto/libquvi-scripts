@@ -54,6 +54,7 @@ dist_media_DATA=\
   media/guardian.lua\
   media/lego.lua\
   media/liveleak.lua\
+  media/myspass.lua\
   media/publicsenat.lua\
   media/sapo.lua\
   media/senat.lua\
