@@ -28,22 +28,19 @@
 
 static const gchar *URLs[] =
 {
-  "http://www.funnyordie.com/videos/e3662085fb/american-psycho-with-huey-lewis-and-weird-al",
-  "http://www.funnyordie.com/videos/ba5fd32f31/kristen-bell-s-body-of-lies",
+  "http://www.funnyordie.com/videos/7a01aa0280/walter-white-calls-uncle-buck",
   NULL
 };
 
 static const gchar *TITLEs[] =
 {
-  "American Psycho with Huey Lewis and Weird Al",
-  "Kristen Bell's Body of Lies",
+  "Walter White Calls Uncle Buck",
   NULL
 };
 
 static const gchar *IDs[] =
 {
-  "e3662085fb",
-  "ba5fd32f31",
+  "7a01aa0280",
   NULL
 };
 
