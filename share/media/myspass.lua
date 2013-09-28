@@ -1,4 +1,5 @@
 -- libquvi-scripts
+-- Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
 -- Copyright (C) 2012  Guido Leisker <guido@guido-leisker.de>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
@@ -18,26 +19,14 @@
 -- <http://www.gnu.org/licenses/>.
 --
 
--- About
---  Each video url ends with an id composed of digits.
---  This id leads us to a metadata xml file (see function
---  MySpass.getMetadataValue) containing all necessary information
---  including download link.
-
 local MySpass = {} -- Utility functions unique to this script
 
--- Identify the script.
-function ident(self)
-  package.path = self.script_dir .. '/?.lua'
-  local C      = require 'quvi/const'
-  local r      = {}
-  r.domain     = "myspass%.de"
-  r.formats    = "default"
-  r.categories = C.proto_http
-  local U      = require 'quvi/util'
-  -- expect all urls ending with digits to be videos
-  r.handles    = U.handles(self.page_url, {r.domain}, {"/myspass/.-/%d+/?$"})
-  return r
+-- Identify the media script.
+function ident(qargs)
+  return {
+    can_parse_url = MySpass.can_parse_url(qargs),
+    domains = table.concat({'myspass.de'}, ',')
+  }
 end
 
 -- Query available formats.
@@ -70,6 +59,20 @@ end
 --
 -- Utility functions
 --
+
+function MySpass.can_parse_url(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('myspass%.de$')
+       -- Expect all URLs ending with digits to be videos.
+       and t.path   and t.path:lower():match('^/myspass/.-/%d+/?$')
+  then
+    return true
+  else
+    return false
+  end
+end
 
 function MySpass.getMetadataValue(self, key)
   if self.metadata == nil then
