@@ -29,25 +29,32 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-  self.host_id = "myspass"
+-- Parse the media properties.
+function parse(qargs)
 
-  self.id = self.page_url:match("(%d+)/?$")
-      or error("no match: media ID")
+  -- Make mandatory: the media ID is needed to fetch the data XML.
+  qargs.id = qargs.input_url:match("(%d+)/?$") or error("no match: media ID")
 
-  local format  = MySpass.getMetadataValue(self, 'format')
-  local title   = MySpass.getMetadataValue(self, 'title')
-  local season  = MySpass.getMetadataValue(self, 'season')
-  local episode = MySpass.getMetadataValue(self, 'episode')
-  self.thumbnail_url = MySpass.getMetadataValue(self, 'imagePreview') or ''
+  local t = {
+    'http://www.myspass.de/myspass/includes/apps/video',
+    '/getvideometadataxml.php?id=', qargs.id
+  }
 
-  self.title = string.format("%s %03d %03d %s", format, season,
-                             episode, title)
+  local c = quvi.http.fetch(table.concat(t,'')).data
+  local P = require 'lxp.lom'
 
-  self.url = {MySpass.getMetadataValue(self, 'url_flv')}
+  local L = require 'quvi/lxph'
+  local x = P.parse(c)
 
-  return self
+  qargs.thumb_url = L.find_first_tag(x, 'imagePreview')[1]
+
+  qargs.duration_ms = MySpass.to_duration_ms(L, x)
+
+  qargs.streams = MySpass.iter_streams(L, x)
+
+  qargs.title = MySpass.to_title(L, x)
+
+  return qargs
 end
 
 --
@@ -68,18 +75,27 @@ function MySpass.can_parse_url(qargs)
   end
 end
 
-function MySpass.getMetadataValue(self, key)
-  if self.metadata == nil then
-    self.metadata =  quvi.fetch(
-      'http://www.myspass.de/myspass/'
-          .. 'includes/apps/video/getvideometadataxml.php?id='
-          .. self.id ) or error("cannot fetch meta data xml file")
-  end
-  local p = string.format("<%s>(.-)</%s>", key, key)
-  local temp = self.metadata:match(p) or error("meta data: no match: " .. key)
-  local value = temp:match('<!%[CDATA%[(.+)]]>') or temp
-  return value
+function MySpass.iter_streams(L, x)
+  local u = L.find_first_tag(x, 'url_flv')[1]
+  local S = require 'quvi/stream'
+  return {S.stream_new(u)}
+end
+
+function MySpass.to_duration_ms(L, x)
+  local m,s = L.find_first_tag(x, 'duration')[1]:match('(%d+)%:(%d+)')
+  m = tonumber(((m or ''):gsub('%a',''))) or 0
+  m = tonumber(((s or ''):gsub('%a',''))) or 0
+  return (m*60000) + (s*1000)
+end
+
+function MySpass.to_title(L, x)
+  local t = {
+    L.find_first_tag(x, 'format')[1],
+    string.format('s%02de%02d -', L.find_first_tag(x, 'season')[1],
+                                  L.find_first_tag(x, 'episode')[1]),
+    L.find_first_tag(x, 'title')[1]
+  }
+  return table.concat(t, ' ')
 end
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:
-
