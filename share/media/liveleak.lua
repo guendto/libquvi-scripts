@@ -47,7 +47,7 @@ function parse(qargs)
     end
   end
   -- Cleanup the JSON, otherwise 'json' module will croak.
-  d = d:gsub('%+encodeURIComponent%(document%.URL%)', '')
+  d = d:gsub('code:.-%),','')
 
   local J = require 'json'
   local j = J.decode(d)
