@@ -77,10 +77,51 @@ function LiveLeak.can_parse_url(qargs)
   end
 end
 
+function LiveLeak.stream_new(S, t)
+  local v_enc, v_h, c = t['file']:match('%.(%w+)_(%d+)p%.(%w+)%?')
+  local s = S.stream_new(t['file'] or error('no match: media stream URL'))
+  s.video.height = tonumber(v_h or 0)
+  s.video.encoding = v_enc or ''
+  s.container = c or ''
+  LiveLeak.to_id(s,t)
+  return s
+end
+
 function LiveLeak.iter_streams(j)
-  local u = j['file'] or error('no match: media stream URL')
   local S = require 'quvi/stream'
-  return {S.stream_new(u)}
+  if j['sources'] then -- >1 streams
+    local r = {}
+    for _,v in pairs(j['sources']) do
+      table.insert(r, LiveLeak.stream_new(S,v))
+    end
+    if #r >1 then -- Pick one stream as the 'best' quality.
+      LiveLeak.ch_best(S, r)
+    end
+    return r
+  else
+    local u = j['file'] or error('no match: media stream URL')
+    return {S.stream_new(u)}
+  end
+end
+
+function LiveLeak.ch_best(S, t)
+  local r = t[1] -- Make the first one the 'best' by default.
+  r.flags.best = true
+  for _,v in pairs(t) do
+    if v.video.height > r.video.height then
+      r = S.swap_best(r, v)
+    end
+  end
+end
+
+function LiveLeak.to_id(s,t)
+  if s.container then
+    local q = t['label']:match('(%w%w)$'):lower()
+    local r = {q, s.container, s.video.encoding, s.video.height .. 'p'}
+    s.id = table.concat(r, '_')
+  else -- Fallback to 'label'.
+    s.id = t['label']:gsub('%W',''):lower()
+  end
 end
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:
