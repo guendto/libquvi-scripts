@@ -30,6 +30,7 @@ static const gchar *URLs[] =
 {
   "http://www.liveleak.com/view?i=c72_1366852611",
   "http://www.liveleak.com/view?i=8d2_1367308416", /* Hosted by YouTube */
+  "http://www.liveleak.com/view?i=edd_1380341149", /* >1 streams */
   NULL
 };
 
@@ -37,6 +38,7 @@ static const gchar *TITLEs[] =
 {
   "Otter jumps in car and refuses to leave",
   "How To Park A Porsche",
+  "JUNGLE HENDRIX",
   NULL
 };
 
@@ -44,6 +46,7 @@ static const gchar *IDs[] =
 {
   "c72_1366852611",
   "6NPkvWnabK4",
+  "edd_1380341149",
   NULL
 };
 
