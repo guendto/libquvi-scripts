@@ -46,11 +46,8 @@ function parse(qargs)
       error('no match: setup')
     end
   end
-  -- Cleanup the JSON, otherwise 'json' module will croak.
-  d = d:gsub('code:.-%),','')
 
-  local J = require 'json'
-  local j = J.decode(d)
+  local j = LiveLeak.sanitize_json(d)
 
   qargs.thumb_url = j['image'] or ''
 
@@ -112,6 +109,14 @@ function LiveLeak.ch_best(S, t)
       r = S.swap_best(r, v)
     end
   end
+end
+
+function LiveLeak.sanitize_json(d)
+  d = d:gsub('\r\n',''):gsub('%s','') -- Strip CRLFs and wspace
+  d = d:gsub('%+?%w+%(.-%)?,', ',')   -- Remove function calls
+  d = d:gsub('%w+:,','')              -- Remove empty value names
+  local J = require 'json'
+  return J.decode(d)
 end
 
 function LiveLeak.to_id(s,t)
