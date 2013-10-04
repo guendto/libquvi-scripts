@@ -74,31 +74,36 @@ function LiveLeak.can_parse_url(qargs)
   end
 end
 
-function LiveLeak.stream_new(S, t)
-  local v_enc, v_h, c = t['file']:match('%.(%w+)_(%d+)p%.(%w+)%?')
-  local s = S.stream_new(t['file'] or error('no match: media stream URL'))
+function LiveLeak.stream_new(S, url)
+  local v_enc, v_h, c = url:match('%.(%w+)_(%d+)p%.(%w+)%?')
+  local s = S.stream_new(url)
   s.video.height = tonumber(v_h or 0)
-  s.video.encoding = v_enc or ''
-  s.container = c or ''
-  LiveLeak.to_id(s,t)
-  return s
+  s.video.encoding = v_enc
+  s.container = c
+  return LiveLeak.to_id(s)
 end
 
 function LiveLeak.iter_streams(j)
   local S = require 'quvi/stream'
-  if j['sources'] then -- >1 streams
-    local r = {}
-    for _,v in pairs(j['sources']) do
-      table.insert(r, LiveLeak.stream_new(S,v))
-    end
+  local U = require 'socket.url'
+
+  local t = U.parse(j['config'])
+  local r = {}
+
+  for f_url in t.query:gmatch('file_url=(.-)&') do
+    local u = U.unescape(f_url)
+    table.insert(r, LiveLeak.stream_new(S, u))
+  end
+
+  if #r ==0 then
+    error('no match: media stream URL')
+  else
     if #r >1 then -- Pick one stream as the 'best' quality.
       LiveLeak.ch_best(S, r)
     end
-    return r
-  else
-    local u = j['file'] or error('no match: media stream URL')
-    return {S.stream_new(u)}
   end
+
+  return r
 end
 
 function LiveLeak.ch_best(S, t)
@@ -119,14 +124,12 @@ function LiveLeak.sanitize_json(d)
   return J.decode(d)
 end
 
-function LiveLeak.to_id(s,t)
+function LiveLeak.to_id(s)
   if s.container then
-    local q = t['label']:match('(%w%w)$'):lower()
-    local r = {q, s.container, s.video.encoding, s.video.height .. 'p'}
+    local r = {s.container, s.video.encoding, s.video.height .. 'p'}
     s.id = table.concat(r, '_')
-  else -- Fallback to 'label'.
-    s.id = t['label']:gsub('%W',''):lower()
   end
+  return s
 end
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:
