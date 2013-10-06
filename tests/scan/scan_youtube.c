@@ -29,7 +29,6 @@
 static const struct qs_test_exact_s qste[] =
 {
   {"http://eupodiatamatando.com/2010/10/19/voce-nao-sabe-fazer-um-cha-ele-sabe/", 1},
-  {"http://feedproxy.google.com/~r/TheFirearmBlog/~3/HxQgxmW15Sg/", 1},
   {"http://screenrant.com/superman-man-steel-trailer/", 2},
   {"http://is.gd/HHJuWa", 1},
   {NULL, 0}
