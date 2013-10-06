@@ -31,6 +31,7 @@ end
 
 -- Parse media properties.
 function parse(qargs)
+  quvi.http.header('Accept-Encoding: gzip;q=1.0, identity; q=0.5, *;q=0')
   local p = quvi.http.fetch(qargs.input_url).data
 
   qargs.thumb_url = p:match('"og:image" content="(.-)"') or ''
