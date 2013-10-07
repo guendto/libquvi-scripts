@@ -81,7 +81,7 @@ function SevenLoad.iter_streams(p)
   local S = require 'quvi/stream'
   local J = require 'json'
 
-  local d = p:match('data%-html5="(.-)">') or error('no match: data-html5')
+  local d = p:match('data%-html5="(.-)" ') or error('no match: data-html5')
   local j = J.decode(d)
 
   local s = j['sources'] or error('"sources" not found')
