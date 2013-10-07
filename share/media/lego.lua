@@ -25,7 +25,7 @@ local Lego = {} -- Utility functions unique to this script
 function ident(qargs)
   return {
     can_parse_url = Lego.can_parse_url(qargs),
-    domains = table.concat({'city.lego.com'}, ',')
+    domains = table.concat({'lego.com'}, ',')
   }
 end
 
@@ -33,19 +33,11 @@ end
 function parse(qargs)
   local p = quvi.http.fetch(qargs.input_url).data
 
-  local d = p:match('FirstVideoData = (.-);')
-              or error('no match: FirstVideoData')
-
-  local J = require 'json'
-  local j = J.decode(d)
-
-  qargs.id = j['LikeObjectGuid'] or '' -- Lack of a better one.
-
-  qargs.title = j['Name'] or ''
-
-  Lego.parse_thumb_url(qargs, p)
-
-  qargs.streams = Lego.iter_streams(j)
+  if p:match('FirstVideoData') then
+    Lego.parse_movies(qargs, p)
+  else
+    Lego.parse_videos(qargs ,p)
+  end
 
   return qargs
 end
@@ -58,8 +50,9 @@ function Lego.can_parse_url(qargs)
   local U = require 'socket.url'
   local t = U.parse(qargs.input_url)
   if t and t.scheme and t.scheme:lower():match('^http$')
-       and t.host   and t.host:lower():match('^city%.lego%.com$')
-       and t.path   and t.path:lower():match('/%w+%-%w+/movies/')
+       and t.host   and t.host:lower():match('lego%.com$')
+       and t.path   and (t.path:lower():match('/movies/')
+                         or t.path:lower():match('/videos$'))
   then
     return true
   else
@@ -67,16 +60,56 @@ function Lego.can_parse_url(qargs)
   end
 end
 
-function Lego.iter_streams(j)
+function Lego.movies_iter_streams(j)
   local v = j['VideoHtml5'] or error('no match: VideoHtml5')
   local u = v['Url'] or error('no match: media stream URL')
   local S = require 'quvi/stream'
   return {S.stream_new(u)}
 end
 
-function Lego.parse_thumb_url(qargs, p)
+function Lego.movies_thumb(qargs, p)
   local t = {'thumbNavigation.+', '<img src="(.-)" alt="',qargs.title, '"/>',}
   qargs.thumb_url = p:match(table.concat(t,'') or '')
+end
+
+function Lego.parse_movies(qargs, p) -- /movies/
+  local d = p:match('FirstVideoData = (.-);')
+              or error('no match: FirstVideoData')
+
+  local J = require 'json'
+  local j = J.decode(d)
+
+  qargs.title = j['Name'] or ''
+  Lego.movies_thumb(qargs, p)
+
+  qargs.streams = Lego.movies_iter_streams(j)
+  qargs.id = j['LikeObjectGuid'] or ''
+end
+
+function Lego.videos_iter_streams(L, i)
+  local u = L.find_first_tag(i, 'movie')[1]
+  local S = require 'quvi/stream'
+  return {S.stream_new(u)}
+end
+
+function Lego.parse_videos(qargs, p)  -- /videos?video=ID
+  local d = p:match('name="flashvars" value="configxml=(.-</lego>)')
+              or error('no match: flashvars: configxml')
+
+  local L = require 'quvi/lxph'
+  local P = require 'lxp.lom'
+
+  local x = P.parse(d)
+  local m = L.find_first_tag(x, 'movieplayer')
+
+  local c = L.find_first_tag(m, 'content')
+  local i = L.find_first_tag(c, 'item')
+
+  qargs.title = L.find_first_tag(i, 'trackingName')[1]
+  qargs.thumb_url = L.find_first_tag(i, 'cover')[1]
+
+  qargs.id = (qargs.input_url:match('video=%{(.-)%}') or ''):lower()
+  qargs.streams = Lego.videos_iter_streams(L, i)
 end
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:
