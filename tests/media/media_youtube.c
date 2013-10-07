@@ -26,44 +26,56 @@
 
 #include "tests.h"
 
-static const gchar URL[] =
-  "http://www.youtube.com/watch?v=G4evlxq34og#t=1m09s";
+static const gchar *URLs[] =
+{
+  "http://www.youtube.com/watch?v=G4evlxq34og#t=1m09s",
+  "http://www.youtube.com/v/Xw7wrJUio3E",
+  NULL
+};
 
-static const gchar TITLE[] =
-  "Hal-5";
+static const gchar *TITLEs[] =
+{
+  "Hal-5",
+  "Road Bike Of The Year 2013 Roundtable discussion",
+  NULL
+};
 
-static const gchar ID[] =
-  "G4evlxq34og";
+static const gchar *IDs[] =
+{
+  "G4evlxq34og",
+  "Xw7wrJUio3E",
+  NULL
+};
 
 static void test_media_youtube()
 {
   struct qm_test_exact_s e;
   struct qm_test_opts_s o;
+  gint i;
 
-  memset(&e, 0, sizeof(e));
-  memset(&o, 0, sizeof(o));
+  for (i=0; URLs[i] != NULL; ++i)
+    {
+      memset(&e, 0, sizeof(e));
+      memset(&o, 0, sizeof(o));
 
-  e.title = TITLE;
-  e.id = ID;
+      e.title = TITLEs[i];
+      e.id = IDs[i];
 
-  /* String values. */
-
-#ifdef _1
-  /* These are available to only some of the formats. Skip these. */
-  o.s_len_gt0.stream.video.encoding = TRUE;
-  o.s_len_gt0.stream.audio.encoding = TRUE;
+#ifdef _1 /* SKIP: Available to some of the streams only */
+      o.s_len_gt0.stream.video.encoding = TRUE;
+      o.s_len_gt0.stream.audio.encoding = TRUE;
 #endif
-  o.s_len_gt0.stream.container = TRUE;
+      o.s_len_gt0.stream.container = TRUE;
 
-  /* Numerical values. */
+      o.gt0.stream.video.height = TRUE;
+      o.gt0.stream.video.width = TRUE;
+      o.gt0.duration_ms = TRUE;
 
-  o.gt0.stream.video.height = TRUE;
-  o.gt0.stream.video.width = TRUE;
+      if (strstr(URLs[i], "#t=") != NULL)
+        o.gt0.start_time_ms = TRUE;
 
-  o.gt0.start_time_ms = TRUE; /* The URL above specifies the #t= parameter. */
-  o.gt0.duration_ms = TRUE;
-
-  qm_test(__func__, URL, &e, &o);
+      qm_test(__func__, URLs[i], &e, &o);
+    }
 }
 
 gint main(gint argc, gchar **argv)
