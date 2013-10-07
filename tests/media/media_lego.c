@@ -28,13 +28,15 @@
 
 static const gchar *URLs[] =
 {
-  "http://city.lego.com/en-us/movies/fan-created/truckload-of-cash/",
+  "http://www.lego.com/en-us/videos?video={F1126563-A96C-4561-93D0-7048143BF4C0}",
+  "http://www.lego.com/en-us/city/movies/fan-created/truckload-of-cash",
   "http://city.lego.com/en-us/movies/mini-movies/museum-heist/",
   NULL
 };
 
 static const gchar *TITLEs[] =
 {
+  "Brain Attack Episode 10",
   "Truckload of Cash",
   "Museum Heist",
   NULL
@@ -42,6 +44,7 @@ static const gchar *TITLEs[] =
 
 static const gchar *IDs[] =
 {
+  "f1126563-a96c-4561-93d0-7048143bf4c0",
   "5d7e7177-ee51-463b-b0fb-fe2abd2e19ac",
   "3ef1b044-126f-4833-b9fb-0371595d25f9",
   NULL
