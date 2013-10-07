@@ -76,6 +76,10 @@ function M.normalize(url)
   end
   -- Unroll youtu.be
   u.host = u.host:gsub('youtu%.be', 'youtube.com')
+  -- Process URLs with the youtube domain name only.
+  if not u.host:match('youtube%.com$') then
+    return url
+  end
   -- Try to lookup the video/media ID.
   for _,p in pairs({'/embed/([-_%w]+)', '/%w/([-_%w]+)', '/([-_%w]+)'}) do
     local v_id = u.path:match(p)
