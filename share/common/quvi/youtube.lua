@@ -57,38 +57,77 @@ function M.can_parse_url(url)
 end
 
 --[[
-"Normalize" URL to YouTube media URL. See the test URLs for examples.
+Validate media/video ID and update URL 'query' and 'path' elements.
+Parameters:
+  u    .. Dictionary returned by socket.url.parse
+  v_id .. Media/video ID to validate
+Returns:
+  Boolean value (true if ID looks valid). Modifies the 'query' and the
+  'path' URL elements. These will then be used to rebuild the
+  media/video URL.
+]]--
+function M.normalize_found_id(u, v_id, other_query_params)
+  if v_id and #v_id ==11 then
+    u.query = table.concat({'v=', v_id})
+    u.path = '/watch'
+    return true
+  end
+  return false
+end
+
+--[[
+Try to match media/video ID in the URL 'path' element.
+Parameters:
+  u .. Dictionary returned by socket.url.parse
+Returns:
+  Boolean value (true if matched).
+]]--
+function M.normalize_path_match(u)
+  for _,p in pairs({'/embed/([-_%w]+)', '/%w/([-_%w]+)', '/([-_%w]+)'}) do
+    local v_id = u.path:match(p)
+    if M.normalize_found_id(u, v_id) then
+      return true
+    end
+  end
+  return false
+end
+
+--[[
+"Normalize" the given YouTube media/video URL.
 Parameters:
   s  .. URL to normalize
 Returns:
   Normalized URL
+See also:
+  Test cases at the bottom of this file.
 ]]--
 function M.normalize(url)
-  -- Leave if url is undefined for some reason.
   if not url then
     return url
   end
+
   local U = require 'socket.url'
   local u = U.parse(url)
-  -- Leave if parsing fails for some reason.
+
   if not u.host or not u.path then
     return url
   end
-  -- Unroll youtu.be
+
+  -- Unmangle "youtu.be" -> "youtube.com".
   u.host = u.host:gsub('youtu%.be', 'youtube.com')
-  -- Process URLs with the youtube domain name only.
+
+  -- Process URLs of the youtube domain only.
   if not u.host:match('youtube%.com$') then
     return url
   end
-  -- Try to lookup the video/media ID.
-  for _,p in pairs({'/embed/([-_%w]+)', '/%w/([-_%w]+)', '/([-_%w]+)'}) do
-    local v_id = u.path:match(p)
-    if v_id and #v_id ==11 then -- Convert the URL into a YouTube media URL.
-      u.query = table.concat({'v=',v_id})
-      u.path = '/watch'
-    end
+
+  -- Normalize embedded media/video URLs.
+  if M.normalize_path_match(u) then
+    return U.build(u)
   end
-  return U.build(u) -- Rebuild and return the media URL.
+
+  -- Rebuild and return the media URL.
+  return U.build(u)
 end
 
 --[[
@@ -126,30 +165,59 @@ end
 --[[
 local function test_normalize()
   local test_cases = {
+    --
+    -- query parameters must be kept.
+    --
+    {url='http://www.youtube.com/watch?feature=player_embedded&v=3WSQH__H1XE',
+     expect='http://www.youtube.com/watch?feature=player_embedded&v=3WSQH__H1XE'},
+
+    {url='http://www.youtube.com/watch?v=3WSQH__H1XE&list=PLfoo',
+      expect='http://www.youtube.com/watch?v=3WSQH__H1XE&list=PLfoo'},
+
+    {url='http://www.youtube.com/watch?v=3WSQH__H1XE&list=PLfoo#t=1m09s',
+      expect='http://www.youtube.com/watch?v=3WSQH__H1XE&list=PLfoo#t=1m09s'},
+
+    --
+    -- Protocol scheme should remain the same (e.g. https remains https)
+    -- Different embedded media URL forms -> "youtube.com/watch?v="
+    -- Shortened "youtu.be" -> "youtube.com"
+    --
     {url = 'http://youtu.be/3WSQH__H1XE',
      expect = 'http://youtube.com/watch?v=3WSQH__H1XE'},
+
     {url = 'https://youtu.be/3WSQH__H1XE',
      expect = 'https://youtube.com/watch?v=3WSQH__H1XE'},
+
     {url='http://youtu.be/v/3WSQH__H1XE?hl=en',
      expect='http://youtube.com/watch?v=3WSQH__H1XE'},
+
     {url='http://youtu.be/watch?v=3WSQH__H1XE',
      expect='http://youtube.com/watch?v=3WSQH__H1XE'},
+
     {url='http://youtu.be/embed/3WSQH__H1XE',
      expect='http://youtube.com/watch?v=3WSQH__H1XE'},
+
     {url='http://youtu.be/v/3WSQH__H1XE',
      expect='http://youtube.com/watch?v=3WSQH__H1XE'},
+
     {url='http://youtu.be/e/3WSQH__H1XE',
      expect='http://youtube.com/watch?v=3WSQH__H1XE'},
+
     {url='http://youtube.com/watch?v=3WSQH__H1XE',
      expect='http://youtube.com/watch?v=3WSQH__H1XE'},
+
     {url='http://youtube.com/embed/3WSQH__H1XE',
      expect='http://youtube.com/watch?v=3WSQH__H1XE'},
+
     {url='http://jp.youtube.com/watch?v=3WSQH__H1XE',
      expect='http://jp.youtube.com/watch?v=3WSQH__H1XE'},
+
     {url='http://jp.youtube.com/embed/3WSQH__H1XE',
      expect='http://jp.youtube.com/watch?v=3WSQH__H1XE'},
+
     {url='https://jp.youtube.com/embed/3WSQH__H1XE',
      expect='https://jp.youtube.com/watch?v=3WSQH__H1XE'},
+
     {url='http://youtube.com/3WSQH__H1XE', -- invalid page url
      expect='http://youtube.com/watch?v=3WSQH__H1XE'}
   }
@@ -165,7 +233,6 @@ local function test_normalize()
   end
   print((e==0) and 'tests OK' or error('failed tests: '..e))
 end
-
 test_normalize()
 ]]--
 
