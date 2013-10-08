@@ -76,6 +76,7 @@ end
 
 function ClipFish.iter_streams(L, x)
   local u = L.find_first_tag(x, 'filename')[1]
+              or error('no match: media stream URL')
   local S = require 'quvi/stream'
   return {S.stream_new(u)}
 end
