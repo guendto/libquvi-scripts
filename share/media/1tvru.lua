@@ -29,25 +29,41 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "1tvru"
+-- Parse the media properties.
+function parse(qargs)
 
-    self.id = self.page_url:match('fi(%d+)')
-                or self.page_url:match('fi=(%d+)')
-                or error("no match: media ID")
+  qargs.id = qargs.input_url:match('fi(%d+)')
+              or qargs.input_url:match('fi=(%d+)')
+              or qargs.input_url:match('p(%d+)')
+                or ''
 
-    local p = quvi.fetch(self.page_url)
+  local C = require 'quvi/const'
+  local o = { [C.qoo_fetch_from_charset] = 'windows-1251' }
+  local p = quvi.http.fetch(qargs.input_url, o).data
 
-    self.title = p:match("'title': '(.-)'")
-                  or error("no match: media title")
+  --
+  -- Videos and articles (?) share similar URL path structure. Look up
+  -- 'og:video' in the page HTML to determine whether this is a video page.
+  --
+  if not p:match('og:video') then
+    error('no video: page does not appear to contain a media stream')
+  end
 
-    self.url = {p:match("'file': '(.-)'")
-                  or error("no match: media stream URL")}
+  local d = p:match('"og:video:duration" content="(%d+)"') or 0
+  qargs.duration_ms = tonumber(d)*1000
 
-    self.thumbnail_url = p:match('"og:image" content="(.-)"') or ''
+  d = p:match('playlistObj.-=.-%[(.-)%]') or error('no match: playlistObj')
 
-    return self
+  local J = require 'json'
+  local j = J.decode(d)
+
+  qargs.streams = OTvRu.iter_streams(j)
+
+  qargs.thumb_url = j['image'] or ''
+
+  qargs.title = j['title'] or ''
+
+  return qargs
 end
 
 --
@@ -68,4 +84,10 @@ function OTvRu.can_parse_url(qargs)
   end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function OTvRu.iter_streams(j)
+  local u = j['file'] or error('no match: media stream URL')
+  local S = require 'quvi/stream'
+  return {S.stream_new(u)}
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
