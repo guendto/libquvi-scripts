@@ -1,4 +1,5 @@
 -- libquvi-scripts
+-- Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
 -- Copyright (C) 2012  Mikhail Gusarov <dottedmag@dottedmag.net>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
@@ -20,18 +21,12 @@
 
 local OTvRu = {} -- Utility functions specific to this script
 
--- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
-    local C      = require 'quvi/const'
-    local r      = {}
-    r.domain     = "1tv%.ru"
-    r.formats    = "default"
-    r.categories = C.proto_http
-    local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, {r.domain},
-                              {"/sprojects_edition/"})
-    return r
+-- Identify the media script.
+function ident(qargs)
+  return {
+    can_parse_url = OTvRu.can_parse_url(qargs),
+    domains = table.concat({'1tv.ru'}, ',')
+  }
 end
 
 -- Query available formats.
@@ -61,11 +56,22 @@ function parse(self)
     return self
 end
 
---[[
-function OTvRu.pattern(key_name, value_pattern)
-   return string.format("jwplayer%%('flashvideoportal_1'%%).*'%s': '%s'",
-                          key_name, value_pattern)
+--
+-- Utility functions
+--
+
+function OTvRu.can_parse_url(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^https?$')
+       and t.host   and t.host:lower():match('1tv%.ru$')
+       and t.path   and (t.path:lower():match('^/sprojects_edition/')
+                         or t.path:lower():match('^/sprojects_utro_video/'))
+  then
+    return true
+  else
+    return false
+  end
 end
-]]--
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
