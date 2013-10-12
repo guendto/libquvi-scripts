@@ -1,3 +1,46 @@
+v0.9.20131012
+
+Mohamed El Morabity:
+  - Add support for ina.fr [5cb76af]
+Toni Gundogdu:
+  - FIX: media/clipfish.lua: Raise "no match: media stream URL" [808494b]
+  - FIX: media/funnyordie.lua: Media stream URL pattern [364ad53]
+  - FIX: media/funnyordie.lua: Set "Accept-Encoding" HTTP header [53c0a44]
+  - FIX: media/liveleak.lua: Sanitize input for LuaJSON [0f692c7]
+  - FIX: media/sevenload.lua: JSON extraction pattern [4ac3938]
+  - FIX: media/youtube.lua: Unescape using quvi/util [aedecad]
+  - FIX: quvi/youtube: ident: query: "v=" may not be first param [ffaadfd]
+  - FIX: resolve_redirections.lua: Normalize YouTube input URL [cf39991]
+  - Install with share/README [e8ad881]
+  - media/1tvru.lua: Relicense under AGPLv3+ [970da57]
+    - Remove query_formats function [296a34e]
+    - Rewrite ident function [853993f]
+    - Rewrite parse function [193755f]
+  - media/lego.lua: Relicense under AGPLv3+ [5b3daf1]
+    - Add support for "/videos?video=ID" [8799938]
+    - Remove query_formats function [f617614]
+    - Rewrite ident function [5343385]
+    - Rewrite parse function [317de20]
+  - media/liveleak.lua:
+    - Add support for >1 streams [0a34094]
+    - Parse stream URLs from "config:" [18b6caf]
+    - Sanitize JSON [7c7dcb9]
+  - media/myspass.lua: Relicense under AGPLv3+ [38fd4bf]
+    - Remove query_formats function [2ebdb84]
+    - Rewrite ident function [6e580da]
+    - Rewrite parse function [4d5db98]
+  - playlist/youtube.lua: Use HTTPS if input URL uses it [18068fe]
+  - media/youtube.lua: Use HTTPS if input URL uses it [e6a6587]
+  - quvi/youtube:
+    - normalize: Revise, remove "nocookie" handling [3d1d706]
+    - normalize: Process YouTube URLs only [fe4d72b]
+    - normalize: Reimplement [3fa91eb]
+  - scan/youtube.lua: Return HTTPS media URLs if input URL uses it [33b172f]
+  - subtitle/youtube.lua: Use HTTPS if input URL uses it [c58c7b5]
+
+ 33 files changed, 1184 insertions(+), 424 deletions(-)
+
+
 v0.9.20130903
 
 Bastien Nocera:
