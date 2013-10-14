@@ -1,4 +1,5 @@
 -- libquvi-scripts
+-- Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
 -- Copyright (C) 2012  Tzafrir Cohen <tzafrir@cohens.org.il>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
@@ -18,19 +19,14 @@
 -- <http://www.gnu.org/licenses/>.
 --
 
--- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
-    local C      = require 'quvi/const'
-    local r      = {}
-    --- http://flix.tapuz.co.il/v/watch-4158845-.html
-    r.domain     = "flix%.tapuz%.co%.il"
-    r.formats    = "default"
-    r.categories = C.proto_http
-    local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, {r.domain},
-                       {"/v/watch-.*.html", "/showVideo%.asp"})
-    return r
+local Tapuz = {} -- Utility functions unique to this script
+
+-- Identify the media script.
+function ident(qargs)
+  return {
+    can_parse_url = Tapuz.can_parse_url(qargs),
+    domains = table.concat({'flix.tapuz.co.il'}, ',')
+  }
 end
 
 -- Query available formats.
@@ -67,6 +63,24 @@ function parse(self)
     self.url = { xml_page:match('<videoUrl>.*(http://.*%.flv).*</videoUrl>') }
 
     return self
+end
+
+--
+-- Utility functions.
+--
+
+function Tapuz.can_parse_url(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('flix%.tapuz%.co%.il$')
+       and t.path   and (t.path:lower():match('^/v/watch%-.-%.html$')
+                          or t.path:lower():match('/showVideo%.asp%?m=%d+'))
+  then
+    return true
+  else
+    return false
+  end
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
