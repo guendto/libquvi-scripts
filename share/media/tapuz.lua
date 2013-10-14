@@ -29,34 +29,36 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = 'tapuz-flix'
+-- Parse the media properties.
+function parse(qargs)
 
-    self.id = self.page_url:match('/v/watch%-(%d+)%-.*%.html')
-    if not self.id then
-        self.id = self.page_url:match('/showVideo%.asp%?m=(%d+)')
-                    or error("no match: media ID")
-    end
+  -- Make mandatory: the ID required to fetch the XML data
+  qargs.id = qargs.input_url:match('/v/watch%-(%d+)%-.*%.html')
+  if not qargs.id then
+    qargs.id = qargs.input_url:match('/showVideo%.asp%?m=(%d+)')
+                or error("no match: media ID")
+  end
 
-    local xml_url_base = 'v/Handlers/XmlForPlayer.ashx' -- Variable?
-    local mako = 0 -- Does it matter?
-    local playerOptions = '0|1|grey|large|0' -- Does it matter? Format?
+  local t = {
+    'http://flix.tapuz.co.il/v/Handlers/XmlForPlayer.ashx?mediaid=',
+    qargs.id, '&playerOptions=0|1|grey|large|0&mako=0'
+  }
 
-    local p = quvi.fetch(self.page_url)
-    self.title = p:match('<meta name="item%-title" content="([^"]*)" />')
+  local d = quvi.http.fetch(table.concat(t)).data
+  local L = require 'quvi/lxph'
 
-    local s_fmt =
-      'http://flix.tapuz.co.il/%s?mediaid=%d&autoplay=0&mako=%d'
-      .. '&playerOptions=%s'
+  local X = require 'lxp.lom'
+  local x = X.parse(d)
 
-    local xml_url =
-      string.format(s_fmt, xml_url_base, self.id, mako, playerOptions)
+  qargs.duration_ms = tonumber(L.find_first_tag(x, 'duration')[1] or 0)*1000
 
-    local xml_page = quvi.fetch(xml_url)
-    self.url = { xml_page:match('<videoUrl>.*(http://.*%.flv).*</videoUrl>') }
+  qargs.thumb_url = L.find_first_tag(x, 'thumbUrl')[1]
 
-    return self
+  qargs.title = L.find_first_tag(x, 'title')[1]
+
+  qargs.streams = Tapuz.iter_streams(L, x)
+
+  return qargs
 end
 
 --
@@ -77,4 +79,11 @@ function Tapuz.can_parse_url(qargs)
   end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function Tapuz.iter_streams(L, x)
+  local u = L.find_first_tag(x, 'videoUrl')[1]
+              or error('no match: media stream URL')
+  local S = require 'quvi/stream'
+  return {S.stream_new(u)}
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
