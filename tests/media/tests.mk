@@ -26,6 +26,7 @@ include $(top_srcdir)/tests/media/senat.mk
 include $(top_srcdir)/tests/media/sevenload.mk
 include $(top_srcdir)/tests/media/soundcloud.mk
 include $(top_srcdir)/tests/media/spiegel.mk
+include $(top_srcdir)/tests/media/tapuz.mk
 include $(top_srcdir)/tests/media/ted.mk
 include $(top_srcdir)/tests/media/theonion.mk
 include $(top_srcdir)/tests/media/tvlux.mk
