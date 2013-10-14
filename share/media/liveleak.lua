@@ -40,7 +40,7 @@ function parse(qargs)
 
   if not d then  -- Try the first iframe
     qargs.goto_url = p:match('<iframe.-src="(.-)"') or ''
-    if #qargs.goto_url >0 then
+    if #qargs.goto_url >0 and not qargs.goto_url:match('facebook') then
       return qargs
     else
       error('no match: setup')
