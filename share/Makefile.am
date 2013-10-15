@@ -67,6 +67,7 @@ dist_media_DATA=\
   media/tvlux.lua\
   media/videa.lua\
   media/vimeo.lua\
+  media/vzaar.lua\
   media/youtube.lua
 
 if WITH_GEOBLOCKED
