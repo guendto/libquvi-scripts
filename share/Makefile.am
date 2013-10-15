@@ -115,6 +115,7 @@ dist_playlist_DATA=\
 scandir=$(pkgdatadir)/$(VERSION)/scan
 
 dist_scan_DATA=\
+  scan/vzaar.lua\
   scan/youtube.lua
 
 install-data-hook:
