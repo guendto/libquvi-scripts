@@ -68,6 +68,7 @@ dist_media_DATA=\
   media/tvlux.lua\
   media/videa.lua\
   media/vimeo.lua\
+  media/vzaar.lua\
   media/youtube.lua
 
 if WITH_GEOBLOCKED
@@ -115,6 +116,7 @@ dist_playlist_DATA=\
 scandir=$(pkgdatadir)/$(VERSION)/scan
 
 dist_scan_DATA=\
+  scan/vzaar.lua\
   scan/youtube.lua
 
 install-data-hook:
