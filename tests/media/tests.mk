@@ -19,6 +19,7 @@ include $(top_srcdir)/tests/media/guardian.mk
 include $(top_srcdir)/tests/media/ina.mk
 include $(top_srcdir)/tests/media/lego.mk
 include $(top_srcdir)/tests/media/liveleak.mk
+include $(top_srcdir)/tests/media/majestyc.mk
 include $(top_srcdir)/tests/media/myspass.mk
 include $(top_srcdir)/tests/media/publicsenat.mk
 include $(top_srcdir)/tests/media/sapo.mk
