@@ -41,7 +41,7 @@ function parse(qargs)
   qargs.duration_ms = T.timecode_str_to_s(d) * 1000
 
   local t = {'http://videos.sapo.pt/oembed?url=', qargs.input_url}
-  local d = quvi.http.fetch(table.concat(t,'')).data
+  local d = quvi.http.fetch(table.concat(t)).data
 
   local J = require 'json'
   local j = J.decode(d)

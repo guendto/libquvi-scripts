@@ -72,7 +72,7 @@ function TVLux.iter_streams(p)
   table.insert(u, j['file'] or error('no match: media stream URL path'))
 
   local S = require 'quvi/stream'
-  local s = S.stream_new(table.concat(u,''))
+  local s = S.stream_new(table.concat(u))
 
   s.video.height = tonumber(j['height'] or 0)
   s.video.width = tonumber(j['width'] or 0)

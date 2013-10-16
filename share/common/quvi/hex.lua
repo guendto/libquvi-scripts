@@ -50,7 +50,7 @@ function M.from_bytes(b)
   for _,v in pairs(b) do
     table.insert(r, B.tohex(v,2))
   end
-  return table.concat(r,'')
+  return table.concat(r)
 end
 
 -- Data to a hexadecimal string.
@@ -81,7 +81,7 @@ function M.to_str(s)
   for _,v in pairs(a) do
     table.insert(r, string.char(v))
   end
-  return table.concat(r,'')
+  return table.concat(r)
 end
 
 --[[

@@ -40,7 +40,7 @@ function parse(qargs)
     '/getvideometadataxml.php?id=', qargs.id
   }
 
-  local c = quvi.http.fetch(table.concat(t,'')).data
+  local c = quvi.http.fetch(table.concat(t)).data
   local P = require 'lxp.lom'
 
   local L = require 'quvi/lxph'

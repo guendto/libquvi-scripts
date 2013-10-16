@@ -50,7 +50,7 @@ function parse(qargs)
                 or error('no match: media ID')
 
   local t = {'http://video.spiegel.de/flash/', qargs.id, '.xml'}
-  local c = quvi.http.fetch(table.concat(t,'')).data
+  local c = quvi.http.fetch(table.concat(t)).data
 
   local P = require 'lxp.lom'
   local x = P.parse(c)

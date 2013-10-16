@@ -50,7 +50,7 @@ function YouTube.gvi_request_new(qargs, input_url)
   }
 
   local T = require 'quvi/util'
-  local r = table.concat(t,'')
+  local r = table.concat(t)
 
   local c = T.decode(quvi.http.fetch(r).data)
   local r = c['reason']
@@ -88,7 +88,7 @@ function YouTube.append_begin_param(qargs, U)
   if ms >0 then -- Rebuild each stream URL with the 'begin' parameter.
     for i,v in ipairs(qargs.streams) do
       local u = U.parse(qargs.streams[i].url)
-      u.query = table.concat({u.query, '&begin=', ms}, '')
+      u.query = table.concat({u.query, '&begin=', ms})
       qargs.streams[i].url = U.build(u)
     end
     qargs.start_time_ms = ms
@@ -106,8 +106,8 @@ function YouTube.stream_url_new(d, U, T, scheme)
   --u.scheme = scheme -- Uncomment to use the input URL scheme
   --
   if d['sig'] then
-    local s = table.concat({'&signature=', T.unescape(d['sig'])}, '')
-    u.query = table.concat({u.query, s}, '')
+    local s = table.concat({'&signature=', T.unescape(d['sig'])})
+    u.query = table.concat({u.query, s})
   end
   return U.build(u) -- Rebuild the stream URL.
 end

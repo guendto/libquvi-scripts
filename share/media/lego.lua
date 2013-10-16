@@ -69,7 +69,7 @@ end
 
 function Lego.movies_thumb(qargs, p)
   local t = {'thumbNavigation.+', '<img src="(.-)" alt="',qargs.title, '"/>',}
-  qargs.thumb_url = p:match(table.concat(t,'') or '')
+  qargs.thumb_url = p:match(table.concat(t) or '')
 end
 
 function Lego.parse_movies(qargs, p) -- /movies/

@@ -36,7 +36,7 @@ function parse(qargs)
                 or error("no match: media ID")
 
   local t = {'http://www.clipfish.de/devxml/videoinfo/', qargs.id}
-  local c = quvi.http.fetch(table.concat(t,'')).data
+  local c = quvi.http.fetch(table.concat(t)).data
 
   local L = require 'quvi/lxph'
   local P = require 'lxp.lom'

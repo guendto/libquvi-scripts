@@ -84,13 +84,13 @@ function YouTube.tt_track_new(scheme, v, name, lang)
     scheme, '://youtube.com/api/timedtext?hl=en&type=track',
     '&v=', v, '&name=', name, '&lang=', lang
   }
-  return table.concat(t,'')
+  return table.concat(t)
 end
 
 -- Return a new timed-text list URL.
 function YouTube.tt_list_new(scheme, v)
   local t = {scheme, '://video.google.com/timedtext?hl=en&type=list&v=', v}
-  return table.concat(t,'')
+  return table.concat(t)
 end
 
 -- Extract the CC (closed-captions) data.
@@ -114,7 +114,7 @@ function YouTube.cc_get(qargs, v, C)
           translated = t[i].attr['lang_translated'] or '',
           url = YouTube.tt_track_new(u.scheme, v, name, lang),
           original = t[i].attr['lang_original'] or '',
-          id = table.concat({'cc_', lang}, ''),
+          id = table.concat({'cc_', lang}),
           code = lang
         })
       end

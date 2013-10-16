@@ -73,7 +73,7 @@ end
 function Videa.normalize(qargs) -- "Normalize" an embedded URL
   local s = qargs.input_url:match('/flvplayer%.swf%?v=(.-)$')
   if s then
-    qargs.input_url = table.concat({'http://videa.hu/videok/',s},'')
+    qargs.input_url = table.concat({'http://videa.hu/videok/',s})
   end
 end
 
@@ -82,7 +82,7 @@ function Videa.iter_streams(j)
   local t = {'http://videa.hu/static/video/', (w:gsub('%.%d+$',''))}
 
   local S = require 'quvi/stream'
-  local s = S.stream_new(table.concat(t,''))
+  local s = S.stream_new(table.concat(t))
 
   s.video.height = tonumber(j['video']['height'] or 0)
   s.video.width = tonumber(j['video']['width'] or 0)

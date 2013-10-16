@@ -80,7 +80,7 @@ function ArdMediathek.chk_avail(p)
   local from,to = p:match(s)
   if from and to then
     local t = {'media available from ', from, ':00 to ', to, ':00 CET only'}
-    error(table.concat(t,''))
+    error(table.concat(t))
   end
 end
 
@@ -117,7 +117,7 @@ function ArdMediathek.iter_streams(p)
               .. '%(0, (%d+), "(.-)", "(.-)", "%w+"%);'
   local r = {}
   for id,pre,suf in p:gmatch(s) do
-    local u = table.concat({pre,suf},'')
+    local u = table.concat({pre,suf})
     u = u:match('^(.-)?') or u  -- remove the query string
 
     local t = S.stream_new(u)

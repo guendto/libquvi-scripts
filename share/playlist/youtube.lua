@@ -89,7 +89,7 @@ function YouTube.config_url(qargs, U, start_index, max_results)
     qargs.id, '?v=2', '&start-index=', start_index,
     '&max-results=', max_results, '&strict=true'
   }
-  return table.concat(t,'')
+  return table.concat(t)
 end
 
 function YouTube.entry_avail(x)

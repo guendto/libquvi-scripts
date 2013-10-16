@@ -90,7 +90,7 @@ function SubRip.from_tt(qargs)
       last_start = start
     end
   end
-  qargs.data = table.concat(r, '')
+  qargs.data = table.concat(r)
   return qargs
 end
 
