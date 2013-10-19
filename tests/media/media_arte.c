@@ -1,4 +1,5 @@
 /* libquvi-scripts
+ * Copyright (C) 2013  Mohamed El Morabity <melmorabity@fedoraproject.org>
  * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi-scripts <http://quvi.sourceforge.net>.
@@ -32,8 +33,8 @@
 
 #include "tests.h"
 
-static const gchar PATTERN[] = "<h2><a href=\"(.*)\"";
-static const gchar WWW[] = "http://videos.arte.tv";
+static const gchar PATTERN[] = "\"url\":\"(.*?)\"";
+static const gchar WWW[] = "http://www.arte.tv/guide/fr/plus7.json";
 
 static void test_media_arte()
 {
@@ -64,7 +65,7 @@ static void test_media_arte()
   while (capture_matches(c) == TRUE)
     {
       r = capture_fetch(c, 1);
-      l = g_slist_prepend(l, g_strdup_printf("%s%s", WWW, r));
+      l = g_slist_prepend(l, g_strdup_printf("http://www.arte.tv%s", r));
       capture_next(c);
       g_free(r);
     }
