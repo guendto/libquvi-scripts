@@ -29,14 +29,6 @@ function ident(qargs)
   }
 end
 
--- Query available formats.
-function query_formats(self)
-    if not Metacafe.redirectp(self) then
-        self.formats = 'default'
-    end
-    return self
-end
-
 -- Parse media URL.
 function parse(self)
     self.host_id = "metacafe"
