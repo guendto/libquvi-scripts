@@ -69,7 +69,6 @@ end
 function Arte.can_parse_url(qargs)
   local U = require 'socket.url'
   local t = U.parse(qargs.input_url)
-
   if t and t.scheme and t.scheme:lower():match('^http$')
        and t.host   and t.host:lower():match('www.arte%.tv$')
        and t.path   and t.path:lower():match('^/guide/%w+/')
@@ -87,14 +86,10 @@ function Arte.iter_streams(j)
   local r = {}
 
   for _, v in pairs(d) do
-    local s
 
-    -- Handle available RTMP streams.
-    if v['streamer'] then
-      s = v['streamer'] .. 'mp4:' .. v['url']
-    else
-      s = v['url']
-    end
+    local s = v['streamer'] -- Handle available RTMP streams.
+                and table.concat({v['streamer'], 'mp4:', v['url']})
+                 or v['url']
 
     local t = S.stream_new(s)
 
