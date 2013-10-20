@@ -21,18 +21,12 @@
 
 local Metacafe = {} -- Utility functions unique to this script.
 
--- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
-    local C      = require 'quvi/const'
-    local r      = {}
-    r.domain     = "metacafe%.com"
-    r.formats    = "default"
-    r.categories = C.proto_http
-    local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, {r.domain},
-		     {"/watch/%d+/", "/watch/yt-[^/]+/"})
-    return r
+-- Identify the media script.
+function ident(qargs)
+  return {
+    can_parse_url = Metacafe.can_parse_url(qargs),
+    domains = table.concat({'metacafe.com'}, ',')
+  }
 end
 
 -- Query available formats.
@@ -79,6 +73,20 @@ end
 --
 -- Utility functions
 --
+
+function Metacafe.can_parse_url(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('metacafe%.com$')
+       and t.path   and (t.path:lower():match('^/watch/%d+/')
+                          or t.path:lower():match('^/watch/yt-[^/]+/'))
+  then
+    return true
+  else
+    return false
+  end
+end
 
 function Metacafe.redirectp(self)
     local s = self.page_url:match('/watch/yt%-([^/]+)/')
