@@ -154,7 +154,7 @@ function Arte.to_id(t)
   local s = (t.nostd.mediaType == '') and 'http' or t.nostd.mediaType
 
   return string.format("%s_%s_%s", t.nostd.quality, s, t.nostd.versionCode)
-           :gsub('%s?%-%s?', '_')
+           :gsub('%s?%-%s?', '_'):lower()
 end
 
 -- Check which stream of two is the "best".
