@@ -29,37 +29,34 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "metacafe"
+-- Parse the media properties.
+function parse(qargs)
 
-    if Metacafe.redirectp(self) then
-        return self
-    end
+  if Metacafe.is_affiliate(qargs) then
+    return qargs
+  end
 
-    local U = require 'quvi/util'
-    local p = Metacafe.fetch_page(self, U)
+  local p = quvi.http.fetch(qargs.input_url).data
 
-    local v = p:match('name="flashvars" value="(.-)"')
-                or error('no match: flashvars')
+  local v = p:match('name="flashvars" value="(.-)"')
+              or error('no match: flashvars')
 
-    v = U.slash_unescape(U.unescape(v))
+  qargs.thumb_url = p:match('"og:image"%s+content="(.-)"') or ''
 
-    self.thumbnail_url = p:match('rel="image_src" href="(.-)"') or ''
+  local U = require 'socket.url'
+  local T = require 'quvi/util'
 
-    self.title = v:match('title=(.-)&') or error('no match: media title')
+  local r = T.decode(U.unescape(v))
 
-    self.id = v:match('itemID=(%d+)') or error('no match: media ID')
+  qargs.streams = Metacafe.iter_streams(U, r)
 
-    local u = v:match('"mediaURL":"(.-)"')
-                or error('no match: media stream URL')
+  qargs.duration_ms = tonumber(r['duration'] or 0) * 1000
 
-    local k = v:match('"key":"__gda__","value":"(.-)"')
-                or error('no match: key')
+  qargs.title = r['title'] or ''
 
-    self.url = {string.format("%s?__gda__=%s", u, k)}
+  qargs.id = r['itemID'] or ''
 
-    return self
+  return qargs
 end
 
 --
@@ -80,23 +77,55 @@ function Metacafe.can_parse_url(qargs)
   end
 end
 
-function Metacafe.redirectp(self)
-    local s = self.page_url:match('/watch/yt%-([^/]+)/')
-    if s then -- Hand over to youtube.lua
-        self.redirect_url = 'http://youtube.com/watch?v=' .. s
-        return true
+function Metacafe.is_affiliate(qargs)
+  local id = qargs.input_url:match('/watch/yt%-([^/]+)/') -- YouTube.
+  if id then
+    qargs.goto_url = table.concat({'http://youtu.be/',id})
+  end
+  return qargs.goto_url ~= nil
+end
+
+function Metacafe.iter_streams(U, r)
+  local S = require 'quvi/stream'
+  local J = require 'json'
+
+  local j = J.decode(r['mediaData'])
+  local t = {}
+
+  for k,_ in pairs(j) do
+    local u = U.parse(j[k]['mediaURL'] or error('no match: media stream URL'))
+
+    local q = {} -- Construct the URL query from the given args.
+    for _,v in pairs(j[k]['access'][1]) do
+      table.insert(q,v)
     end
-    return false
+    u.query = table.concat(q, '=')
+
+    local s = S.stream_new(U.build(u)) -- Build stream URL from these elems.
+    Metacafe.to_id(s,k)
+
+    table.insert(t,s)
+  end
+
+  local r = {} -- Reverse the stream order, SD should be first ('default').
+  for i = #t,1,-1 do
+    table.insert(r, t[i])
+  end
+
+  if #r >1 then
+    Metacafe.ch_best(S, r)
+  end
+
+  return r
 end
 
-function Metacafe.fetch_page(self, U)
-    self.page_url = Metacafe.normalize(self.page_url)
-
-    return quvi.fetch(self.page_url)
+function Metacafe.ch_best(S, t)
+  t[#t].flags.best = true -- Make the last stream the best one.
 end
 
-function Metacafe.normalize(page_url) -- "Normalize" embedded URLs
-    return page_url
+function Metacafe.to_id(s,k)
+  -- Lack of a better scheme: reuse the internal IDs with minor tweaks.
+  s.id = k:gsub('(%l)(%u)','%1_%2'):lower()
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+-- vim: set ts=2 sw=2 tw=72 expandtab:
