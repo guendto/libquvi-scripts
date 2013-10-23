@@ -64,6 +64,7 @@ dist_media_DATA=\
   media/sevenload.lua\
   media/soundcloud.lua\
   media/spiegel.lua\
+  media/tagtele.lua\
   media/tapuz.lua\
   media/ted.lua\
   media/theonion.lua\
