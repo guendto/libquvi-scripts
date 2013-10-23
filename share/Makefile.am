@@ -69,6 +69,7 @@ dist_media_DATA=\
   media/theonion.lua\
   media/tvlux.lua\
   media/videa.lua\
+  media/videobash.lua\
   media/vimeo.lua\
   media/vzaar.lua\
   media/youtube.lua
