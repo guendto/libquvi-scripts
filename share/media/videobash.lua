@@ -29,27 +29,21 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "videobash"
+-- Parse the media properties.
+function parse(qargs)
+  local p = quvi.http.fetch(qargs.input_url).data
 
-    local p = quvi.fetch(self.page_url)
+  qargs.duration_ms = tonumber(p:match('duration=(%d+)') or 0)*1000
 
-    self.title = p:match("<title>(.-)%s+-")
-                  or error ("no match: media title")
+  qargs.thumb_url = p:match('"og:image" content="(.-)"') or ''
 
-    self.id = p:match("addFavorite%((%d+)")
-                or error ("no match: media ID")
+  qargs.title = p:match('"og:title" content="(.-)"') or ''
 
-    local s = p:match('file="(.-);') or error("no match: media URL")
-    s = s:gsub("[%s+']+", '')
+  qargs.id = qargs.input_url:match('%-(%d+)$') or ''
 
-    self.thumbnail_url = p:match('og:image"%s+content="(.-)"') or ''
+  qargs.streams = Videobash.iter_streams(p)
 
-    local U  = require 'quvi/util'
-    self.url = {U.unescape(s)}
-
-    return self
+  return qargs
 end
 
 --
@@ -69,4 +63,12 @@ function Videobash.can_parse_url(qargs)
   end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function Videobash.iter_streams(p)
+  local S = require 'quvi/stream'
+  local u = p:match("file=.-'(%w+%..-)'")
+              or error('no match: media stream URL')
+  u = table.concat({'http://', u})
+  return {S.stream_new(u)}
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
