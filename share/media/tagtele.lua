@@ -29,25 +29,34 @@ function ident(qargs)
   }
 end
 
--- Parse media URL.
-function parse(self)
-    self.host_id = "tagtele"
+-- Parse media properties.
+function parse(qargs)
+  local p = quvi.http.fetch(qargs.input_url).data
+  local s = p:match('setup%((.-)%)') or error('no match: setup')
 
-    local p = quvi.fetch(self.page_url)
+  local J = require 'json'
+  local j = J.decode(s)
 
-    self.title = p:match("<title>TagTélé%s+-%s+(.-)</title>")
-                  or error("no match: media title")
+  qargs.thumb_url = j['image'] or ''
 
-    self.id = self.page_url:match('/voir/(%d+)')
-                or error("no match: media ID")
+  if #qargs.thumb_url >0 then
+    --
+    -- Make sure the thumb URL uses the same scheme as the input URL.
+    -- e.g. HTTPS. For some reason this isn't done by default.
+    --
+    local U = require 'socket.url'
+    local t = U.parse(qargs.thumb_url)
+    t.scheme = U.parse(qargs.input_url).scheme
+    qargs.thumb_url = U.build(t)
+  end
 
-    local pl_url = "http://www.tagtele.com/videos/playlist/"..self.id.."/"
-    local pl = quvi.fetch(pl_url, {fetch_type='playlist'})
+  qargs.title = p:match('"og:title" content="(.-)"') or ''
 
-    self.url = {pl:match("<location>(.-)</")
-                  or error("no match: media URL")}
+  qargs.id = qargs.input_url:match('/voir/(%d+)/') or ''
 
-    return self
+  qargs.streams = Tagtele.iter_streams(j)
+
+  return qargs
 end
 
 --
@@ -67,4 +76,25 @@ function Tagtele.can_parse_url(qargs)
   end
 end
 
--- vim: set ts=4 sw=4 tw=72 expandtab:
+function Tagtele.iter_streams(j)
+  local m = 'no match: media stream URL'
+  local S = require 'quvi/stream'
+  local r = {}
+  for _,v in pairs(j['sources']) do
+    for _,vv in pairs(v) do
+      --
+      -- Forcing HTTPs here as we do with the thumb URLs would only
+      -- result in errors. The streams are available via HTTP only.
+      --
+      local t = S.stream_new(v.file or error(m))
+      t.id = table.concat({v.type,v.label}, '_')
+      table.insert(r,t)
+    end
+  end
+  if #r ==0 then
+    error(m)
+  end
+  return r
+end
+
+-- vim: set ts=2 sw=2 tw=72 expandtab:
