@@ -102,7 +102,7 @@ function Vimeo.iter_streams(qargs, page)
 end
 
 function Vimeo.normalize(qargs)
-  qargs_input_url = qargs.input_url:gsub("player.", "")
+  qargs_input_url = qargs.input_url:gsub("player%.", "")
   qargs.input_url = qargs.input_url:gsub("/video/", "/")
 end
 
