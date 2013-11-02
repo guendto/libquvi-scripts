@@ -1,0 +1,18 @@
+{
+  "host": "dorkly",
+  "page_title": "Ice World Problems",
+  "page_url": "http://www.dorkly.com/video/48596/ice-world-problems",
+  "id": "48596",
+  "format_requested": "default",
+  "thumbnail_url": "http://0.media.dorkly.cvcdn.com/49/16/717059ee647f7cf5aefaabd676678808-ice-world-problems.jpg",
+  "duration": "86000",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "25317087",
+      "content_type": "video/mp4",
+      "file_suffix": "mp4",
+      "url": ""
+    }
+  ]
+}
