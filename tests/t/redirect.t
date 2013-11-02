@@ -34,16 +34,14 @@ my $q = Test::Quvi->new;
 plan skip_all => "TEST_SKIP rule"
   if $q->test_skip("redirect");
 
-plan tests => 12;
+plan tests => 14;
 
 my $j = $q->get_json_obj;
 
-=for comment
-test_redirect_url(    # Test self.redirect_url in collegehumor.lua
+test_redirect_url(    # Test self.redirect_url in dorkly.lua
   "http://www.dorkly.com/embed/17349/ridiculous-way-to-get-ammo-to-teammates-in-battlefield-bad-company-2",
   "data/resolve/redirect_url_dorkly.json"
                  );
-=cut
 
 test_redirect_url(    # Test self.redirect_url in ted.lua
       "http://www.ted.com/talks/paul_lewis_crowdsourcing_the_news.html",
