@@ -24,6 +24,7 @@ DIST_lua=\
  lua/website/clipfish.lua \
  lua/website/collegehumor.lua \
  lua/website/dailymotion.lua \
+ lua/website/dorkly.lua \
  lua/website/foxnews.lua \
  lua/website/funnyordie.lua \
  lua/website/gaskrank.lua \
