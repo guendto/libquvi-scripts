@@ -22,6 +22,7 @@ DIST_lua=\
  lua/website/canalplus.lua \
  lua/website/cbsnews.lua \
  lua/website/clipfish.lua \
+ lua/website/collegehumor.lua \
  lua/website/dailymotion.lua \
  lua/website/foxnews.lua \
  lua/website/funnyordie.lua \
@@ -77,7 +78,6 @@ DIST_lua+=\
  lua/website/bloomberg.lua \
  lua/website/break.lua \
  lua/website/charlierose.lua \
- lua/website/collegehumor.lua \
  lua/website/francetelevisions.lua \
  lua/website/globo.lua \
  lua/website/golem.lua \
