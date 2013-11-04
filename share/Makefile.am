@@ -50,7 +50,6 @@ DIST_lua=\
  lua/website/theonion.lua \
  lua/website/videa.lua \
  lua/website/videobash.lua \
- lua/website/vimeo.lua \
  lua/website/wdrmaus.lua \
  lua/website/wimp.lua \
  lua/website/youtube.lua
@@ -83,7 +82,8 @@ DIST_lua+=\
  lua/website/globo.lua \
  lua/website/golem.lua \
  lua/website/mgnetwork.lua \
- lua/website/pluzz.lua
+ lua/website/pluzz.lua \
+ lua/website/vimeo.lua
 if WITH_NSFW
 DIST_lua+=\
  lua/website/fastjizz.lua \
