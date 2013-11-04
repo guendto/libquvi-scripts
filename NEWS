@@ -1,3 +1,16 @@
+v0.4.20  (2013-11-04) / Toni Gundogdu
+
+Toni Gundogdu:
+  - Add website/dorkly.lua for dorkly.com [6528f5d]
+  - FIX: website/collegehumor.lua [168d954]
+  - FIX: website/redtube.lua: media stream URL pattern [ed756ef]
+  - FIX: website/tcmag.lua: Media stream URL pattern [e90c00d]
+  - website/arte.lua: Mark as FIXME [a823ef0]
+  - website/vimeo.lua: Mark as FIXME [a2279ff]
+
+ 14 files changed, 202 insertions(+), 189 deletions(-)
+
+
 v0.4.19  (2013-10-04) / Toni Gundogdu
 
 Toni Gundogdu:
