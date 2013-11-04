@@ -1,3 +1,38 @@
+v0.9.20131104
+
+Mohamed El Morabity:
+  - Fix support for arte.tv [485ce77]
+Toni Gundogdu:
+  - media: Add support for tube.majestyc.net [47a1639]
+  - media: Add support for vzaar.com [343db67]
+  - media/lego.lua: Update ID pattern [ab8c084]
+  - media/liveleak.lua: Ignore fac3book iframe src values [bf18023]
+  - media/metacafe.lua: Relicense under AGPLv3+ [0593317]
+    - Move website/metacafe.lua to media/ [47d3d3d]
+    - Remove query_formats function [e0731b8]
+    - Rewrite ident function [3231cbf]
+    - Rewrite parse function [b13ee5f]
+  - media/tagtele.lua: Relicense under AGPLv3+ [af8dcb3]
+    - Move website/tagtele.lua to media/ [118a92e]
+    - Remove query_formats function [6e73a9a]
+    - Rewrite ident function [60da497]
+    - Rewrite parse function [cc40857]
+  - media/tapuz.lua: Relicense under AGPLv3+ [22c0ba7]
+    - Move website/tapuz.lua to media/ [f80a844]
+    - Remove query_formats function [2f9cb5f]
+    - Rewrite ident function [b44e053]
+    - Rewrite parse function [5f5bb57]
+  - media/videobash.lua: Relicense under AGPLv3+ [5a1a49b]
+    - Move website/videobash.lua to media/ [6adcc15]
+    - Remove query_formats function [b1b1d5f]
+    - Rewrite ident function [fa6ef82]
+    - Rewrite parse function [b712d04]
+  - media/vimeo.lua: Mark as FIXME [c5e7cc8]
+  - scan: Add support for embedded vzaar.com media URLs [2d8bfc3]
+
+ 48 files changed, 1308 insertions(+), 451 deletions(-)
+
+
 v0.9.20131012
 
 Mohamed El Morabity:
