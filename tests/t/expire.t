@@ -28,7 +28,7 @@ plan skip_all => "LWP::UserAgent required for testing" if $@;
 use Test::Quvi;
 
 my $q = Test::Quvi->new;
-#plan skip_all => "FIXME";
+plan skip_all => "FIXME";
 plan skip_all => "TEST_SKIP rule" if $q->test_skip("expire");
 
 my $ua = new LWP::UserAgent;
