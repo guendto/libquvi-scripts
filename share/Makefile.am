@@ -49,6 +49,7 @@ dist_media_DATA=\
   media/cbsnews.lua\
   media/clipfish.lua\
   media/dailymotion.lua\
+  media/dorkly.lua\
   media/funnyordie.lua\
   media/ina.lua\
   media/gaskrank.lua\
