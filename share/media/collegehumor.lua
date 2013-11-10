@@ -29,26 +29,6 @@ function ident(qargs)
   }
 end
 
--- Query formats.
-function query_formats(self)
-    if CollegeHumor.redirect_if_embed(self) then
-        return self
-    end
-
-    local config  = CollegeHumor.get_config(self)
-    local formats = CollegeHumor.iter_formats(config)
-
-    local t = {}
-    for k,v in pairs(formats) do
-        table.insert(t, CollegeHumor.to_s(v))
-    end
-
-    table.sort(t)
-    self.formats = table.concat(t, "|")
-
-    return self
-end
-
 -- Parse media URL.
 function parse(self)
     self.host_id  = "collegehumor"
