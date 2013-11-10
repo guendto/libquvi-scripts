@@ -8,6 +8,7 @@ include $(top_srcdir)/tests/media/cbsnews.mk
 include $(top_srcdir)/tests/media/clipfish.mk
 include $(top_srcdir)/tests/media/collegehumor.mk
 include $(top_srcdir)/tests/media/dailymotion.mk
+include $(top_srcdir)/tests/media/dorkly.mk
 include $(top_srcdir)/tests/media/funnyordie.mk
 include $(top_srcdir)/tests/media/gaskrank.mk
 include $(top_srcdir)/tests/media/guardian.mk

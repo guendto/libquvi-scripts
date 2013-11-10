@@ -50,6 +50,7 @@ dist_media_DATA=\
   media/clipfish.lua\
   media/collegehumor.lua\
   media/dailymotion.lua\
+  media/dorkly.lua\
   media/funnyordie.lua\
   media/ina.lua\
   media/gaskrank.lua\
