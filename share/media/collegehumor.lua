@@ -1,5 +1,5 @@
 -- libquvi-scripts
--- Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
 -- Copyright (C) 2010-2011  Lionel Elie Mamane <lionel@mamane.lu>
 --
 -- This file is part of libquvi-scripts <http://quvi.sourceforge.net/>.
@@ -21,19 +21,12 @@
 
 local CollegeHumor = {} -- Utility functions unique to this script
 
--- Identify the script.
-function ident(self)
-    package.path = self.script_dir .. '/?.lua'
-    local C      = require 'quvi/const'
-    local r      = {}
-    local domains= {"collegehumor%.com", "dorkly%.com"}
-    r.domain     = table.concat(domains, "|")
-    r.formats    = "default|best"
-    r.categories = C.proto_http
-    local U      = require 'quvi/util'
-    r.handles    = U.handles(self.page_url, domains,
-                    {"/video[:/]%d+/?", "/embed/%d+"})
-    return r
+-- Identify the media script.
+function ident(qargs)
+  return {
+    can_parse_url = CollegeHumor.can_parse_url(qargs),
+    domains = table.concat({'collegehumor.com'}, ',')
+  }
 end
 
 -- Query formats.
@@ -85,6 +78,20 @@ end
 --
 -- Utility functions
 --
+
+function CollegeHumor.can_parse_url(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  if t and t.scheme and t.scheme:lower():match('^http$')
+       and t.host   and t.host:lower():match('collegehumor%.com$')
+       and t.path   and (t.path:lower():match('^/video/%d+/')
+                          or t.path:lower():match('^/embed/%d+/'))
+  then
+    return true
+  else
+    return false
+  end
+end
 
 function CollegeHumor.redirect_if_embed(self) -- dorkly embeds YouTube videos
     if self.page_url:match('/embed/%d+') then
