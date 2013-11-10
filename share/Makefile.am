@@ -48,6 +48,7 @@ dist_media_DATA=\
   media/bikeradar.lua\
   media/cbsnews.lua\
   media/clipfish.lua\
+  media/collegehumor.lua\
   media/dailymotion.lua\
   media/funnyordie.lua\
   media/ina.lua\
