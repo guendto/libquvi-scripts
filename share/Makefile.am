@@ -46,6 +46,7 @@ dist_media_DATA=\
   media/ardmediathek.lua\
   media/audioboo.lua\
   media/bikeradar.lua\
+  media/canalplus.lua\
   media/cbsnews.lua\
   media/clipfish.lua\
   media/collegehumor.lua\

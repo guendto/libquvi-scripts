@@ -4,6 +4,7 @@ include $(top_srcdir)/tests/media/ardmediathek.mk
 include $(top_srcdir)/tests/media/arte.mk
 include $(top_srcdir)/tests/media/audioboo.mk
 include $(top_srcdir)/tests/media/bikeradar.mk
+include $(top_srcdir)/tests/media/canalplus.mk
 include $(top_srcdir)/tests/media/cbsnews.mk
 include $(top_srcdir)/tests/media/clipfish.mk
 include $(top_srcdir)/tests/media/collegehumor.mk
