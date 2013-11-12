@@ -14,6 +14,7 @@ If you are new to Lua:
   http://www.lua.org/pil/contents.html        -- Programming in Lua (1st ed.)
     (http://www.lua.org/pil/contents.html#20) -- String={patterns, captures}
   http://lua-users.org/wiki/                  -- lua-users wiki
+  http://www.luafaq.org/                      -- Lua Unofficial FAQ (uFAQ)
   http://lua.org/                             -- Lua home
 
 Additionally, the following 3rd party Lua modules can also be used:
