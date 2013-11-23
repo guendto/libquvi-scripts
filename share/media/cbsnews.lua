@@ -30,17 +30,23 @@ end
 
 -- Parse media properties.
 function parse(qargs)
-  local c = CBSNews.get_data(qargs)
+  local p = quvi.http.fetch(qargs.input_url).data
 
-  local L = require 'quvi/lxph'
-  local U = require 'quvi/util'
-  local P = require 'lxp.lom'
+  local d = p:match("data%-cbsvideoui%-options='(.-)'")
+              or error('no match: player options')
 
-  local x = P.parse(c)
+  local J = require 'json'
+  local v = J.decode(d).state.video
 
-  local v = CBSNews.parse_optional(qargs, x, U, L)
+  qargs.duration_ms = (v.duration or 0) *1000
 
-  qargs.streams = CBSNews.iter_streams(U, L, v)
+  qargs.streams = CBSNews.iter_streams(v)
+
+  qargs.thumb_url = v.image.path or ''
+
+  qargs.title = v.title or ''
+
+  qargs.id = v.id or ''
 
   return qargs
 end
@@ -53,9 +59,8 @@ function CBSNews.can_parse_url(qargs)
   local U = require 'socket.url'
   local t = U.parse(qargs.input_url)
   if t and t.scheme and t.scheme:lower():match('^http$')
-       and t.host   and t.host:lower():match('cbsnews%.com$')
-       and t.path   and t.path:lower():match('^/video/watch/')
-       and t.query  and t.query:lower():match('^id=%w+$')
+       and t.host   and t.host:lower():match('^www%.cbsnews%.com$')
+       and t.path   and t.path:lower():match('^/videos/.-/?$')
   then
     return true
   else
@@ -63,74 +68,40 @@ function CBSNews.can_parse_url(qargs)
   end
 end
 
--- Queries the video data from the server.
-function CBSNews.get_data(qargs)
-  local p = quvi.http.fetch(qargs.input_url).data
-
-  -- Make mandatory for the reason we need it to fetch the config.
-  qargs.id = qargs.input_url:match('id=(%d+)') or error('no match: media ID')
-
-  local s = "http://api.cnet.com/restApi/v1.0/videoSearch?videoIds=%s"
-              .. "&iod=videoMedia"
-
-  return quvi.http.fetch(string.format(s, qargs.id)).data
-end
-
--- Parse optional properties, e.g. title.
-function CBSNews.parse_optional(qargs, x, U, L)
-  local v = L.find_first_tag(L.find_first_tag(x, 'Videos'), 'Video')
-
-  qargs.title = U.trim(L.find_first_tag(v, 'Title')[1]) or ''
-
-  local t = L.find_first_tag(v, 'ThumbnailImage')
-  qargs.thumb_url = U.trim(L.find_first_tag(t, 'ImageURL')[1]) or ''
-
-  return v
-end
-
--- Iterates the available streams.
-function CBSNews.iter_streams(U, L, v)
-  local m = L.find_first_tag(v, 'VideoMedias')
+function CBSNews.iter_streams(v)
   local S = require 'quvi/stream'
+
+  local m = v.medias
   local r = {}
 
-  for i=1, #m do
-    if m[i].tag == 'VideoMedia' then
-      local u = U.trim(L.find_first_tag(m[i], 'DeliveryUrl')[1])
-      local t = S.stream_new(u)
-      t.video.bitrate_kbit_s = tonumber(L.find_first_tag(m[i], 'BitRate')[1])
-      t.video.height =  tonumber(L.find_first_tag(m[i], 'Height')[1])
-      t.video.width = tonumber(L.find_first_tag(m[i], 'Width')[1])
-      t.video.encoding = ''
-      t.container = u:match('%.(%w+)$') or ''
-      t.id = CBSNews.to_id(t)
+  for k,_ in pairs(m) do
+    local a = m[k]
+    if type(a) == 'table' then
+      local t = S.stream_new(a.uri)
+      CBSNews.optional_stream_props(t, a)
+      t.id = CBSNews.to_id(t, k)
+      -- For lack of a better solution:
+      --  Set the 'desktop' stream as the 'best'
+      if k == 'desktop' then
+        t.flags.best = true
+      end
       table.insert(r, t)
     end
   end
-
-  if #r >1 then
-    CBSNews.ch_best(S, r) -- Pick a stream that of the 'best' quality.
-  end
-
   return r
 end
 
--- Return an ID for a stream.
-function CBSNews.to_id(t)
-  return string.format("%s_%dk_%dp", t.container,
-                                     t.video.bitrate_kbit_s,
-                                     t.video.height)
+function CBSNews.optional_stream_props(t, a)
+  t.container = t.url:match('%.(%w+)$') or ''
+  local b = tonumber(a.bitrate or 0)
+  if b >1000 then
+    b = b/1000
+  end
+  t.video.bitrate_kbit_s = b
 end
 
--- Picks the stream with the highest video height property.
-function CBSNews.ch_best(S, t)
-  local r = t[1] -- Set the first stream as the default 'best'.
-  r.flags.best = true
-  for _,v in pairs(t) do
-    if v.video.height > r.video.height then
-      r = S.swap_best(r, v)
-    end
-  end
+function CBSNews.to_id(t, k)
+  return string.format('%s_%s_%dk', t.container, k, t.video.bitrate_kbit_s)
 end
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:
