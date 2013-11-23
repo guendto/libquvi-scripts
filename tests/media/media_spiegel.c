@@ -29,21 +29,21 @@
 static const gchar *URLs[] =
 {
   "http://www.spiegel.de/video/leverkusens-streben-nach-gelassenheit-video-1265612.html",
-  "http://www.spiegel.de/video/akrobaten-der-luefte-1-fliegen-am-limit-video-35465.html",
+  "http://www.spiegel.de/video/drogenschmuggel-in-kolumbien-fahnder-entdecken-schmuggel-u-boot-video-1222654.html",
   NULL
 };
 
 static const gchar *TITLEs[] =
 {
   "Schürrle sorgt für Unruhe: Leverkusens schweres Streben nach Gelassenheit",
-  "Akrobaten der Lüfte(1): Fliegen am Limit",
+  "Drogenschmuggel: Kolumbianische Polizei entdeckt Drogen-U-Boot",
   NULL
 };
 
 static const gchar *IDs[] =
 {
   "1265612",
-  "35465",
+  "1222654",
   NULL
 };
 
