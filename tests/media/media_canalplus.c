@@ -29,24 +29,24 @@
 
 static const gchar *URLs[] =
 {
-  "http://www.canalplus.fr/c-divertissement/pid1784-c-les-guignols.html?vid=791262",
-  "http://www.d8.tv/d8-divertissement/pid5200-d8-le-grand-8.html?vid=954696",
+  "http://www.canalplus.fr/c-sport/c-football/c-football-coupe-du-monde-2014/pid3610-c-videos-cdm-2014.html?vid=973283",
+  "http://www.d8.tv/c-divertissement/d8-palmashow/pid5036-vbb-saison-2.html?vid=776533",
   "http://www.d17.tv/docs-mags/pid6273-musique.html?vid=933914",
   NULL
 };
 
 static const gchar *TITLEs[] =
 {
-  "Les Guignols de l'Info du 11/11/13",
-  "Face à face : Amanda Lear vs Roselyne Bachelot",
+  "Coupe du Monde 2014",
+  "Very Bad Blagues - Saison 2",
   "Pink Floyd : Behind «the wall»",
   NULL
 };
 
 static const gchar *IDs[] =
 {
-  "969879",
-  "954696",
+  "973283",
+  "776533",
   "933914",
   NULL
 };
