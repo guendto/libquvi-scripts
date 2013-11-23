@@ -28,22 +28,22 @@
 
 static const gchar *URLs[] =
 {
-  "http://www.cbsnews.com/video/watch/?id=50145057n",
-  "http://www.cbsnews.com/video/watch/?id=50145055n",
+  "http://www.cbsnews.com/videos/how-jfk-changed-the-course-of-civil-rights",
+  "http://www.cbsnews.com/videos/cat-runs-onto-soccer-field/",
   NULL
 };
 
 static const gchar *TITLEs[] =
 {
+  "How JFK changed the course of civil rights",
   "Cat runs onto soccer field",
-  "All That Mattered: The Ford Mustang",
   NULL
 };
 
 static const gchar *IDs[] =
 {
-  "50145057",
-  "50145055",
+  "841854bb-3128-487c-a08c-ba16db80f7ea",
+  "1593e3bf-3644-11e3-8ce8-047d7b15b92e",
   NULL
 };
 
@@ -61,11 +61,8 @@ static void test_media_cbsnews()
       e.title = TITLEs[i];
       e.id = IDs[i];
 
-      o.s_len_gt0.stream.container = TRUE;
-
       o.gt0.stream.video.bitrate_kbit_s = TRUE;
-      o.gt0.stream.video.height = TRUE;
-      o.gt0.stream.video.width = TRUE;
+      o.s_len_gt0.stream.container = TRUE;
 
       qm_test(__func__, URLs[i], &e, &o);
     }
