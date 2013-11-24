@@ -57,13 +57,15 @@ function parse(self)
     local t = {'http://www.dorkly.com/moogaloop/video/', self.id}
     local x = quvi.fetch(table.concat(t), {fetch_type='config'})
 
-    self.duration = tonumber(Dorkly.xml_get(x, 'duration', false))
+    local U = require 'quvi/util'
 
-    self.thumbnail_url = Dorkly.xml_get(x, 'thumbnail', true)
+    self.duration = tonumber(U.xml_get(x, 'duration', false))
 
-    self.title = Dorkly.xml_get(x, 'caption', true)
+    self.thumbnail_url = U.xml_get(x, 'thumbnail', true)
 
-    self.url = { Dorkly.xml_get(x, 'file', true) }
+    self.title = U.xml_get(x, 'caption', true)
+
+    self.url = { U.xml_get(x, 'file', true) }
 
     return self
 end
@@ -83,13 +85,6 @@ function Dorkly.is_affiliate(self)
     end
     self.redirect_url = u
     return true
-end
-
-function Dorkly.xml_get(x, e, is_cdata)
-    local c = is_cdata and '.-%w+%[(.-)%].-' or '(%d+)'
-    local t = {'<',e,'>', c, '</',e,'>'}
-    return x:match(table.concat(t))
-              or error(table.concat({'no match: element: ',e}))
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
