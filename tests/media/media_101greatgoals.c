@@ -27,13 +27,13 @@
 #include "tests.h"
 
 static const gchar URL[] =
-  "http://www.101greatgoals.com/gvideos/individual-highlights-neymar-brazil-v-england/";
+  "http://www.101greatgoals.com/gvideos/jose-mourinho-on-his-haircut-i-did-it-myself-its-nice-and-cheap/";
 
 static const gchar TITLE[] =
-  "Neymar vs England (International Friendly) 2013 HD 720p By Guilherme";
+  "Mourinho on his haircut: 'I did it myself, it's nice and cheap'";
 
 static const gchar ID[] =
-  "X5YJ9J1HJDE";
+  "K3XDDBfODqA";
 
 static void test_media_101greatgoals()
 {
