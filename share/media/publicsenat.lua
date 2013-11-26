@@ -33,13 +33,22 @@ end
 function parse(qargs)
   local p = quvi.http.fetch(qargs.input_url).data
 
-  local t = p:match('id="imgEmissionSelect" value="(.-)"') or ''
-  qargs.thumb_url = (#t >0) and ('http://publicsenat.fr'..t) or ''
+  local u = p:match('id="dmcloudUrlEmissionSelect" value="(.-)"')
+              or error('no match: emission URL')
+
+  local e = quvi.http.fetch(u).data
+  local d = e:match('info = (.-);') or error('no match: info')
+
+  local J = require 'json'
+  local j = J.decode(d)
 
   qargs.id = qargs.input_url:match("/vod/.-/(%d+)$") or ''
+
   qargs.title = p:match('<title>(.-)%s+%|') or ''
 
-  qargs.streams = PublicSenat.iter_streams(p)
+  qargs.streams = PublicSenat.iter_streams(j)
+
+  qargs.thumb_url = j.thumbnail_url or ''
 
   return qargs
 end
@@ -61,11 +70,9 @@ function PublicSenat.can_parse_url(qargs)
   end
 end
 
-function PublicSenat.iter_streams(p)
-  local u = p:match('id="flvEmissionSelect" value="(.-)"')
-              or error('no match: media stream URL')
+function PublicSenat.iter_streams(j)
   local S = require 'quvi/stream'
-  return {S.stream_new(u)}
+  return {S.stream_new(j.mp4_url)}
 end
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:
