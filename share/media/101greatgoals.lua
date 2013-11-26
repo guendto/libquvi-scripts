@@ -86,13 +86,18 @@ function HaOgg.chk_embedded(p)
   -- and pass it back to libquvi to find a media script that accepts the
   -- parsed (embedded) media URL.
   --
-  -- NOTE: This means that those media scripts must unwrangle the embedded
-  --       media URLs passed from this script
-  --
   local s = p:match('class="post%-type%-gvideos">(.-)</')
               or p:match('id="jwplayer%-1">(.-)</>')
                 or error('unable to determine embedded source')
-  return s:match('value="(.-)"') or s:match('src="(.-)"')
+
+  s = s:match('value="(.-)"') or s:match('src="(.-)"')
+
+  local U = require 'socket.url'
+  local t = U.parse(s)
+  if not t.scheme then -- Make sure the URL has a scheme.
+    t.scheme = 'http'
+  end
+  return U.build(t)
 end
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:
