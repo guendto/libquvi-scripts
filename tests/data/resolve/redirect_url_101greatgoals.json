@@ -9,9 +9,9 @@
   "link": [
     {
       "id": "1",
-      "length_bytes": "2804005",
-      "content_type": "video/x-flv",
-      "file_suffix": "flv",
+      "length_bytes": "2308237",
+      "content_type": "video/webm",
+      "file_suffix": "webm",
       "url": ""
     }
   ]
