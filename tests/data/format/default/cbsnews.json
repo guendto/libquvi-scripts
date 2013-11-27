@@ -1,15 +1,16 @@
 {
   "host": "cbsnews",
   "page_title": "48 Hours Live to Tell: Full Moon",
-  "page_url": "http://www.cbsnews.com/video/watch/?id=7118769n",
-  "id": "50096912",
+  "page_url": "http://www.cbsnews.com/videos/48-hours-live-to-tell-full-moon/",
+  "id": "674917c0-8bdf-11e2-9400-029118418759",
   "format_requested": "default",
+  "thumbnail_url": "http://cbsnews1.cbsistatic.com/hub/i/r/2010/12/04/b4733738-3ab3-11e3-a4cb-047d7b15b92e/thumbnail/140x90/48_1204_FULLMOON.jpg?hash=c648488e529d5d009d7112ace95527ba",
   "link": [
     {
       "id": "1",
-      "length_bytes": "105048222",
-      "content_type": "video/x-m4v",
-      "file_suffix": "m4v",
+      "length_bytes": "257876782",
+      "content_type": "video/x-flv",
+      "file_suffix": "flv",
       "url": ""
     }
   ]
