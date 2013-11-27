@@ -4,13 +4,13 @@
   "page_url": "http://www.publicsenat.fr/vod/un-monde-de-bulles/speciale-journal-de-spirou/67141",
   "id": "67141",
   "format_requested": "default",
-  "thumbnail_url": "http://publicsenat.fr/photo/vignettes/424265bulles_20101217-500k-250100.jpg",
+  "thumbnail_url": "http://static.dmcloud.net/522497e194a6f650d300002d/5270069706361d7401000014/jpeg_thumbnail_source-1383069857.jpeg",
   "link": [
     {
       "id": "1",
-      "length_bytes": "138643826",
-      "content_type": "video/x-flv",
-      "file_suffix": "flv",
+      "length_bytes": "101479883",
+      "content_type": "video/mp4",
+      "file_suffix": "mp4",
       "url": ""
     }
   ]
