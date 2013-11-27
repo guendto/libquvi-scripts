@@ -4,14 +4,14 @@
   "page_url": "http://www.youtube.com/embed/C2hk6d_8Gt4?rel=0",
   "id": "C2hk6d_8Gt4",
   "format_requested": "default",
-  "thumbnail_url": "http://i4.ytimg.com/vi/C2hk6d_8Gt4/default.jpg",
+  "thumbnail_url": "http://i1.ytimg.com/vi/C2hk6d_8Gt4/default.jpg",
   "duration": "44000",
   "link": [
     {
       "id": "1",
-      "length_bytes": "6943044",
-      "content_type": "video/webm",
-      "file_suffix": "webm",
+      "length_bytes": "11645264",
+      "content_type": "video/mp4",
+      "file_suffix": "mp4",
       "url": ""
     }
   ]
