@@ -1,0 +1,18 @@
+{
+  "host": "youtube",
+  "page_title": "Mourinho on his haircut: 'I did it myself, it's nice and cheap'",
+  "page_url": "http://www.youtube.com/embed/K3XDDBfODqA?rel=0",
+  "id": "K3XDDBfODqA",
+  "format_requested": "default",
+  "thumbnail_url": "http://i1.ytimg.com/vi/K3XDDBfODqA/default.jpg",
+  "duration": "37000",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "11271005",
+      "content_type": "video/mp4",
+      "file_suffix": "mp4",
+      "url": ""
+    }
+  ]
+}

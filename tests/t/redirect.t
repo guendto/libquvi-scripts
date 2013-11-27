@@ -34,7 +34,7 @@ my $q = Test::Quvi->new;
 plan skip_all => "TEST_SKIP rule"
   if $q->test_skip("redirect");
 
-plan tests => 12;
+plan tests => 14;
 
 my $j = $q->get_json_obj;
 
@@ -61,6 +61,11 @@ test_redirect_url(    # Test self.redirect_url in bikeradar.lua
 test_redirect_url(    # Test self.redirect_url in 101greatgoals.lua
       "http://www.101greatgoals.com/gvideos/welsh-premier-goal-of-the-season-glenn-rule-airbus-uk-broughton-v-prestatyn-town/",
       "data/resolve/redirect_url_101greatgoals.json"
+                 );
+
+test_redirect_url(    # Test self.redirect_url in 101greatgoals.lua
+      "http://www.101greatgoals.com/gvideos/jose-mourinho-on-his-haircut-i-did-it-myself-its-nice-and-cheap/",
+      "data/resolve/redirect_url_101greatgoals-1.json"
                  );
 
 test_redirect_url(    # Test self.redirect_url in liveleak.lua
