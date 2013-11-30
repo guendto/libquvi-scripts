@@ -74,6 +74,7 @@ dist_media_DATA=\
   media/tvlux.lua\
   media/videa.lua\
   media/videobash.lua\
+  media/vimeo.lua\
   media/vzaar.lua\
   media/youtube.lua
 
@@ -88,8 +89,7 @@ endif
 if WITH_FIXME
 dist_media_DATA+=\
   media/break.lua\
-  media/charlierose.lua\
-  media/vimeo.lua
+  media/charlierose.lua
 if WITH_GEOBLOCKED
 endif
 if WITH_NSFW

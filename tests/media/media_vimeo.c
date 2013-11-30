@@ -46,12 +46,9 @@ static void test_media_vimeo()
   e.title = TITLE;
   e.id = ID;
 
-  /* String values. */
-
-  o.s_len_gt0.stream.video.encoding = TRUE;
-
-  /* Numerical values. */
-
+  o.s_len_gt0.stream.container = TRUE;
+  o.gt0.stream.video.height = TRUE;
+  o.gt0.stream.video.width = TRUE;
   o.gt0.duration_ms = TRUE;
 
   qm_test(__func__, URL, &e, &o);
