@@ -32,11 +32,11 @@ include $(top_srcdir)/tests/media/theonion.mk
 include $(top_srcdir)/tests/media/tvlux.mk
 include $(top_srcdir)/tests/media/videa.mk
 include $(top_srcdir)/tests/media/videobash.mk
+include $(top_srcdir)/tests/media/vimeo.mk
 include $(top_srcdir)/tests/media/vzaar.mk
 include $(top_srcdir)/tests/media/youtube.mk
 
 if WITH_FIXME
 include $(top_srcdir)/tests/media/break.mk
 include $(top_srcdir)/tests/media/charlierose.mk
-include $(top_srcdir)/tests/media/vimeo.mk
 endif
