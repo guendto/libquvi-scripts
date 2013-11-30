@@ -1,3 +1,24 @@
+v0.4.21  (2013-11-30) / Toni Gundogdu
+
+Toni Gundogdu:
+  - FIX: website/101greatgoals: redirect: Add URL scheme [d1313ea]
+  - FIX: website/arte: Reimpl. support [7084f63]
+  - FIX: website/beeg: title pattern [6dd0013]
+  - FIX: website/cbsnews: Adapt to website changes [cda2d12]
+  - FIX: website/publicsenat: Reimpl. support [e33d3f9]
+  - FIX: website/senat: Reimpl. support [cf3210c]
+  - FIX: website/spankwire: Reimpl. support [33745ae]
+  - FIX: website/vimeo: Reimpl. support [ac21fa0]
+  - Mark website/imdb as "FIXME" [a3e6fb3]
+  - Mark website/justintv as "FIXME" [f50dc23]
+  - Mark website/wdrmaus as "FIXME" [547ba93]
+  - quvi/util: Add json_get function [43d2654]
+  - quvi/util: Add xml_get [e24824c]
+  - website/canalplus.lua: Add support for {d8,d17} [a505772]
+
+ 44 files changed, 539 insertions(+), 542 deletions(-)
+
+
 v0.4.20  (2013-11-04) / Toni Gundogdu
 
 Toni Gundogdu:
