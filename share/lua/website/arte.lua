@@ -41,8 +41,8 @@ end
 
 -- Query available formats.
 function query_formats(self)
-    local c = Arte.get_config(self)
-    local s = Arte.iter_streams(c)
+    local c,U = Arte.get_config(self)
+    local s = Arte.iter_streams(U, c)
 
     local t = {}
     for _,v in pairs(s) do
@@ -61,15 +61,15 @@ function parse(self)
 
     local c,U = Arte.get_config(self)
 
-    self.duration = Arte.get(c, 'videoDurationSeconds', true) * 1000
+    self.duration = U.json_get(c, 'videoDurationSeconds', true) * 1000
 
-    self.thumbnail_url = Arte.get(c, 'programImage')
+    self.thumbnail_url = U.json_get(c, 'programImage')
 
-    self.title = Arte.get(c, 'VTI')
+    self.title = U.json_get(c, 'VTI')
 
-    self.id = Arte.get(c, 'VPI')
+    self.id = U.json_get(c, 'VPI')
 
-    local c = U.choose_format(self, Arte.iter_streams(c), Arte.choose_best,
+    local c = U.choose_format(self, Arte.iter_streams(U,c), Arte.choose_best,
                               Arte.choose_default, Arte.to_id)
 
     self.url = {c.url or error("no match: media stream URL")}
@@ -81,22 +81,22 @@ end
 -- Utility functions
 --
 
-function Arte.iter_streams(c)
+function Arte.iter_streams(U, c)
     local s = c:match('"VSR":(.-)$') or error('no match: VSR')
     local r = {}
     for id,p in s:gmatch('"(.-)":{(.-)}') do
-        local m = Arte.get(p, 'streamer')
-        local u = Arte.get(p, 'url')
+        local m = U.json_get(p, 'streamer')
+        local u = U.json_get(p, 'url')
         local g = (#m >0) and table.concat({m,'mp4:',u}) or u
         local t = {
-            bitrate = Arte.get(p, 'bitrate', true),
-            height = Arte.get(p, 'height', true),
-            width = Arte.get(p, 'width', true),
-            quality = Arte.get(p, 'quality'),
+            bitrate = U.json_get(p, 'bitrate', true),
+            height = U.json_get(p, 'height', true),
+            width = U.json_get(p, 'width', true),
+            quality = U.json_get(p, 'quality'),
             -- Refer to 0.9+ script for the description of "versionProg".
-            vprog = tonumber(Arte.get(p, 'versionProg')),
-            vcode = Arte.get(p, 'versionCode'),
-            mtype = Arte.get(p, 'mediaType'),
+            vprog = tonumber(U.json_get(p, 'versionProg')),
+            vcode = U.json_get(p, 'versionCode'),
+            mtype = U.json_get(p, 'mediaType'),
             url = g
         }
         table.insert(r,t)
@@ -113,18 +113,12 @@ function Arte.get_config(self)
     local c = quvi.fetch(u, {fetch_type='config'})
     local U = require 'quvi/util'
 
-    local e = Arte.get(c, 'VRU')
+    local e = U.json_get(c, 'VRU')
     if #e >0 and Arte.has_expired(U, e) then
         error('media no longer available (expired)')
     end
 
     return c,U
-end
-
-function Arte.get(p, e, is_num)
-  local c = is_num and '(%d+)' or '"(.-)"'
-  local t = {'"',e,'":',c}
-  return p:match(table.concat(t)) or ((is_num) and 0 or '')
 end
 
 function Arte.has_expired(U, s)
