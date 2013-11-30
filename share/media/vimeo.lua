@@ -36,17 +36,17 @@ end
 function parse(qargs)
   Vimeo.normalize(qargs)
 
-  local p = quvi.http.fetch(qargs.input_url).data
-  local U = require 'quvi/util'
-
   qargs.id = qargs.input_url:match('/(%d+)$') or error('no match: media ID')
-  qargs.duration_ms =(tonumber(p:match('"duration":(%d+)')) or 0) * 1000
-  qargs.thumb_url = U.slash_unescape(p:match('"thumbnail":"(.-)"') or '')
+  local c = Vimeo.config_new(qargs)
 
-  local s = p:match('"title":(.-),') or ''
-  qargs.title = U.slash_unescape(s):gsub('^"',''):gsub('"$','')
+  local J = require 'json'
+  local j = J.decode(c)
 
-  qargs.streams = Vimeo.iter_streams(qargs, p)
+  qargs.duration_ms = tonumber(j.video.duration or 0) * 1000
+  qargs.streams = Vimeo.iter_streams(qargs, j)
+
+  qargs.thumb_url = Vimeo.thumb_new(j)
+  qargs.title = j.video.title or ''
 
   return qargs
 end
@@ -69,36 +69,21 @@ function Vimeo.can_parse_url(qargs)
   end
 end
 
-function Vimeo.iter_streams(qargs, page)
-  local p = page:match('"profiles":{(.-)},') or error('no match: profiles')
+function Vimeo.config_new(qargs)
+  local U = require 'socket.url'
+  local t = U.parse(qargs.input_url)
+  t.host = 'player.vimeo.com'
+  t.path = table.concat({'/video/', qargs.id})
+  local p = quvi.http.fetch(U.build(t)).data
+  return p:match('b=(.-);') or error('no match: b')
+end
 
-  local rs = page:match('"signature":"(.-)"')
-              or error('no match: request signature')
-
-  local rt = page:match('"timestamp":(%d+)')
-              or error('no match: request timestamp')
-
-  local f = "http://player.vimeo.com/play_redirect?clip_id=%s"
-              .. "&sig=%s&time=%s&quality=%s&type=moogaloop_local"
-
-  local S = require 'quvi/stream'
+function Vimeo.thumb_new(j)
   local r = {}
-
-  for e,a in p:gmatch('"(.-)":{(.-)}') do -- For each profile.
-    for q in a:gmatch('"(.-)":%d+') do    -- For each quality in the profile.
-      local u = string.format(f, qargs.id, rs, rt, q)
-      local t = S.stream_new(u)
-      t.video.encoding = string.lower(e or '')
-      t.id = Vimeo.to_id(t, q)
-      table.insert(r, t)
-    end
+  for _,u in pairs(j.video.thumbs) do
+    table.insert(r,u)
   end
-
-  if #r >1 then
-    Vimeo.ch_best(r)
-  end
-
-  return r
+  return r[#r] or ''
 end
 
 function Vimeo.normalize(qargs)
@@ -106,13 +91,41 @@ function Vimeo.normalize(qargs)
   qargs.input_url = qargs.input_url:gsub("/video/", "/")
 end
 
-function Vimeo.ch_best(t)
-  t[1].flags.best = true -- Should be the 'hd'.
+function Vimeo.iter_streams(qargs, j)
+  local S = require 'quvi/stream'
+  local h = j.request.files.h264
+
+  local r = {}
+  for k,v in pairs(h) do
+    local s = S.stream_new(v.url)
+    s.container = v.url:match('%.(%w+)%?') or ''
+    s.video.bitrate_kbit_s = v.bitrate
+    s.video.height = v.height
+    s.video.width = v.width
+    s.id = Vimeo.to_id(s,k)
+    table.insert(r,s)
+  end
+
+  if #r >1 then
+    Vimeo.ch_best(S, r)
+  end
+
+  return r
 end
 
--- Return an ID for a stream.
+function Vimeo.ch_best(S, t)
+  local r = t[1]
+  r.flags.best = true
+  for _,v in pairs(t) do
+    if v.video.height > r.video.height then
+      r = S.swap_best(r, v)
+    end
+  end
+end
+
 function Vimeo.to_id(t, quality)
-  return string.format("%s_%s", quality, t.video.encoding)
+  return string.format("%s_%s_%dk_%dp",
+            quality, t.container, t.video.bitrate_kbit_s, t.video.height)
 end
 
 -- vim: set ts=2 sw=2 tw=72 expandtab:
