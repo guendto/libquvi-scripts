@@ -34,7 +34,7 @@ my $q = Test::Quvi->new;
 plan skip_all => "TEST_SKIP rule"
   if $q->test_skip("redirect");
 
-plan tests => 12;
+plan tests => 14;
 
 my $j = $q->get_json_obj;
 
@@ -73,12 +73,10 @@ test_redirect_url(    # Test self.redirect_url in liveleak.lua
       "data/resolve/redirect_url_liveleak.json"
                  );
 
-=comment
 test_url_shortener(    # Test URL shortener support
         "http://is.gd/WipJlL",             # -> http://vimeo.com/42605731
         "data/format/default/vimeo.json"
                   );
-=cut
 
 sub test_redirect_url
 {
