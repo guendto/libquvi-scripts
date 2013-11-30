@@ -4,12 +4,12 @@
   "page_url": "http://vimeo.com/42605731",
   "id": "42605731",
   "format_requested": "default",
-  "thumbnail_url": "http://b.vimeocdn.com/ts/328/038/328038708_960.jpg",
+  "thumbnail_url": "http://b.vimeocdn.com/ts/328/038/328038708_640.jpg",
   "duration": "230000",
   "link": [
     {
       "id": "1",
-      "length_bytes": "24893958",
+      "length_bytes": "75757171",
       "content_type": "video/mp4",
       "file_suffix": "mp4",
       "url": ""
