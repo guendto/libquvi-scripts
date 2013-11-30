@@ -43,7 +43,6 @@ DIST_lua=\
  lua/website/tapuz.lua \
  lua/website/ted.lua \
  lua/website/tvlux.lua \
- lua/website/tvrain.lua \
  lua/website/tmunderground.lua \
  lua/website/theonion.lua \
  lua/website/videa.lua \
@@ -83,6 +82,7 @@ DIST_lua+=\
  lua/website/justintv.lua \
  lua/website/mgnetwork.lua \
  lua/website/pluzz.lua \
+ lua/website/tvrain.lua \
  lua/website/wdrmaus.lua
 if WITH_NSFW
 DIST_lua+=\
