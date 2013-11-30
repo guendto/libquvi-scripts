@@ -1,3 +1,23 @@
+v0.9.20131130
+
+Mohamed El Morabity:
+  - media/canalplus.lua: Relicense under AGPLv3+ [041e33b]
+    - Ported and updated revision of the 0.4 script w/ improvements
+Toni Gundogdu:
+  - FIX: media/101greatgoals: redirect: Add URL scheme [d74e442]
+  - FIX: media/cbsnews.lua: Adapt to website changes [6a265a9]
+  - FIX: media/publicsenat: Reimpl. support [eb4bb86]
+  - FIX: media/vimeo: Reimpl. support [25ec596]
+  - media/collegehumor.lua: Relicense under AGPLv3+ [3639d54]
+    - Move website/collegehumor.lua to media/ [458f484]
+    - Remove query_formats function [a0a0bb9]
+    - Rewrite ident function [b121ade]
+    - Rewrite parse function [c8e7924]
+  - Port website/dorkly.lua from the 0.4 series [5304e1b]
+
+ 22 files changed, 695 insertions(+), 465 deletions(-)
+
+
 v0.9.20131104
 
 Mohamed El Morabity:
