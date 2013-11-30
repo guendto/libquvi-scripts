@@ -195,6 +195,13 @@ function M.xml_get(d, e, is_cdata)
               or error(table.concat({'no match: element: ',e}))
 end
 
+-- For very simple JSON value extraction.
+function M.json_get(p, e, is_num)
+  local c = is_num and '(%d+)' or '"(.-)"'
+  local t = {'"',e,'":',c}
+  return p:match(table.concat(t)) or ((is_num) and 0 or '')
+end
+
 return M
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:
